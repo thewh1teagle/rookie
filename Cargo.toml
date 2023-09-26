@@ -1,0 +1,27 @@
+[package]
+name = "rookie"
+version = "0.1.0"
+edition = "2021"
+description = "Load cookie from your web browsers"
+license-file = "MIT-LICENSE.txt"
+homepage = "https://github.com/thewh1teagle/rookie"
+documentation = "https://github.com/thewh1teagle/rookie"
+repository = "https://github.com/thewh1teagle/rookie"
+readme = "README.md"
+keywords = ["windows", "winapi", "cookies", "rust"]
+
+[lib]
+name = "rookie"
+path = "src/lib.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
+[dependencies]
+aes-gcm = "0.10.3"
+base64 = "0.21.4"
+serde = { version = "1.0.188", features = ["derive"] }
+serde_json = "1.0.107"
+sqlite = "0.31.1"
+winapi = { version = "0.3.9", features = ["dpapi", "winbase", "wincrypt", "minwindef"] }

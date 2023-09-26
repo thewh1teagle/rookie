@@ -83,9 +83,9 @@ fn decrypt(keydpapi: &[u8]) -> Result<Vec<u8>, String> {
     let decrypted_data = unsafe {
         Vec::from_raw_parts(data_out.pbData, data_out.cbData as usize, data_out.cbData as usize)
     };
-    unsafe {
-        winbase::LocalFree(data_out.pbData as minwindef::HLOCAL);
-    };
+    // unsafe {
+    //     winbase::LocalFree(data_out.pbData as minwindef::HLOCAL);
+    // };
     Ok(decrypted_data)
 }
 

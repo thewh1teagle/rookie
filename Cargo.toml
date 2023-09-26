@@ -16,7 +16,7 @@ path = "src/lib.rs"
 
 [[bin]]
 name = "main"
-path = "src/main.rs"
+path = "bin/main.rs"
 
 [dependencies]
 aes-gcm = "0.10.3"

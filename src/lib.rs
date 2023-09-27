@@ -81,11 +81,14 @@ fn decrypt(keydpapi: &[u8]) -> Result<Vec<u8>, String> {
     }
     
     let decrypted_data = unsafe {
-        Vec::from_raw_parts(data_out.pbData, data_out.cbData as usize, data_out.cbData as usize)
+        std::slice::from_raw_parts(data_out.pbData, data_out.cbData as usize).to_vec()
     };
-    // unsafe {
-    //     winbase::LocalFree(data_out.pbData as minwindef::HLOCAL);
-    // };
+    let result = unsafe {
+        winbase::LocalFree(data_out.pbData as minwindef::HLOCAL)
+    };
+    if !result.is_null() {
+        return Err("LocalFree failed".to_string());
+    }
     Ok(decrypted_data)
 }
 

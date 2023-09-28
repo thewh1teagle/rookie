@@ -1,5 +1,6 @@
 use rookie;
 
 fn main() {
-    rookie::get_cookies();
+    let cookies = rookie::chrome().unwrap();
+    println!("{:?}", cookies);
 }

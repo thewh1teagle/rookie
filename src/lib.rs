@@ -1,6 +1,4 @@
-use std::{env, path::{self, PathBuf}, fs, ptr, fmt, ffi::c_void};
-use time::OffsetDateTime;
-use cookie::Expiration;
+use std::{env, path::{self, PathBuf}, fs, ptr, fmt::{self}, ffi::c_void, time::{SystemTime, Duration, UNIX_EPOCH}};
 use serde_json;
 use sqlite;
 use base64::{Engine as _, engine::general_purpose};
@@ -8,11 +6,12 @@ use windows::Win32::{Foundation, Security::Cryptography};
 use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
 
 
-struct Cookie {
+#[derive(Debug)]
+pub struct Cookie {
     host: String,
     path:     String,
 	secure:   bool,
-	expires:  i64,
+	expires:  SystemTime,
 	name:     String,
 	value:    String,
 	http_only: bool,
@@ -28,7 +27,7 @@ impl fmt::Display for Cookie {
              - Host: {}\n\
              - Path: {}\n\
              - Secure: {}\n\
-             - Expires: {}\n\
+             - Expires: {:?}\n\
              - Name: {}\n\
              - Value: {}\n\
              - Http Only: {}\n\
@@ -117,12 +116,23 @@ fn decrypt_encrypted_value(value: &[u8], key: &[u8]) -> String {
     plaintext
 }
 
-fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) {
+fn convert_chromium_timestamp_to_unix(timestamp: i64) -> SystemTime {
+    if timestamp == 0 {
+        UNIX_EPOCH
+    } else {
+        let unix_time = UNIX_EPOCH + Duration::from_micros((timestamp as u64 - 11_644_473_600_000_000) / 1_000);
+        unix_time
+    }
+}
+
+fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) -> Result<Vec<Cookie>, &'static str> {
     let connection = sqlite::open(db_path).unwrap();
     let query = "
         SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite
         FROM cookies;
     ";
+
+    let mut cookies: Vec<Cookie> = vec![];
     for row in connection
     .prepare(query)
     .unwrap()
@@ -132,6 +142,7 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) {
         let path = row.read::<&str, _>("path");
         let is_secure = row.read::<i64, _>("is_secure") != 0;
         let expires_nt_time_epoch = row.read::<i64, _>("expires_utc");
+        let expires = convert_chromium_timestamp_to_unix(expires_nt_time_epoch);
         let name = row.read::<&str, _>("name");
         
 
@@ -144,23 +155,22 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) {
             host: host_key.to_string(),
             path: path.to_string(),
             secure: is_secure,
-            expires: expires_nt_time_epoch,
+            expires,
             name: name.to_string(),
             value: decrypted_value,
             http_only,
             same_site
         };
-        println!("{}", cookie);
-
+        cookies.push(cookie);
     }
+    Ok(cookies)
 }
 
-pub fn get_cookies() {
+pub fn chrome() -> Result<Vec<Cookie>, &'static str> {
     let (key, db_path) = find_chrome_paths();
     let content = fs::read_to_string(&key).unwrap();
     let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
     let key64 = key_dict.get("os_crypt").unwrap().get("encrypted_key").unwrap().as_str().unwrap();
-    println!("{}", key64);
     let v10_key = get_v10_key(key64);
-    query_cookies(v10_key, db_path);
+    query_cookies(v10_key, db_path)
 }

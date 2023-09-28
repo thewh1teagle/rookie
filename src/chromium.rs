@@ -35,17 +35,28 @@ fn decrypt_encrypted_value(value: &[u8], key: &[u8]) -> String {
 }
 
 
-fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) -> Result<Vec<Cookie>, Box<dyn Error>> {
+fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let flags = OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_URI;
     let conn_str = format!("{}", db_path.canonicalize().unwrap().to_str().unwrap());
     let connection = rusqlite::Connection::open_with_flags(conn_str, flags).unwrap();
-    let query = "
-        SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite
-        FROM cookies;
-    ";
+    let mut query = "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
+
+    if let Some(domains) = domains {
+        let domain_queries: Vec<String> = domains.iter()
+            .map(|domain| format!("host_key LIKE '%{}%'", domain))
+            .collect();
+        
+        if !domain_queries.is_empty() {
+            let joined_queries = domain_queries.join(" OR ");
+            query += &format!("WHERE ({})", joined_queries);
+        }
+    }
+    query += ";";
+
+    
 
     let mut cookies: Vec<Cookie> = vec![];
-    let mut stmt = connection.prepare(query)?;
+    let mut stmt = connection.prepare(query.as_str())?;
     let mut rows = stmt.query([])?;
 
 
@@ -79,10 +90,10 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) -> Result<Vec<Cookie>, Box<
 }
 
 
-pub fn chromium_based(key: PathBuf, db_path: PathBuf) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let content = fs::read_to_string(&key).unwrap();
     let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
     let key64 = key_dict.get("os_crypt").unwrap().get("encrypted_key").unwrap().as_str().unwrap();
     let v10_key = get_v10_key(key64);
-    query_cookies(v10_key, db_path)
+    query_cookies(v10_key, db_path, domains)
 }

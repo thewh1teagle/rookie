@@ -7,17 +7,30 @@ use rusqlite::{self, OpenFlags};
 
 use crate::enums::*;
 
-pub fn firefox_based(db_path: PathBuf) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let flags = OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_URI;
     let conn_str = format!("{}", db_path.canonicalize().unwrap().to_str().unwrap());
     println!("{}", conn_str);
     let connection = rusqlite::Connection::open_with_flags(conn_str, flags).unwrap();
-    let query = "
-        SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies;
-    ";
+    let mut query = "
+        SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies 
+    ".to_string();
+
+    if let Some(domains) = domains {
+        let domain_queries: Vec<String> = domains.iter()
+            .map(|domain| format!("host LIKE '%{}%'", domain))
+            .collect();
+        
+        if !domain_queries.is_empty() {
+            let joined_queries = domain_queries.join(" OR ");
+            query += &format!("WHERE ({})", joined_queries);
+        }
+    }
+    
+    query += ";";
 
     let mut cookies: Vec<Cookie> = vec![];
-    let mut stmt = connection.prepare(query)?;
+    let mut stmt = connection.prepare(query.as_str())?;
     let mut rows = stmt.query([])?;
 
 

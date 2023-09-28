@@ -29,3 +29,17 @@ impl fmt::Display for Cookie {
         )
     }
 }
+
+
+pub trait CookieToString {
+    fn to_string(&self) -> String;
+}
+
+impl CookieToString for Vec<Cookie> {
+    fn to_string(&self) -> String {
+        self.iter()
+            .map(|cookie| format!("{}={}", cookie.name, cookie.value))
+            .collect::<Vec<String>>()
+            .join(";")
+    }
+}

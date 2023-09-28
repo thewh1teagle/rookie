@@ -1,4 +1,4 @@
-mod enums;
+pub mod enums;
 mod winapi;
 mod paths;
 mod chromium;
@@ -12,24 +12,24 @@ use enums::*;
 
 
 
-pub fn firefox() -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let db_path = paths::find_firefox_paths();
-    firefox_based(db_path)
+    firefox_based(db_path, domains)
 }
 
-pub fn chrome() -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let (key, db_path) = paths::find_chrome_paths();
-    chromium_based(key, db_path)
+    chromium_based(key, db_path, domains)
 }
 
 
-pub fn brave() -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let (key, db_path) = paths::find_brave_paths();
-    chromium_based(key, db_path)
+    chromium_based(key, db_path, domains)
 }
 
-pub fn edge() -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let (key, db_path) = paths::find_edge_paths();
-    chromium_based(key, db_path)
+    chromium_based(key, db_path, domains)
 }
 

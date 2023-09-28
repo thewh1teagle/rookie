@@ -11,7 +11,8 @@ cargo add rookie
 use rookie::{self, Cookie};
 
 fn main() {
-    let cookies: Vec<Cookie> = rookie::chrome().unwrap();
+    let domains = Some(vec!["google.com"]); // set to None to get all
+    let cookies: Vec<Cookie> = rookie::chrome(domains).unwrap();
     println!("{:?}", cookies);
 }
 ```

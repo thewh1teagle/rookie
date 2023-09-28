@@ -1,6 +1,6 @@
 use rookie;
 
 fn main() {
-    let cookies = rookie::chrome().unwrap();
+    let cookies = rookie::edge().unwrap();
     println!("{:?}", cookies);
 }

@@ -2,12 +2,12 @@
 Load cookie from your web browsers into rust
 
 # Install
-```
+```shell
 cargo add rookie
 ```
 
 # Usage
-```
+```rust
 use rookie::{self, Cookie};
 
 fn main() {

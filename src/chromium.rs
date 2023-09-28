@@ -1,4 +1,4 @@
-use std::{path::PathBuf, fs, time::{SystemTime, Duration, UNIX_EPOCH}, error::Error};
+use std::{path::PathBuf, fs, error::Error};
 use serde_json;
 use rusqlite::{self, OpenFlags};
 
@@ -9,6 +9,7 @@ use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}}
 
 use crate::winapi;
 use crate::enums::*;
+use crate::utils::*;
 
 
 fn get_v10_key(key64: &str) -> Vec<u8> {
@@ -33,19 +34,10 @@ fn decrypt_encrypted_value(value: &[u8], key: &[u8]) -> String {
     plaintext
 }
 
-fn convert_chromium_timestamp_to_unix(timestamp: i64) -> SystemTime {
-    if timestamp == 0 {
-        UNIX_EPOCH
-    } else {
-        let unix_time = UNIX_EPOCH + Duration::from_micros((timestamp as u64 - 11_644_473_600_000_000) / 1_000);
-        unix_time
-    }
-}
 
 fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let flags = OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_URI;
-    let conn_str = format!("{}?immutable=1", db_path.canonicalize().unwrap().to_str().unwrap());
-    println!("{}", conn_str);
+    let conn_str = format!("{}", db_path.canonicalize().unwrap().to_str().unwrap());
     let connection = rusqlite::Connection::open_with_flags(conn_str, flags).unwrap();
     let query = "
         SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite
@@ -62,7 +54,7 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf) -> Result<Vec<Cookie>, Box<
         let path: String = row.get(1)?;
         let is_secure: bool = row.get(2)?;
         let expires_nt_time_epoch: i64 = row.get(3)?;
-        let expires = convert_chromium_timestamp_to_unix(expires_nt_time_epoch);
+        let expires = epoch_to_systemtime(expires_nt_time_epoch);
         let name: String = row.get(4)?;
         
 

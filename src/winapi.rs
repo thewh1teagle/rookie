@@ -47,3 +47,4 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>, String> {
     };
     Ok(decrypted_data)
 }
+

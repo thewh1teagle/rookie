@@ -1,6 +1,6 @@
 use rookie;
 
 fn main() {
-    let cookies = rookie::edge().unwrap();
+    let cookies = rookie::firefox().unwrap();
     println!("{:?}", cookies);
 }

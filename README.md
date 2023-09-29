@@ -1,5 +1,5 @@
 # rookie
-Load cookie from your web browsers into rust
+Load cookies from your web browsers into rust
 
 # Install
 ```shell

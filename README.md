@@ -1,5 +1,5 @@
 # rookie
-Load cookies from your web browsers into rust
+Load cookies from your web browsers
 
 # Install
 ```shell
@@ -15,4 +15,18 @@ fn main() {
     let cookies: Vec<Cookie> = rookie::chrome(domains).unwrap();
     println!("{:?}", cookies);
 }
+```
+
+
+# Bindings
+There's Python bindings to `rookie`
+```shell
+pip install rookiepy
+```
+And the usage it similar to original
+```python
+import rookiepy
+cookies = rookiepy.firefox(["google.com"])
+for cookie in cookies:
+    print(cookie.domain, cookie.value)
 ```

@@ -1,5 +1,5 @@
 use reqwest::blocking::Client;
-use rookie::chrome;
+use rookie::firefox;
 use rookie::enums::CookieToString;
 use regex::Regex;
 
@@ -17,7 +17,7 @@ fn extract_username(html: &str) -> &str {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create a custom cookie store
     let client = Client::new();
-    let cookies = chrome(Some(vec!["github.com"]))?;
+    let cookies = firefox(Some(vec!["github.com"]))?;
     let response = client.get("https://github.com/")
     .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36")
     .header("Cookie", cookies.to_string()) // <- try to comment

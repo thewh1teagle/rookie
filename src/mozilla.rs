@@ -9,7 +9,7 @@ use crate::enums::*;
 
 pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let flags = OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_URI;
-    let conn_str = format!("{}", db_path.canonicalize().unwrap().to_str().unwrap());
+    let conn_str = format!("file://{}?mode=ro&immutable=1", db_path.canonicalize().unwrap().to_str().unwrap());
     let connection = rusqlite::Connection::open_with_flags(conn_str, flags).unwrap();
     let mut query = "
         SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies 

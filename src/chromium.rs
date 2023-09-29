@@ -5,6 +5,7 @@ use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}}
 
 use crate::enums::*;
 use crate::utils::*;
+use crate::sqlite;
 
 #[cfg(target_os = "windows")]
 use base64::{Engine as _, engine::general_purpose};
@@ -52,9 +53,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
 
 
 fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let flags = OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_URI;
-    let conn_str = format!("file://{}?mode=ro&immutable=1", db_path.canonicalize().unwrap().to_str().unwrap());
-    let connection = rusqlite::Connection::open_with_flags(conn_str, flags).unwrap();
+    let connection = sqlite::connect(db_path);
     let mut query = "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
 
     if let Some(domains) = domains {

@@ -5,7 +5,7 @@ mod chromium;
 mod winapi;
 
 mod paths;
-
+mod sqlite;
 mod mozilla;
 mod utils;
 use std::error::Error;

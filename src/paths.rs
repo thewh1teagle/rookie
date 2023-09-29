@@ -40,7 +40,7 @@ pub fn find_firefox_paths() -> PathBuf {
     let appdata_path = env::var("APPDATA").unwrap();
     let appdata_path = path::Path::new(appdata_path.as_str());
     let profiles_path = appdata_path.join("Mozilla/Firefox/profiles.ini");
-    let default_profile = get_default_profile(profiles_path).unwrap();
+    let default_profile = get_default_profile(profiles_path.as_path()).unwrap();
     let db_path = appdata_path.join("Mozilla/Firefox/").join(default_profile).join("cookies.sqlite");    
     db_path
 }

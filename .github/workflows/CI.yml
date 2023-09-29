@@ -115,6 +115,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: wheels
+          path: bindings/python
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:

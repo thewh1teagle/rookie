@@ -10,7 +10,6 @@ use crate::enums::*;
 pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let flags = OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_URI;
     let conn_str = format!("{}", db_path.canonicalize().unwrap().to_str().unwrap());
-    println!("{}", conn_str);
     let connection = rusqlite::Connection::open_with_flags(conn_str, flags).unwrap();
     let mut query = "
         SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies 
@@ -65,13 +64,12 @@ pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec
 }
 
 
-pub fn get_default_profile(user_data_dir: &Path) -> Option<String> {
-    let path = user_data_dir.join("Mozilla/Firefox/profiles.ini");
-    let conf = Ini::load_from_file(path).unwrap();  
+pub fn get_default_profile(profiles_path: &Path) -> Option<String> {
+    let conf = Ini::load_from_file(profiles_path).unwrap();  
     for (sec, prop) in conf.iter() {
         let name: &str = sec.unwrap_or("");
-        if name.starts_with("Install") {
-            let path: &str = prop.get("Default").unwrap();
+        if name.starts_with("Profile0") {
+            let path: &str = prop.get("Path").unwrap();
             return Some(path.to_string());
         }
     }

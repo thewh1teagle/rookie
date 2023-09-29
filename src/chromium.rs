@@ -7,16 +7,22 @@ use base64::{Engine as _, engine::general_purpose};
 use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
 
 
-use crate::winapi;
+
 use crate::enums::*;
 use crate::utils::*;
 
-
+#[cfg(target_os = "windows")]
 fn get_v10_key(key64: &str) -> Vec<u8> {
+    use crate::winapi;
     let mut keydpapi: Vec<u8> = general_purpose::STANDARD.decode(&key64).unwrap();
     let keydpapi = &mut keydpapi[5..];
     let v10_key = winapi::decrypt(keydpapi).unwrap();
     v10_key
+}
+
+#[cfg(target_os = "linux")]
+fn get_v10_key(key64: &str) -> Vec<u8> {
+    vec![1]
 }
 
 

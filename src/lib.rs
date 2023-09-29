@@ -1,5 +1,8 @@
 pub mod enums;
+
+#[cfg(target_os = "windows")]
 mod winapi;
+
 mod paths;
 mod chromium;
 mod mozilla;

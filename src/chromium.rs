@@ -1,15 +1,18 @@
 use std::{path::PathBuf, fs, error::Error};
 use serde_json;
 use rusqlite::{self, OpenFlags};
-
-
-use base64::{Engine as _, engine::general_purpose};
 use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
-
-
 
 use crate::enums::*;
 use crate::utils::*;
+
+#[cfg(target_os = "windows")]
+use base64::{Engine as _, engine::general_purpose};
+
+#[cfg(target_os = "linux")]
+use bcrypt_pbkdf;
+
+
 
 #[cfg(target_os = "windows")]
 fn get_v10_key(key64: &str) -> Vec<u8> {
@@ -20,16 +23,23 @@ fn get_v10_key(key64: &str) -> Vec<u8> {
     v10_key
 }
 
+
+
 #[cfg(target_os = "linux")]
-fn get_v10_key(key64: &str) -> Vec<u8> {
-    vec![1]
+fn get_v10_key() -> Result<Vec<u8>, bcrypt_pbkdf::Error> {
+    let mut output = [0u8; 64];
+    bcrypt_pbkdf::bcrypt_pbkdf(b"peanuts", b"saltysalt", 1, output.as_mut())?;
+    Ok(output.to_vec())
 }
 
-
-fn decrypt_encrypted_value(value: &[u8], key: &[u8]) -> String {
-    let value = &value[3..];
-    let nonce = &value[..12];
-    let ciphertext = &value[12..];
+fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> String {
+    let key_type = &encrypted_value[..3];
+    if value.is_empty() && (key_type == b"v11" || key_type == b"v10") {
+        return value;
+    }
+    let encrypted_value = &encrypted_value[3..];
+    let nonce = &encrypted_value[..12];
+    let ciphertext = &encrypted_value[12..];
 
     // Create a new AES block cipher.
     let key = Key::<Aes256Gcm>::from_slice(key);
@@ -43,7 +53,7 @@ fn decrypt_encrypted_value(value: &[u8], key: &[u8]) -> String {
 
 fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let flags = OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_URI;
-    let conn_str = format!("{}", db_path.canonicalize().unwrap().to_str().unwrap());
+    let conn_str = format!("file://{}?mode=ro&immutable=1", db_path.canonicalize().unwrap().to_str().unwrap());
     let connection = rusqlite::Connection::open_with_flags(conn_str, flags).unwrap();
     let mut query = "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
 
@@ -74,9 +84,9 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>)
         let expires = epoch_to_systemtime(expires_nt_time_epoch);
         let name: String = row.get(4)?;
         
-
+        let value: String = row.get(5)?;
         let encrypted_value: Vec<u8> = row.get(6)?;
-        let decrypted_value = decrypt_encrypted_value(&encrypted_value, &v10_key);
+        let decrypted_value = decrypt_encrypted_value(value, &encrypted_value, &v10_key);
         let http_only: bool = row.get(7)?;
         
         let same_site: i64 = row.get(8)?;
@@ -96,10 +106,22 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>)
 }
 
 
+
+
+#[cfg(target_os = "windows")]
 pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let content = fs::read_to_string(&key).unwrap();
     let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
     let key64 = key_dict.get("os_crypt").unwrap().get("encrypted_key").unwrap().as_str().unwrap();
     let v10_key = get_v10_key(key64);
     query_cookies(v10_key, db_path, domains)
+}
+
+
+#[cfg(target_os = "linux")]
+pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let content = fs::read_to_string(&key).unwrap();
+    let _key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
+    let v10_key = get_v10_key();
+    query_cookies(v10_key.unwrap(), db_path, domains)
 }

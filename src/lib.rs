@@ -1,16 +1,17 @@
 pub mod enums;
+mod chromium;
 
 #[cfg(target_os = "windows")]
 mod winapi;
 
 mod paths;
-mod chromium;
+
 mod mozilla;
 mod utils;
 use std::error::Error;
 
-use chromium::chromium_based;
-use mozilla::firefox_based;
+pub use chromium::chromium_based;
+pub use mozilla::firefox_based;
 use enums::*;
 
 

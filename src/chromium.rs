@@ -1,6 +1,5 @@
 use std::{path::PathBuf, fs, error::Error};
 use serde_json;
-use rusqlite::{self, OpenFlags};
 use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
 
 use crate::enums::*;

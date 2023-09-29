@@ -26,8 +26,8 @@ jobs:
         target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
     steps:
       - uses: actions/checkout@v3
-      with:
-        path: bindings/python
+        with:
+          path: bindings/python
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'

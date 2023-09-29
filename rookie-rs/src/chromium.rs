@@ -32,6 +32,13 @@ fn get_v10_key() -> Result<Vec<u8>, bcrypt_pbkdf::Error> {
     Ok(output.to_vec())
 }
 
+#[cfg(target_os = "macos")]
+fn get_v10_key() -> Result<Vec<u8>, bcrypt_pbkdf::Error> {
+    let mut output = [0u8; 64];
+    bcrypt_pbkdf::bcrypt_pbkdf(b"peanuts", b"saltysalt", 1, output.as_mut())?;
+    Ok(output.to_vec())
+}
+
 fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> String {
     let key_type = &encrypted_value[..3];
     if value.is_empty() && (key_type == b"v11" || key_type == b"v10") {
@@ -117,6 +124,15 @@ pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>
 
 
 #[cfg(target_os = "linux")]
+pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let content = fs::read_to_string(&key).unwrap();
+    let _key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
+    let v10_key = get_v10_key();
+    query_cookies(v10_key.unwrap(), db_path, domains)
+}
+
+
+#[cfg(target_os = "macos")]
 pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let content = fs::read_to_string(&key).unwrap();
     let _key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");

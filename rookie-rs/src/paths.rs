@@ -1,5 +1,5 @@
 use std::{env, path::PathBuf};
-use crate::mozilla::get_default_profile;
+use crate::{mozilla::get_default_profile, BrowserConfig};
 
 
 #[cfg(target_os = "windows")]
@@ -44,27 +44,37 @@ pub fn expand_path(path: &str) -> PathBuf {
 }
 
 
-pub fn find_chrome_based_paths(browser_paths: &[&str]) -> Result<(PathBuf, PathBuf), Box<dyn std::error::Error>> {
-    for path in browser_paths {
-        let user_data_path = expand_path(path);
-        let key_path = user_data_path.join("Local State");
-        let db_path = user_data_path.join("Default/Network/Cookies");
-        if db_path.exists() {
-            return Ok((key_path, db_path));
+pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBuf, PathBuf), Box<dyn std::error::Error>> {
+    for path in browser_config.data_paths {
+        for channel in browser_config.channels {
+            let path = path.replace("{channel}", &channel);
+            let user_data_path = expand_path(path.as_str());
+            let key_path = user_data_path.join("Local State");
+            let db_path = user_data_path.join("Default/Network/Cookies");
+            if db_path.exists() {
+                return Ok((key_path, db_path));
+            }
         }
     }
+    
+    
     Err(("can't find any cookies file").into())
 }
 
-pub fn find_mozilla_based_paths(browser_paths: &[&str]) -> Result<PathBuf, Box<dyn std::error::Error>> {
-    for path in browser_paths {
-        let firefox_path = expand_path(path);
-        let profiles_path = firefox_path.join("profiles.ini");
-        let default_profile = get_default_profile(profiles_path.as_path()).unwrap();
-        let db_path = firefox_path.join(default_profile).join("cookies.sqlite");    
-        if db_path.exists() {
-            return Ok(db_path);
+pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
+    for path in browser_config.data_paths {
+        for channel in browser_config.channels {
+            let path = path.replace("{channel}", &channel);
+            let firefox_path = expand_path(path.as_str());
+            let profiles_path = firefox_path.join("profiles.ini");
+            let default_profile = get_default_profile(profiles_path.as_path()).unwrap();
+            let db_path = firefox_path.join(default_profile).join("cookies.sqlite");    
+            if db_path.exists() {
+                return Ok(db_path);
+            }
         }
     }
+    
+
     Err(("cant find any brave cookies file").into())
 }

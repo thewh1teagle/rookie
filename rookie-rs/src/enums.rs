@@ -43,3 +43,10 @@ impl CookieToString for Vec<Cookie> {
             .join(";")
     }
 }
+
+
+#[derive(Debug)]
+pub struct BrowserConfig<'a> {
+    pub data_paths: &'a [&'static str],
+    pub channels: &'a [&'static str],
+}

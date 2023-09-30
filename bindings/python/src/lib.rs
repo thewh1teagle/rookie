@@ -109,6 +109,15 @@ fn opera(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
 }
 
 #[pyfunction]
+fn opera_gx(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+    let cookies = rookie::opera(domains).unwrap();
+    
+    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+
+    Ok(py_cookies)
+}
+
+#[pyfunction]
 fn chromium(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
     let cookies = rookie::chromium(domains).unwrap();
     
@@ -153,6 +162,7 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(brave, m)?)?;
     m.add_function(wrap_pyfunction!(edge, m)?)?;
     m.add_function(wrap_pyfunction!(opera, m)?)?;
+    m.add_function(wrap_pyfunction!(opera_gx, m)?)?;
     m.add_function(wrap_pyfunction!(chromium, m)?)?;
     m.add_function(wrap_pyfunction!(vivaldi, m)?)?;
     m.add_function(wrap_pyfunction!(chromium_based, m)?)?;

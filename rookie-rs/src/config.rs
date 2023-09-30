@@ -106,6 +106,18 @@ pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
 };
 
 
+#[cfg(target_os = "windows")] 
+pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "%LOCALAPPDATA%/Opera Software/Opera GX {channel}/Cookies",
+        "%LOCALAPPDATA%/Opera Software/Opera GX {channel}/Network/Cookies",
+
+        "%APPDATA%/Opera Software/Opera GX {channel}/Cookies",
+        "%APPDATA%/Opera Software/Opera GX {channel}/Network/Cookies"
+    ],
+    channels: &["Stable", ""],
+};
+
 
 /*
   *********** LINUX **********
@@ -198,6 +210,13 @@ pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &[""],
 };
 
+#[cfg(target_os = "linux")] 
+pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[], // not available on Linux
+    channels: &["", ""],
+};
+
+
 
 /*
   *********** MACOS **********
@@ -272,3 +291,10 @@ pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
     ],
     channels: &[""],
 };
+
+#[cfg(target_os = "macos")] 
+pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &["~/Library/Application Support/com.operasoftware.OperaGX/Cookies"],
+    channels: &["Stable", ""],
+};
+

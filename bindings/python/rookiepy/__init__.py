@@ -6,7 +6,8 @@ from .rookiepy import (
     chromium_based, 
     chromium, 
     opera, 
-    vivaldi
+    vivaldi,
+    opera_gx
 )
 from typing import List, Any
 import http.cookiejar
@@ -19,9 +20,10 @@ __all__ = [
     "chrome",
     "chromium",
     "opera",
-    "vivaldi"
+    "opera_gx",
+    "vivaldi",
     "chromium_based",
-    "firefox_based"
+    "firefox_based",
     "to_dict",
     "to_cookiejar",
     "create_cookie",

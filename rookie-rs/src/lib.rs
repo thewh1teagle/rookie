@@ -201,3 +201,24 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> 
     let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_CONFIG)?;
     chromium_based(key, db_path, domains)
 }
+
+/// Returns cookies from opera gx
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// use rookie;
+/// 
+/// fn main() {
+///     let domains = vec!["google.com"];
+///     let cookies = rookie::opera_gx(Some(domains));
+/// }
+/// ```
+pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
+    chromium_based(key, db_path, domains)
+}

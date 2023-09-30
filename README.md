@@ -48,6 +48,7 @@ Browser  |  Linux   |  MacOS   | Windows  |
 Chrome   | 1/10/23  |    -     |  1/10/23 |
 Firefox  | 1/10/23  |    -     |  1/10/23 |
 Opera    | 1/10/23  |    -     |  1/10/23 |
+Opera GX |    -     |    -     |  1/10/23 |
 Edge     | 1/10/23  |    -     |  1/10/23 |
 Chromium | 1/10/23  |    -     |  1/10/23 |
 Brave    | 1/10/23  |    -     |  1/10/23 |

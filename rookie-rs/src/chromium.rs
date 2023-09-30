@@ -91,7 +91,6 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
     let encrypted_value = & mut encrypted_value.to_owned()[3..];
     let iv: [u8; 16] = [b' '; 16];
 
-    println!("{:?}", key);
     let mut  key_array: [u8;16] = [0;16];
     key_array.copy_from_slice(&key[..16]);
     let cipher = Aes128CbcDec::new(&key_array.into(), &iv.into());
@@ -119,7 +118,6 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
     let encrypted_value = & mut encrypted_value.to_owned()[3..];
     let iv: [u8; 16] = [b' '; 16];
 
-    println!("{:?}", key);
     let mut  key_array: [u8;16] = [0;16];
     key_array.copy_from_slice(&key[..16]);
     let cipher = Aes128CbcDec::new(&key_array.into(), &iv.into());

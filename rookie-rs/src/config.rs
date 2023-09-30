@@ -92,10 +92,15 @@ pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
 #[cfg(target_os = "windows")] 
 pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
     data_paths: &[
-        "Chromium/User Data/Default/Cookies",
-        "Chromium/User Data/Default/Network/Cookies",
-        "Chromium/User Data/Profile */Cookies",
-        "Chromium/User Data/Profile */Network/Cookies"
+        "%LOCALAPPDATA%/Chromium/User Data/Default/Cookies",
+        "%LOCALAPPDATA%/Chromium/User Data/Default/Network/Cookies",
+        "%LOCALAPPDATA%/Chromium/User Data/Profile */Cookies",
+        "%LOCALAPPDATA%/Chromium/User Data/Profile */Network/Cookies",
+
+        "%APPDATA%/Chromium/User Data/Default/Cookies",
+        "%APPDATA%/Chromium/User Data/Default/Network/Cookies",
+        "%APPDATA%/Chromium/User Data/Profile */Cookies",
+        "%APPDATA%/Chromium/User Data/Profile */Network/Cookies"
     ],
     channels: &[""],
 };

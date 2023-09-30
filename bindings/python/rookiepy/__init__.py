@@ -1,4 +1,13 @@
-from .rookiepy import firefox, brave, edge, chrome, chromium_based
+from .rookiepy import (
+    firefox, 
+    brave, 
+    edge, 
+    chrome, 
+    chromium_based, 
+    chromium, 
+    opera, 
+    vivaldi
+)
 from typing import List, Any
 import http.cookiejar
 

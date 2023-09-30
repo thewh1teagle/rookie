@@ -21,3 +21,5 @@ for path in cargo_paths:
         new_content = re.sub(pattern, f'version = "{new_ver}"\nedition = "2021"', content)
         with toml.open('w') as f:
             f.write(new_content)
+
+# cd rookie-rs && cargo publish

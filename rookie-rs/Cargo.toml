@@ -7,7 +7,7 @@ license-file = "MIT-LICENSE.txt"
 homepage = "https://crates.io/crates/rookie"
 documentation = "https://docs.rs/rookie/"
 repository = "https://github.com/thewh1teagle/rookie"
-readme = "README.md"
+readme = "../README.md"
 keywords = ["windows", "cookies", "rust", "web"]
 
 [lib]

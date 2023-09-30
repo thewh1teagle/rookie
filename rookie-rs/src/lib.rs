@@ -16,6 +16,26 @@ pub use enums::*;
 
 
 
+pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let mut cookies = Vec::new();
+
+    let firefox_cookies = firefox(domains.clone()).unwrap_or(vec![]);
+    cookies.extend(firefox_cookies);
+
+
+    let chrome_cookies = chrome(domains.clone()).unwrap_or(vec![]);
+    cookies.extend(chrome_cookies);
+
+
+    let brave_cookies = brave(domains.clone()).unwrap_or(vec![]);
+    cookies.extend(brave_cookies);
+
+    let edge_cookies = edge(domains).unwrap_or(vec![]);
+    cookies.extend(edge_cookies);
+
+    Ok(cookies)
+}
+
 pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let db_path = paths::find_mozilla_based_paths(constants::FIREFOX_PATHS)?;
     firefox_based(db_path, domains)

@@ -13,6 +13,7 @@ __all__ = [
     "to_dict",
     "to_cookiejar",
     "create_cookie",
+    "load"
 ]
 
 def create_cookie(host, path, secure, expires, name, value, http_only):

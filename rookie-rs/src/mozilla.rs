@@ -7,7 +7,7 @@ use crate::sqlite;
 use crate::enums::*;
 
 pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let connection = sqlite::connect(db_path);
+    let connection = sqlite::connect(db_path)?;
     let mut query = "
         SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies 
     ".to_string();

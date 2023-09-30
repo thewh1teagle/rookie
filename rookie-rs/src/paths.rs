@@ -50,7 +50,10 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
             let path = path.replace("{channel}", &channel);
             let db_path = expand_path(path.as_str());
             if db_path.exists() {
-                let key_path = db_path.parent().unwrap().join("../Local State");
+                let mut key_path = db_path.parent().unwrap().join("../../Local State");
+                if !key_path.exists() {
+                    key_path = db_path.parent().unwrap().join("../Local State");
+                }
                 return Ok((key_path, db_path));
             }
         }

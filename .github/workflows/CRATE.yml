@@ -1,3 +1,18 @@
+name: CRATE
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - '*'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
 steps:
     - uses: actions/checkout@v3
     - uses: actions-rs/toolchain@v1

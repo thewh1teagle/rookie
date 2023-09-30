@@ -72,6 +72,15 @@ fn firefox(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
 }
 
 #[pyfunction]
+fn libre_wolf(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+    let cookies = rookie::libre_wolf(domains).unwrap();
+    
+    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+
+    Ok(py_cookies)
+}
+
+#[pyfunction]
 fn chrome(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
     let cookies = rookie::chrome(domains).unwrap();
     
@@ -158,6 +167,7 @@ fn firefox_based(_py: Python, db_path: String, domains: Option<Vec<&str>>) -> Py
 #[pymodule]
 fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(firefox, m)?)?;
+    m.add_function(wrap_pyfunction!(libre_wolf, m)?)?;
     m.add_function(wrap_pyfunction!(chrome, m)?)?;
     m.add_function(wrap_pyfunction!(brave, m)?)?;
     m.add_function(wrap_pyfunction!(edge, m)?)?;

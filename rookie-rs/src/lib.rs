@@ -72,6 +72,27 @@ pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>
     firefox_based(db_path, domains)
 }
 
+/// Returns cookies from libre wolf
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// use rookie;
+/// 
+/// fn main() {
+///     let domains = vec!["google.com"];
+///     let cookies = rookie::libre_wolf(Some(domains));
+/// }
+/// ```
+pub fn libre_wolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let db_path = paths::find_mozilla_based_paths(&config::LIBRE_WOLF_CONFIG)?;
+    firefox_based(db_path, domains)
+}
+
 
 /// Returns cookies from chrome
 ///

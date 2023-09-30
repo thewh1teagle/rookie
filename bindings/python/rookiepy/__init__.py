@@ -7,7 +7,8 @@ from .rookiepy import (
     chromium, 
     opera, 
     vivaldi,
-    opera_gx
+    opera_gx,
+    libre_wolf
 )
 from typing import List, Any
 import http.cookiejar
@@ -15,6 +16,7 @@ import http.cookiejar
 
 __all__ = [
     "firefox",
+    "libre_wolf",
     "brave",
     "edge",
     "chrome",

@@ -118,6 +118,15 @@ pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &["Stable", ""],
 };
 
+#[cfg(target_os = "windows")] 
+pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "%LOCALAPPDATA%/librewolf",
+        "%APPDATA%/librewolf",
+    ],
+    channels: &[""],
+};
+
 
 /*
   *********** LINUX **********
@@ -211,6 +220,15 @@ pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
 };
 
 #[cfg(target_os = "linux")] 
+pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "~/snap/librewolf/common/.librewolf",
+        "~/.librewolf"
+    ],
+    channels: &[""],
+};
+
+#[cfg(target_os = "linux")] 
 pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
     data_paths: &[], // not available on Linux
     channels: &["", ""],
@@ -257,6 +275,15 @@ pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
     ],
     channels: &[""],
 };
+
+#[cfg(target_os = "macos")] 
+pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "~/Library/Application Support/librewolf"
+    ],
+    channels: &[""],
+};
+
 
 #[cfg(target_os = "macos")] 
 pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {

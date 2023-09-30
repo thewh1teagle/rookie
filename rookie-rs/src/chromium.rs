@@ -1,5 +1,7 @@
 use std::{path::PathBuf, fs, error::Error};
 use serde_json;
+
+#[cfg(target_os = "windows")]
 use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
 
 use crate::enums::*;
@@ -9,8 +11,6 @@ use crate::sqlite;
 #[cfg(target_os = "windows")]
 use base64::{Engine as _, engine::general_purpose};
 
-#[cfg(target_os = "linux")]
-use bcrypt_pbkdf;
 
 
 
@@ -26,19 +26,36 @@ fn get_v10_key(key64: &str) -> Vec<u8> {
 
 
 #[cfg(target_os = "linux")]
-fn get_v10_key() -> Result<Vec<u8>, bcrypt_pbkdf::Error> {
-    let mut output = [0u8; 64];
-    bcrypt_pbkdf::bcrypt_pbkdf(b"peanuts", b"saltysalt", 1, output.as_mut())?;
+fn get_v10_key() -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+    use pbkdf2::pbkdf2_hmac;
+    use sha1::Sha1;
+
+    let mut output = [0u8; 16];
+    let salt = b"saltysalt";
+    let iterations = 1;
+    let password = b"peanuts";
+
+    pbkdf2_hmac::<Sha1>(password, salt, iterations, &mut output);
     Ok(output.to_vec())
 }
+
+
 
 #[cfg(target_os = "macos")]
 fn get_v10_key() -> Result<Vec<u8>, bcrypt_pbkdf::Error> {
-    let mut output = [0u8; 64];
-    bcrypt_pbkdf::bcrypt_pbkdf(b"peanuts", b"saltysalt", 1, output.as_mut())?;
+    use pbkdf2::pbkdf2_hmac;
+    use sha1::Sha1;
+
+    let mut output = [0u8; 16];
+    let salt = b"saltysalt";
+    let iterations = 1;
+    let password = b"peanuts";
+
+    pbkdf2_hmac::<Sha1>(password, salt, iterations, &mut output);
     Ok(output.to_vec())
 }
 
+#[cfg(target_os = "windows")]
 fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> String {
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
@@ -56,6 +73,35 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
     let plaintext = String::from_utf8(plaintext).unwrap();
     plaintext
 }
+
+#[cfg(target_os = "linux")]
+fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> String {
+    let key_type = &encrypted_value[..3];
+    if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
+        return value;
+    }
+    use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, KeyIvInit};
+    
+    type Aes128CbcDec = cbc::Decryptor<aes::Aes128>;
+
+
+    // Create an AES-128 cipher with the provided key.
+
+
+    let encrypted_value = & mut encrypted_value.to_owned()[3..];
+    let iv: [u8; 16] = [b' '; 16];
+
+    println!("{:?}", key);
+    let mut  key_array: [u8;16] = [0;16];
+    key_array.copy_from_slice(&key[..16]);
+    let cipher = Aes128CbcDec::new(&key_array.into(), &iv.into());
+
+    let plaintext = cipher.decrypt_padded_mut::<Pkcs7>(encrypted_value).unwrap();
+
+
+    String::from_utf8(plaintext.to_vec()).unwrap()
+}
+
 
 
 fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {

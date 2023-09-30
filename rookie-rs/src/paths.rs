@@ -48,10 +48,9 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
     for path in browser_config.data_paths {
         for channel in browser_config.channels {
             let path = path.replace("{channel}", &channel);
-            let user_data_path = expand_path(path.as_str());
-            let key_path = user_data_path.join("Local State");
-            let db_path = user_data_path.join("Default/Network/Cookies");
+            let db_path = expand_path(path.as_str());
             if db_path.exists() {
+                let key_path = db_path.parent().unwrap().join("../Local State");
                 return Ok((key_path, db_path));
             }
         }

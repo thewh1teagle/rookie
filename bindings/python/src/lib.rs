@@ -1,7 +1,9 @@
 
 use std::{fmt::{self}, time::SystemTime, path::PathBuf};
 use rookie::{self, enums::{CookieToString,Cookie}};
-use pyo3::types::{PyFloat, PyString, PyList};
+use pyo3::types::{PyFloat, PyString, PyList, PyDict};
+use pyo3::exceptions::{PyTypeError, PyKeyError};
+
 use pyo3::prelude::*;
 
 
@@ -29,11 +31,15 @@ impl PyCookie {
     fn secure(&self) -> bool {
         self.inner.secure
     }
+
     #[getter]
-    fn expires(&self) -> PyResult<String> {
+    fn expires(&self) -> PyResult<u128> {
         match self.inner.expires.duration_since(SystemTime::UNIX_EPOCH) {
-            Ok(duration) => Ok(duration.as_secs().to_string()),
-            Err(_) => Ok("Invalid duration".to_string())
+            Ok(duration) => {
+                let ms = duration.as_millis();
+                Ok(ms)
+            }
+            Err(_) => Ok(0)
         }
     }
     

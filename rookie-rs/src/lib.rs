@@ -12,7 +12,7 @@ use std::error::Error;
 
 pub use chromium::chromium_based;
 pub use mozilla::firefox_based;
-use enums::*;
+pub use enums::*;
 
 
 

@@ -119,7 +119,7 @@ fn opera(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
 
 #[pyfunction]
 fn opera_gx(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
-    let cookies = rookie::opera(domains).unwrap();
+    let cookies = rookie::opera_gx(domains).unwrap();
     
     let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
 

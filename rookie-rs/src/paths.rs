@@ -1,6 +1,22 @@
 use std::{env, path::PathBuf};
 use crate::{mozilla::get_default_profile, BrowserConfig};
+use glob;
 
+
+fn expand_glob_paths(path: PathBuf) -> Vec<PathBuf> {
+    let mut data_paths: Vec<PathBuf> = vec![];
+    let glob_res = glob::glob(path.to_str().unwrap()).unwrap();
+    for entry in glob_res {
+        match entry {
+            Ok(path) => {
+                data_paths.push(path);
+            },
+            Err(_) => {},
+        }
+    }
+
+    data_paths
+}
 
 #[cfg(target_os = "windows")]
 pub fn expand_path(path: &str) -> PathBuf {
@@ -45,34 +61,41 @@ pub fn expand_path(path: &str) -> PathBuf {
 
 
 pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBuf, PathBuf), Box<dyn std::error::Error>> {
-    for path in browser_config.data_paths {
-        for channel in browser_config.channels {
+    for path in browser_config.data_paths { // base paths
+        for channel in browser_config.channels { // channels
             let path = path.replace("{channel}", &channel);
             let db_path = expand_path(path.as_str());
-            if db_path.exists() {
-                let mut key_path = db_path.parent().unwrap().join("../../Local State");
-                if !key_path.exists() {
-                    key_path = db_path.parent().unwrap().join("../Local State");
+            let glob_db_paths = expand_glob_paths(db_path);
+            for db_path in glob_db_paths { // glob expanded paths
+                if db_path.exists() {
+                    let mut key_path = db_path.parent().unwrap().join("../../Local State");
+                    if !key_path.exists() {
+                        key_path = db_path.parent().unwrap().join("../Local State");
+                    }
+                    return Ok((key_path, db_path));
                 }
-                return Ok((key_path, db_path));
             }
+            
         }
     }
-    
-    
     Err(("can't find any cookies file").into())
 }
 
+
+
 pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
-    for path in browser_config.data_paths {
-        for channel in browser_config.channels {
+    for path in browser_config.data_paths { // base paths
+        for channel in browser_config.channels { // channels
             let path = path.replace("{channel}", &channel);
             let firefox_path = expand_path(path.as_str());
-            let profiles_path = firefox_path.join("profiles.ini");
-            let default_profile = get_default_profile(profiles_path.as_path()).unwrap();
-            let db_path = firefox_path.join(default_profile).join("cookies.sqlite");    
-            if db_path.exists() {
-                return Ok(db_path);
+            let glob_paths = expand_glob_paths(firefox_path);
+            for path in glob_paths { // expanded glob paths
+                let profiles_path = path.join("profiles.ini");
+                let default_profile = get_default_profile(profiles_path.as_path()).unwrap();
+                let db_path = path.join(default_profile).join("cookies.sqlite");    
+                if db_path.exists() {
+                    return Ok(db_path);
+                }
             }
         }
     }

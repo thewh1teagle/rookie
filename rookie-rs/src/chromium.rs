@@ -41,7 +41,7 @@ fn get_v10_key() -> Result<Vec<u8>, bcrypt_pbkdf::Error> {
 
 fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> String {
     let key_type = &encrypted_value[..3];
-    if value.is_empty() && (key_type == b"v11" || key_type == b"v10") {
+    if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
         return value;
     }
     let encrypted_value = &encrypted_value[3..];

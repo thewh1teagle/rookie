@@ -1,5 +1,4 @@
 use std::collections::btree_map::Cursor;
-use std::os::windows::prelude::FileExt;
 use std::{path::PathBuf, error::Error};
 use crate::enums::*;
 

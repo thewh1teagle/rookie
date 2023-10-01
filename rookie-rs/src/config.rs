@@ -173,6 +173,7 @@ pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
 #[cfg(target_os = "linux")] 
 pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
     data_paths: &[
+        "~/snap/chromium/common/chromium/Default/Cookies",
         "~/.config/chromium/Default/Cookies",
         "~/.config/chromium/Profile */Cookies",
         "~/.var/app/org.chromium.Chromium/config/chromium/Default/Cookies",

@@ -8,6 +8,8 @@ __all__ = [
     "brave",
     "edge",
     "chrome",
+    "chromium",
+    "opera",
     "vivaldi"
     "chromium_based",
     "firefox_based"

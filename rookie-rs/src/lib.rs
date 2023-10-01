@@ -46,6 +46,11 @@ pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>>
     chromium_based(key, db_path, domains)
 }
 
+pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let (key, db_path) = paths::find_chrome_based_paths(&config::CHROMIUM_CONFIG)?;
+    chromium_based(key, db_path, domains)
+}
+
 
 pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let (key, db_path) = paths::find_chrome_based_paths(&config::BRAVE_CONFIG)?;
@@ -60,5 +65,10 @@ pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
 
 pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let (key, db_path) = paths::find_chrome_based_paths(&config::VIVALDI_CONFIG)?;
+    chromium_based(key, db_path, domains)
+}
+
+pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_CONFIG)?;
     chromium_based(key, db_path, domains)
 }

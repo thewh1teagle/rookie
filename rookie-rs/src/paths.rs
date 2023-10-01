@@ -68,10 +68,14 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
             let glob_db_paths = expand_glob_paths(db_path);
             for db_path in glob_db_paths { // glob expanded paths
                 if db_path.exists() {
-                    let mut key_path = db_path.parent().unwrap().join("../../Local State");
-                    if !key_path.exists() {
-                        key_path = db_path.parent().unwrap().join("../Local State");
-                    }
+                    let parent = db_path.parent().unwrap();
+                    let key_path = ["../../Local State", "../Local State", "Local State"]
+                        .iter()
+                        .map(|p| parent.join(p))
+                        .find(|p| p.exists())
+                        .unwrap_or_else(|| parent.join("Local State"));
+                
+                    println!("{:?}", db_path);
                     return Ok((key_path, db_path));
                 }
             }

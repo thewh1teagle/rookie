@@ -1,5 +1,7 @@
 use crate::enums::BrowserConfig;
-
+/*
+  *********** WINDOWS **********
+*/
 // Initialize the CHROME_CONFIG as a static variable with specific values
 #[cfg(target_os = "windows")] 
 pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
@@ -75,12 +77,39 @@ pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &[""],
 };
 
+#[cfg(target_os = "windows")] 
+pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "%LOCALAPPDATA%/Opera Software/Opera {channel}/Cookies",
+        "%LOCALAPPDATA%/Opera Software/Opera {channel}/Network/Cookies",
+
+        "%APPDATA%/Opera Software/Opera {channel}/Cookies",
+        "%APPDATA%/Opera Software/Opera {channel}/Network/Cookies"
+    ],
+    channels: &["Stable", "Next", "Developer"],
+};
+
+#[cfg(target_os = "windows")] 
+pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "Chromium/User Data/Default/Cookies",
+        "Chromium/User Data/Default/Network/Cookies",
+        "Chromium/User Data/Profile */Cookies",
+        "Chromium/User Data/Profile */Network/Cookies"
+    ],
+    channels: &[""],
+};
+
+
+
+/*
+  *********** LINUX **********
+*/
 
 // Initialize the CHROME_CONFIG as a static variable with specific values
 #[cfg(target_os = "linux")] 
 pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
     data_paths: &[
-        "~/snap/chromium/common/chromium/Default/Cookies",
         "~/.config/google-chrome{channel}/Default/Cookies",
         "~/.config/google-chrome{channel}/Profile */Cookies",
         "~/.var/app/com.google.Chrome/config/google-chrome{channel}/Default/Cookies",
@@ -126,6 +155,33 @@ pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &[""],
 };
 
+#[cfg(target_os = "linux")] 
+pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "~/snap/opera/*/.config/opera/Cookies",
+        "~/.config/opera/Cookies",
+        "~/.config/opera-beta/Cookies",
+        "~/.config/opera-developer/Cookies",
+        "~/.var/app/com.opera.Opera/config/opera/Cookies",
+        "~/.var/app/com.opera.Opera/config/opera-beta/Cookies",
+        "~/.var/app/com.opera.Opera/config/opera-developer/Cookies"
+    ],
+    channels: &["Stable", "Next", "Developer"],
+};
+
+
+#[cfg(target_os = "linux")] 
+pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "~/.config/chromium/Default/Cookies",
+        "~/.config/chromium/Profile */Cookies",
+        "~/.var/app/org.chromium.Chromium/config/chromium/Default/Cookies",
+        "~/.var/app/org.chromium.Chromium/config/chromium/Profile */Cookies"
+    ],
+    channels: &[""],
+};
+
+
 
 #[cfg(target_os = "linux")] 
 pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
@@ -136,6 +192,10 @@ pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &[""],
 };
 
+
+/*
+  *********** MACOS **********
+*/
 
 #[cfg(target_os = "macos")] 
 pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
@@ -182,4 +242,27 @@ pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &[""],
 };
 
+#[cfg(target_os = "macos")] 
+pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "%LOCALAPPDATA%/Vivaldi/User Data/Default/Cookies",
+        "%LOCALAPPDATA%/Vivaldi/User Data/Default/Network/Cookies",
+        "%LOCALAPPDATA%/Vivaldi/User Data/Profile */Cookies",
+        "%LOCALAPPDATA%/Vivaldi/User Data/Profile */Network/Cookies",
 
+        "%APPDATA%/Vivaldi/User Data/Default/Cookies",
+        "%APPDATA%/Vivaldi/User Data/Default/Network/Cookies",
+        "%APPDATA%/Vivaldi/User Data/Profile */Cookies",
+        "%APPDATA%/Vivaldi/User Data/Profile */Network/Cookies"
+    ],
+    channels: &["Stable", "Next", "Developer"],
+};
+
+#[cfg(target_os = "macos")] 
+pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "~/Library/Application Support/Chromium/Default/Cookies",
+        "~/Library/Application Support/Chromium/Profile */Cookies"
+    ],
+    channels: &[""],
+};

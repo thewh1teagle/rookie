@@ -1,7 +1,12 @@
+#![feature(btree_cursors)]
+#![feature(generators)]
+
 use std::error::Error;
 
 #[cfg(target_os = "windows")]
 mod winapi;
+
+
 
 mod chromium;
 mod paths;
@@ -14,6 +19,8 @@ pub use chromium::chromium_based;
 pub use mozilla::firefox_based;
 pub use enums::*;
 
+
+mod safari;
 
 /// Returns cookies from all browsers
 ///
@@ -242,4 +249,30 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> 
 pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
     chromium_based(key, db_path, domains)
+}
+
+
+
+
+/// Returns cookies from safari (MacOS only)
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// use rookie;
+/// 
+/// fn main() {
+///     let domains = vec!["google.com"];
+///     let cookies = rookie::safari(Some(domains));
+/// }
+/// ```
+#[cfg(target_os = "windows")]
+pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    pub use safari::safari_based;
+    let db_path = paths::find_safari_based_paths(&config::SAFARI_CONFIG)?;
+    safari_based(db_path, domains)
 }

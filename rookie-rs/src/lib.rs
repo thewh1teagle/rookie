@@ -57,3 +57,8 @@ pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     chromium_based(key, db_path, domains)
 }
 
+
+pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let (key, db_path) = paths::find_chrome_based_paths(&config::VIVALDI_CONFIG)?;
+    chromium_based(key, db_path, domains)
+}

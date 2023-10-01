@@ -8,6 +8,7 @@ __all__ = [
     "brave",
     "edge",
     "chrome",
+    "vivaldi"
     "chromium_based",
     "firefox_based"
     "to_dict",

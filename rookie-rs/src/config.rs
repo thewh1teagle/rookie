@@ -59,6 +59,22 @@ pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &["", "-Beta", "-Dev", "-Nightly"],
 };
 
+#[cfg(target_os = "windows")] 
+pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "%LOCALAPPDATA%/Vivaldi/User Data/Default/Cookies",
+        "%LOCALAPPDATA%/Vivaldi/User Data/Default/Network/Cookies",
+        "%LOCALAPPDATA%/Vivaldi/User Data/Profile */Cookies",
+        "%LOCALAPPDATA%/Vivaldi/User Data/Profile */Network/Cookies",
+
+        "%APPDATA%/Vivaldi/User Data/Default/Cookies",
+        "%APPDATA%/Vivaldi/User Data/Default/Network/Cookies",
+        "%APPDATA%/Vivaldi/User Data/Profile */Cookies",
+        "%APPDATA%/Vivaldi/User Data/Profile */Network/Cookies"
+    ],
+    channels: &[""],
+};
+
 
 // Initialize the CHROME_CONFIG as a static variable with specific values
 #[cfg(target_os = "linux")] 
@@ -96,6 +112,20 @@ pub static EDGE_CONFIG: BrowserConfig<'static> = BrowserConfig {
     ],
     channels: &["", "-Beta", "-Dev", "-Nightly"],
 };
+
+#[cfg(target_os = "linux")] 
+pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "~/.config/vivaldi/Default/Cookies",
+        "~/.config/vivaldi/Profile */Cookies",
+        "~/.config/vivaldi-snapshot/Default/Cookies",
+        "~/.config/vivaldi-snapshot/Profile */Cookies",
+        "~/.var/app/com.vivaldi.Vivaldi/config/vivaldi/Default/Cookies",
+        "~/.var/app/com.vivaldi.Vivaldi/config/vivaldi/Profile */Cookies"
+    ],
+    channels: &[""],
+};
+
 
 #[cfg(target_os = "linux")] 
 pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
@@ -139,6 +169,15 @@ pub static EDGE_CONFIG: BrowserConfig<'static> = BrowserConfig {
 pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
     data_paths: &[
         "~/Library/Application Support/Firefox"
+    ],
+    channels: &[""],
+};
+
+#[cfg(target_os = "macos")] 
+pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "~/Library/Application Support/Vivaldi/Default/Cookies",
+        "~/Library/Application Support/Vivaldi/Profile */Cookies"
     ],
     channels: &[""],
 };

@@ -9,7 +9,7 @@ use libesedb::EseDb;
 
 #[cfg(target_os = "windows")]
 pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let db = EseDb::open(db_path).unwrap();
+    let db = EseDb::open(db_path)?;
     let mut cookies: Vec<Cookie> = vec![];
 
     for table in db.iter_tables()? {

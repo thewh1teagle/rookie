@@ -38,3 +38,17 @@ Chrome version 114 or later, when running on Windows, secures cookie files by lo
 Disable this feature by adding the following command-line flag when launching Chrome: `chrome.exe --disable-features=LockProfileCookieDatabase`.
 
 - Terminate Chrome processes if needed: Alternatively, you can terminate `chrome.exe` processes if you encounter any issues related to locked cookie files.
+
+
+
+## Testing Dates  (dd/mm/yy)
+
+Browser  |  Linux   |  MacOS   | Windows  |
+:------  | :------: | :------: | :------: |
+Chrome   | 1/10/23  |    -     |  1/10/23 |
+Firefox  | 1/10/23  |    -     |  1/10/23 |
+Opera    | 1/10/23  |    -     |  1/10/23 |
+Edge     | 1/10/23  |    -     |  1/10/23 |
+Chromium | 1/10/23  |    -     |  1/10/23 |
+Brave    | 1/10/23  |    -     |  1/10/23 |
+Vivaldi  | 1/10/23  |    -     |  1/10/23 |

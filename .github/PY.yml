@@ -3,7 +3,7 @@
 #
 #    maturin generate-ci github
 #
-name: PYO3
+name: PY
 
 on:
   push:

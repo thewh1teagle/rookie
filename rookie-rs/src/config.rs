@@ -77,6 +77,7 @@ pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
 #[cfg(target_os = "linux")] 
 pub static BRAVE_CONFIG: BrowserConfig<'static> = BrowserConfig {
     data_paths: &[
+        "~/snap/brave/*/.config/BraveSoftware/Brave-Browser/Default/Cookies",
         "~/.config/BraveSoftware/Brave-Browser{channel}/Default/Cookies",
         "~/.config/BraveSoftware/Brave-Browser{channel}/Profile */Cookies",
         "~/.var/app/com.brave.Browser/config/BraveSoftware/Brave-Browser{channel}/Default/Cookies",

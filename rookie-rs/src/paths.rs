@@ -125,3 +125,24 @@ pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf
 
     Err(("cant find any brave cookies file").into())
 }
+
+#[cfg(target_os = "windows")]
+pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
+    for path in browser_config.data_paths { // base paths
+        
+        for channel in browser_config.channels { // channels
+            
+            let path = path.replace("{channel}", &channel);
+            let path = expand_path(path.as_str());
+            let glob_paths = expand_glob_paths(path);
+            for path in glob_paths { // expanded glob paths
+                if path.exists() {
+                    return Ok(path);
+                }
+            }
+        }
+    }
+    
+
+    Err(("cant find any IE cookies file").into())
+}

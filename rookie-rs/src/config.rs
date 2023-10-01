@@ -127,6 +127,15 @@ pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
     channels: &[""],
 };
 
+#[cfg(target_os = "windows")] 
+pub static IE_CONFIG: BrowserConfig<'static> = BrowserConfig {
+    data_paths: &[
+        "%APPDATA%/Microsoft/Windows/WebCache/WebCacheV01.dat",
+        "%LOCALAPPDATA%/Microsoft/Windows/WebCache/WebCacheV01.dat",
+    ],
+    channels: &[""],
+};
+
 
 /*
   *********** LINUX **********

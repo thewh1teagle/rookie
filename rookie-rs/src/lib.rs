@@ -6,7 +6,8 @@ use std::error::Error;
 #[cfg(target_os = "windows")]
 mod winapi;
 
-
+#[cfg(target_os = "windows")]
+mod internet_explorer;
 
 mod chromium;
 mod paths;
@@ -15,9 +16,12 @@ mod mozilla;
 mod utils;
 mod enums;
 mod config;
+
+
 pub use chromium::chromium_based;
 pub use mozilla::firefox_based;
 pub use enums::*;
+
 
 
 mod safari;
@@ -275,4 +279,28 @@ pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>>
     pub use safari::safari_based;
     let db_path = paths::find_safari_based_paths(&config::SAFARI_CONFIG)?;
     safari_based(db_path, domains)
+}
+
+/// Returns cookies from internet explorer (Windows only)
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// use rookie;
+/// 
+/// fn main() {
+///     let domains = vec!["google.com"];
+///     let cookies = rookie::internet_explorer(Some(domains));
+/// }
+/// ```
+#[cfg(target_os = "windows")]
+pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    pub use internet_explorer::internet_explorer_based;
+
+    let db_path = paths::find_ie_based_paths(&config::IE_CONFIG)?;
+    internet_explorer_based(db_path, domains)
 }

@@ -335,7 +335,7 @@ pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
 };
 
 
-#[cfg(target_os = "windows")] 
+#[cfg(target_os = "macos")] 
 pub static SAFARI_CONFIG: BrowserConfig<'static> = BrowserConfig {
     data_paths: &[
         "~/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies",

@@ -131,7 +131,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
 
 
 fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    if cfg!(windows) {
+    if cfg!(target_os = "windows") {
         use crate::winapi;
         unsafe {
             winapi::release_file_lock(db_path.to_str().unwrap());

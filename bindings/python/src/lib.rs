@@ -145,6 +145,7 @@ fn vivaldi(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
 }
 
 #[pyfunction]
+#[cfg(target_os = "windows")]
 fn internet_explorer(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
     let cookies = rookie::internet_explorer(domains).unwrap();
     
@@ -153,6 +154,15 @@ fn internet_explorer(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<Py
     Ok(py_cookies)
 }
 
+#[pyfunction]
+#[cfg(target_os = "macos")]
+fn safari(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+    let cookies = rookie::safari(domains).unwrap();
+    
+    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+
+    Ok(py_cookies)
+}
 
 
 #[pyfunction]
@@ -186,6 +196,12 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(vivaldi, m)?)?;
     m.add_function(wrap_pyfunction!(chromium_based, m)?)?;
     m.add_function(wrap_pyfunction!(firefox_based, m)?)?;
+    
+    #[cfg(target_os = "windows")]
     m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;
+
+    #[cfg(target_os = "macos")]
+    m.add_function(wrap_pyfunction!(safari, m)?)?;
+
     Ok(())
 }

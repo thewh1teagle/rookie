@@ -1,8 +1,10 @@
+from sys import platform
+from typing import List, Any
+import http.cookiejar
 from .rookiepy import (
     firefox, 
     brave, 
     edge, 
-    internet_explorer,
     chrome, 
     chromium_based, 
     chromium, 
@@ -11,16 +13,12 @@ from .rookiepy import (
     opera_gx,
     libre_wolf
 )
-from typing import List, Any
-import http.cookiejar
-
 
 __all__ = [
     "firefox",
     "libre_wolf",
     "brave",
     "edge",
-    "internet_explorer",
     "chrome",
     "chromium",
     "opera",
@@ -33,6 +31,18 @@ __all__ = [
     "create_cookie",
     "load"
 ]
+
+
+# Windows
+if platform == "win32":
+    from .rookiepy import internet_explorer
+    __all__.append("internet_explorer")
+
+# MacOS
+if platform == "darwin":
+    from .rookiepy import safari
+    __all__.append("safari")
+
 
 def create_cookie(host, path, secure, expires, name, value, http_only):
     """Shortcut function to create a cookie"""

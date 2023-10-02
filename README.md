@@ -1,5 +1,5 @@
 # rookie
-Load cookies from your web browsers
+Load cookies from any browser on any platform
 
 # Install
 ```shell

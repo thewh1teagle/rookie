@@ -1,6 +1,3 @@
-#![feature(btree_cursors)]
-#![feature(generators)]
-
 use std::error::Error;
 
 #[cfg(target_os = "windows")]

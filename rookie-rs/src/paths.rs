@@ -107,7 +107,7 @@ pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBu
 }
 
 
-
+#[cfg(target_os = "macos")]
 pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
     for path in browser_config.data_paths { // base paths
         for channel in browser_config.channels { // channels

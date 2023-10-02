@@ -10,7 +10,7 @@ use windows::{Win32::{System::RestartManager::{
     RmForceShutdown,
     CCH_RM_SESSION_KEY,
     RM_PROCESS_INFO
-}, Foundation::{ERROR_SUCCESS, WIN32_ERROR, ERROR_MORE_DATA}}, core::{PWSTR, PCWSTR, w, HSTRING}};
+}, Foundation::{ERROR_SUCCESS, WIN32_ERROR, ERROR_MORE_DATA}}, core::{PWSTR, PCWSTR, HSTRING}};
 
 pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>, String> {
     // https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata

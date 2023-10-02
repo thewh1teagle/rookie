@@ -6,9 +6,13 @@ use crate::utils::epoch_to_systemtime_micros;
 
 use libesedb::EseDb;
 
+use crate::winapi;
 
 #[cfg(target_os = "windows")]
 pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    unsafe {
+        winapi::release_file_lock(db_path.to_str().unwrap());
+    }
     let db = EseDb::open(db_path)?;
     let mut cookies: Vec<Cookie> = vec![];
 

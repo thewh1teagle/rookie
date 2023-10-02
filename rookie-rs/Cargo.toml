@@ -40,6 +40,6 @@ sha1 = "0.10.6"
 pbkdf2 = "0.12.2"
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.51.1", features = ["Win32_Security_Cryptography", "Win32_Foundation"] }
+windows = { version = "0.51.1", features = ["Win32_Security_Cryptography", "Win32_Foundation", "Win32_System", "Win32_System_RestartManager"] }
 base64 = "0.21.4"
 libesedb = "0.2.4"

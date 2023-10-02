@@ -11,12 +11,12 @@ use crate::sqlite;
 #[cfg(target_os = "windows")]
 use base64::{Engine as _, engine::general_purpose};
 
-
+#[cfg(target_os = "windows")]
+use crate::winapi;
 
 
 #[cfg(target_os = "windows")]
 fn get_v10_key(key64: &str) -> Vec<u8> {
-    use crate::winapi;
     let mut keydpapi: Vec<u8> = general_purpose::STANDARD.decode(&key64).unwrap();
     let keydpapi = &mut keydpapi[5..];
     let v10_key = winapi::decrypt(keydpapi).unwrap();
@@ -130,13 +130,16 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
 
 
 
+#[cfg(target_os = "windows")]
+fn unlock_file(path: &str) {
+    unsafe {winapi::release_file_lock(path);}
+}
+#[cfg(not(target_os = "windows"))]
+fn unlock_file(path: &str) {}
+
+
 fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    if cfg!(target_os = "windows") {
-        use crate::winapi;
-        unsafe {
-            winapi::release_file_lock(db_path.to_str().unwrap());
-        }
-    }
+    unlock_file(db_path.to_str().unwrap());
     let connection = sqlite::connect(db_path)?;
     let mut query = "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
 

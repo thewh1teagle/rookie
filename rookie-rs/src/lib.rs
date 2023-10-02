@@ -6,8 +6,10 @@ mod winapi;
 #[cfg(target_os = "windows")]
 mod internet_explorer;
 
-#[cfg(target_os = "windows")]
-pub use safari::safari_based;
+#[cfg(target_os = "macos")]
+mod safari;
+
+
 
 mod chromium;
 mod paths;
@@ -22,9 +24,11 @@ pub use chromium::chromium_based;
 pub use mozilla::firefox_based;
 pub use enums::*;
 
+#[cfg(target_os = "macos")]
+pub use safari::safari_based;
 
 
-mod safari;
+
 
 /// Returns cookies from all browsers
 ///
@@ -274,7 +278,7 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error
 ///     let cookies = rookie::safari(Some(domains));
 /// }
 /// ```
-#[cfg(target_os = "windows")]
+#[cfg(target_os = "macos")]
 pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let db_path = paths::find_safari_based_paths(&config::SAFARI_CONFIG)?;
     safari_based(db_path, domains)

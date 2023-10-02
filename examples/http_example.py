@@ -1,7 +1,6 @@
 import requests
 import re
 from rookiepy import brave, to_cookiejar
-import browser_cookie3
 
 def extract_username(html):
     re_pattern = r'dashboard/ajax_context_list\?current_context=(.+)'

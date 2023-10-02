@@ -31,6 +31,11 @@ for cookie in cookies:
     print(cookie.domain, cookie.value)
 ```
 
+# Examples
+For [Python](https://github.com/thewh1teagle/rookie/tree/main/examples)
+
+For [Rust](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
+
 # Limitations
 Chrome version 114 or later, when running on Windows, secures cookie files by locking them for enhanced security. To work with this, you have two options:
 

@@ -36,16 +36,6 @@ For [Python](https://github.com/thewh1teagle/rookie/tree/main/examples)
 
 For [Rust](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
 
-# Limitations
-Chrome version 114 or later, when running on Windows, secures cookie files by locking them for enhanced security. To work with this, you have two options:
-
-- Use a command-line flag: 
-Disable this feature by adding the following command-line flag when launching Chrome: `chrome.exe --disable-features=LockProfileCookieDatabase`.
-
-- Terminate Chrome processes if needed: Alternatively, you can terminate `chrome.exe` processes if you encounter any issues related to locked cookie files.
-
-
-
 ## Testing Dates  (dd/mm/yy)
 
 Browser  |  Linux   |  MacOS   | Windows  |

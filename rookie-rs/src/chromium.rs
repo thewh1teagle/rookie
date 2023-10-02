@@ -158,7 +158,7 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>)
         let path: String = row.get(1)?;
         let is_secure: bool = row.get(2)?;
         let expires_nt_time_epoch: i64 = row.get(3)?;
-        let expires = epoch_to_systemtime(expires_nt_time_epoch);
+        let expires = epoch_to_systemtime_micros(expires_nt_time_epoch);
         let name: String = row.get(4)?;
         
         let value: String = row.get(5)?;

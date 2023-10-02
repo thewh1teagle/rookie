@@ -2,7 +2,7 @@ use std::error::Error;
 use std::path::PathBuf;
 
 use crate::Cookie;
-use crate::utils::epoch_to_systemtime;
+use crate::utils::epoch_to_systemtime_micros;
 
 use libesedb::EseDb;
 
@@ -34,7 +34,7 @@ pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> 
 
                 let should_append = domains.is_none() || domains.iter().any(|d| d.contains(&host));
                 if should_append {
-                    cookies.push(Cookie { host: host.to_string(), path: path.to_string(), secure, expires: epoch_to_systemtime(expires), name, value, http_only, same_site })
+                    cookies.push(Cookie { host: host.to_string(), path: path.to_string(), secure, expires: epoch_to_systemtime_micros(expires), name, value, http_only, same_site })
                 }
                 
             }

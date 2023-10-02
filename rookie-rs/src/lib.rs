@@ -9,6 +9,9 @@ mod winapi;
 #[cfg(target_os = "windows")]
 mod internet_explorer;
 
+#[cfg(target_os = "windows")]
+pub use safari::safari_based;
+
 mod chromium;
 mod paths;
 mod sqlite;
@@ -276,10 +279,10 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error
 /// ```
 #[cfg(target_os = "windows")]
 pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    pub use safari::safari_based;
     let db_path = paths::find_safari_based_paths(&config::SAFARI_CONFIG)?;
     safari_based(db_path, domains)
 }
+
 
 /// Returns cookies from internet explorer (Windows only)
 ///

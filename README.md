@@ -55,4 +55,4 @@ IE       |   N/A    |   N/A    |  1/10/23 |
 Chromium | 1/10/23  |    -     |  1/10/23 |
 Brave    | 1/10/23  |    -     |  1/10/23 |
 Vivaldi  | 1/10/23  |    -     |  1/10/23 |
-Safari   |   N/A    |    -     |    N/A   |
+Safari   |   N/A    |  2/10/23 |    N/A   |

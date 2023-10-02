@@ -9,7 +9,7 @@ pub fn epoch_to_systemtime_micros(timestamp: i64) -> SystemTime {
     }
 }
 
-
+#[cfg(target_os = "macos")]
 pub fn unix_timestamp_to_system_time(timestamp: i64) -> SystemTime {
     UNIX_EPOCH + Duration::from_secs(timestamp as u64)
 }

@@ -1,5 +1,5 @@
 use std::{path::PathBuf, error::Error};
-
+use serde_json;
 
 #[cfg(target_os = "windows")]
 use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
@@ -163,9 +163,10 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>)
 
 
 
+
 #[cfg(target_os = "windows")]
 pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    use serde_json;
+    
     let content = std::fs::read_to_string(&key)?;
     let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).or(Err("Cant read json file"))?;
 

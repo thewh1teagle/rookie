@@ -38,7 +38,6 @@ pub use safari::safari_based;
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -59,7 +58,6 @@ pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -81,7 +79,6 @@ pub fn libre_wolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Err
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -102,7 +99,6 @@ pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>>
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -124,7 +120,6 @@ pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -146,7 +141,6 @@ pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> 
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -167,7 +161,6 @@ pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -189,7 +182,6 @@ pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -210,7 +202,6 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> 
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -234,7 +225,6 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -257,7 +247,6 @@ pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>>
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -283,7 +272,6 @@ pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<
 /// # Examples
 ///
 /// ```
-/// use rookie;
 /// 
 /// fn main() {
 ///     let domains = vec!["google.com"];
@@ -319,3 +307,5 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
 
     Ok(cookies)
 }
+
+

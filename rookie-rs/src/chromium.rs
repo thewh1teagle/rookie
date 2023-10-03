@@ -1,5 +1,5 @@
 use std::{path::PathBuf, error::Error};
-use serde_json;
+
 use crate::enums::*;
 use crate::utils::*;
 use crate::sqlite;
@@ -7,6 +7,7 @@ use crate::sqlite;
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
         use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
+        use serde_json;
         use base64::{Engine as _, engine::general_purpose};
         use crate::winapi;
     }

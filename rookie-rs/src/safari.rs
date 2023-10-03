@@ -75,7 +75,7 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
     Ok(cookie)
 }
 
-pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Error> {
+pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
     // Magic bytes: "COOK" = 0x636F6F6B
     if slice(bs, 0, 4)? != [0x63, 0x6F, 0x6F, 0x6B] {
         return Err(Error::new(ErrorKind::InvalidData, "not a cookie file"));

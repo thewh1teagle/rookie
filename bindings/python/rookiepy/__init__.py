@@ -11,7 +11,8 @@ from .rookiepy import (
     opera, 
     vivaldi,
     opera_gx,
-    libre_wolf
+    libre_wolf,
+    load
 )
 
 __all__ = [

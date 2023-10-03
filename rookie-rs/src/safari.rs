@@ -78,20 +78,27 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
 pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
     // Magic bytes: "COOK" = 0x636F6F6B
     if slice(bs, 0, 4)? != [0x63, 0x6F, 0x6F, 0x6B] {
-        return Err(Error::new(ErrorKind::InvalidData, "not a cookie file"));
+        return Err("not a cookie file".into());
     }
 
     let count = slice(bs, 4, 4).map(BigEndian::read_u32)? as usize;
     let table_iter = parse_table::<BigEndian>(&bs[8..], count)?;
     let table_iter = table_iter.iter();
-    let pages = table_iter
-        .fold((count * 4 + 8, Vec::new()), |(off, mut acc), &len| {
-            let page_slice = slice(bs, off, len)?;
-
-            acc.push(page_slice.to_vec()); // Convert the slice to a Vec and add it to the accumulator
-            (off + len, acc)
-        })
-        .1;
+    let mut pages = Vec::new();
+    let mut off = count * 4 + 8;
+    
+    for &len in table_iter {
+        let page_slice = match slice(bs, off, len) {
+            Ok(slice) => slice,
+            Err(_) => {
+                // Handle the error here, e.g., by returning the error.
+                return Err("cant get slice from page".into());
+            }
+        };
+    
+        pages.push(page_slice.to_vec());
+        off += len;
+    }
 
     let mut cookies: Vec<Cookie> = vec![];
     for page in pages {

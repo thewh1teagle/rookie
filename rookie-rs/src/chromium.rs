@@ -11,13 +11,7 @@ cfg_if::cfg_if! {
         use base64::{Engine as _, engine::general_purpose};
         use crate::winapi;
     }
-    else if #[cfg(target_os = "macos")] {
-
-    }
-    else if #[cfg(target_os = "linux")] {}
 }
-
-#[cfg(target_os = "windows")]
 
 
 

@@ -1,16 +1,4 @@
 use std::error::Error;
-
-#[cfg(target_os = "windows")]
-mod winapi;
-
-#[cfg(target_os = "windows")]
-mod internet_explorer;
-
-#[cfg(target_os = "macos")]
-mod safari;
-
-
-
 mod chromium;
 mod paths;
 mod sqlite;
@@ -19,14 +7,21 @@ mod utils;
 mod enums;
 mod config;
 
-
 pub use chromium::chromium_based;
 pub use mozilla::firefox_based;
 pub use enums::*;
 
-#[cfg(target_os = "macos")]
-pub use safari::safari_based;
-
+cfg_if::cfg_if! {
+    if #[cfg(target_os = "windows")] {
+        mod winapi;        
+        mod internet_explorer;
+    }
+    else if #[cfg(target_os = "macos")] {
+        mod safari;
+        pub use safari::safari_based;
+    }
+    else if #[cfg(target_os = "linux")] {}
+}
 
 
 /// Returns cookies from firefox

@@ -1,18 +1,24 @@
 use std::{path::PathBuf, error::Error};
 use serde_json;
-
-#[cfg(target_os = "windows")]
-use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
-
 use crate::enums::*;
 use crate::utils::*;
 use crate::sqlite;
 
-#[cfg(target_os = "windows")]
-use base64::{Engine as _, engine::general_purpose};
+cfg_if::cfg_if! {
+    if #[cfg(target_os = "windows")] {
+        use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
+        use base64::{Engine as _, engine::general_purpose};
+        use crate::winapi;
+    }
+    else if #[cfg(target_os = "macos")] {
+
+    }
+    else if #[cfg(target_os = "linux")] {}
+}
 
 #[cfg(target_os = "windows")]
-use crate::winapi;
+
+
 
 
 #[cfg(target_os = "windows")]
@@ -25,7 +31,7 @@ fn get_v10_key(key64: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
 
 
 
-#[cfg(target_os = "linux")]
+#[cfg(unix)]
 fn get_v10_key() -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     use pbkdf2::pbkdf2_hmac;
     use sha1::Sha1;
@@ -39,24 +45,10 @@ fn get_v10_key() -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     Ok(output.to_vec())
 }
 
-
-
-#[cfg(target_os = "macos")]
-fn get_v10_key() -> Result<Vec<u8>, Box<dyn std::error::Error>> {
-    use pbkdf2::pbkdf2_hmac;
-    use sha1::Sha1;
-
-    let mut output = [0u8; 16];
-    let salt = b"saltysalt";
-    let iterations = 1;
-    let password = b"peanuts";
-
-    pbkdf2_hmac::<Sha1>(password, salt, iterations, &mut output);
-    Ok(output.to_vec())
-}
 
 #[cfg(target_os = "windows")]
 fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> Result<String, Box<dyn std::error::Error>> {
+    // gcm
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
         return Ok(value);
@@ -76,6 +68,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
 
 #[cfg(unix)]
 fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> Result<String, Box<dyn std::error::Error>> {
+    // cbc
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
         return Ok(value);
@@ -166,7 +159,7 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>)
 
 #[cfg(target_os = "windows")]
 pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    
+    // Use DPAPI
     let content = std::fs::read_to_string(&key)?;
     let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).or(Err("Cant read json file"))?;
 
@@ -184,15 +177,9 @@ pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>
 }
 
 
-#[cfg(target_os = "linux")]
+#[cfg(unix)]
 pub fn chromium_based(_: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let v10_key = get_v10_key()?;
-    query_cookies(v10_key, db_path, domains)
-}
-
-
-#[cfg(target_os = "macos")]
-pub fn chromium_based(_: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    // Simple AES
     let v10_key = get_v10_key()?;
     query_cookies(v10_key, db_path, domains)
 }

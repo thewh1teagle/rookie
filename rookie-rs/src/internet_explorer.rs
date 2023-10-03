@@ -1,14 +1,10 @@
 use std::error::Error;
 use std::path::PathBuf;
-
 use crate::Cookie;
 use crate::utils::epoch_to_systemtime_micros;
-
 use libesedb::EseDb;
-
 use crate::winapi;
 
-#[cfg(target_os = "windows")]
 pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     unsafe {
         if let Some(path) = db_path.to_str() {

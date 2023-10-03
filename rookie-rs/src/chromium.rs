@@ -1,5 +1,5 @@
-use std::{path::PathBuf, fs, error::Error};
-use serde_json;
+use std::{path::PathBuf, error::Error};
+
 
 #[cfg(target_os = "windows")]
 use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
@@ -75,10 +75,10 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
 }
 
 #[cfg(target_os = "linux")]
-fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> String {
+fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) -> Result<String, Box<dyn std::error::Error>> {
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
-        return value;
+        return Ok(value);
     }
     use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, KeyIvInit};
     
@@ -95,10 +95,10 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: &[u8]) ->
     key_array.copy_from_slice(&key[..16]);
     let cipher = Aes128CbcDec::new(&key_array.into(), &iv.into());
 
-    let plaintext = cipher.decrypt_padded_mut::<Pkcs7>(encrypted_value).unwrap();
+    let plaintext = cipher.decrypt_padded_mut::<Pkcs7>(encrypted_value).or(Err("cant decrypt value"))?;
 
 
-    String::from_utf8(plaintext.to_vec()).unwrap()
+    Ok(String::from_utf8(plaintext.to_vec())?)
 }
 
 #[cfg(target_os = "macos")]
@@ -193,8 +193,9 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>)
 
 #[cfg(target_os = "windows")]
 pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let content = fs::read_to_string(&key)?;
-    let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
+    use serde_json;
+    let content = std::fs::read_to_string(&key)?;
+    let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).or(Err("Cant read json file"));
 
     let os_crypt = key_dict
         .get("os_crypt")
@@ -211,18 +212,14 @@ pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>
 
 
 #[cfg(target_os = "linux")]
-pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let content = fs::read_to_string(&key).unwrap();
-    let _key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
-    let v10_key = get_v10_key();
-    query_cookies(v10_key.unwrap(), db_path, domains)
+pub fn chromium_based(_: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let v10_key = get_v10_key()?;
+    query_cookies(v10_key, db_path, domains)
 }
 
 
 #[cfg(target_os = "macos")]
-pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let content = fs::read_to_string(&key).unwrap();
-    let _key_dict: serde_json::Value = serde_json::from_str(content.as_str()).expect("Cant read json file");
+pub fn chromium_based(_: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     let v10_key = get_v10_key()?;
     query_cookies(v10_key, db_path, domains)
 }

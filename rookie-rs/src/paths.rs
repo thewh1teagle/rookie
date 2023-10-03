@@ -44,9 +44,9 @@ pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
 }
 
 #[cfg(unix)]
-pub fn expand_path(path: &str) -> PathBuf {
+pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
         // Get the value of the HOME environment variable
-    let home = env::var("HOME").unwrap();
+    let home = env::var("HOME")?;
 
     // Replace ~ or $HOME with the actual home directory path
     let expanded_path = path
@@ -54,7 +54,7 @@ pub fn expand_path(path: &str) -> PathBuf {
         .replace("$HOME", &home);
 
     // Convert the expanded path to a PathBuf
-    PathBuf::from(expanded_path)
+    Ok(PathBuf::from(expanded_path))
 }
 
 

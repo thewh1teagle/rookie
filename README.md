@@ -1,12 +1,12 @@
 # rookie
 Load cookies from any browser on any platform
 
-# Install
+## Install
 ```shell
 cargo add rookie
 ```
 
-# Usage
+## Usage
 ```rust
 use rookie::{self, Cookie};
 
@@ -18,7 +18,7 @@ fn main() {
 ```
 
 
-# Bindings
+## Bindings
 There's Python bindings to `rookie`
 ```shell
 pip install rookiepy
@@ -31,10 +31,28 @@ for cookie in cookies:
     print(cookie.domain, cookie.value)
 ```
 
-# Examples
+## Examples
 For [Python](https://github.com/thewh1teagle/rookie/tree/main/examples)
 
 For [Rust](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
+
+## Contribute
+So far the following platforms are supported:
+
+* **Chrome:** `Linux`, `MacOS`, `Windows`
+* **Firefox:** `Linux`, `MacOS`, `Windows`
+* **LibreWolf:** `Linux`, `MacOS`, `Windows`
+* **Opera:** `Linux`, `MacOS`, `Windows`
+* **Opera GX:** `MacOS`, `Windows`
+* **Edge:** Linux, `MacOS`, `Windows`
+* **Internet Explorer:** `Windows`
+* **Chromium:** `Linux`, `MacOS`, `Windows`
+* **Brave:** `Linux`, `MacOS`, `Windows`
+* **Vivaldi:** `Linux`, `MacOS`, `Windows`
+* **Safari:** `MacOS`
+
+You are welcome to contribute support for other browsers, or other platforms.
+
 
 ## Testing Dates  (dd/mm/yy)
 

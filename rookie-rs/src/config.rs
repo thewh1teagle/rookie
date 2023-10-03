@@ -19,6 +19,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookie"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
 
@@ -36,6 +39,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Profile */Network/Cookies"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
         
@@ -52,6 +58,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Microsoft/Edge{channel}/User Data/Profile */Network/Cookies"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
         
@@ -61,6 +70,9 @@ cfg_if::cfg_if! {
             "%LOCALAPPDATA%/Mozilla/Firefox"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
         
@@ -77,6 +89,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Vivaldi/User Data/Profile */Network/Cookies"
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
         
@@ -89,6 +104,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Opera Software/Opera {channel}/Network/Cookies"
             ],
             channels: &["Stable", "Next", "Developer"],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
         
@@ -105,6 +123,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Chromium/User Data/Profile */Network/Cookies"
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
 
@@ -118,6 +139,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Opera Software/Opera GX {channel}/Network/Cookies"
             ],
             channels: &["Stable", ""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
         
@@ -127,6 +151,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/librewolf",
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
         
@@ -136,12 +163,13 @@ cfg_if::cfg_if! {
                 "%LOCALAPPDATA%/Microsoft/Windows/WebCache/WebCacheV01.dat",
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
 
     }
-    else if #[cfg(target_os = "linux")] {
-// Initialize the CHROME_CONFIG as a static variable with specific values
-         
+    else if #[cfg(target_os = "linux")] {         
         pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/.config/google-chrome{channel}/Default/Cookies",
@@ -150,6 +178,9 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.google.Chrome/config/google-chrome{channel}/Profile */Cookies"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "chrome",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
 
@@ -163,6 +194,9 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.brave.Browser/config/BraveSoftware/Brave-Browser{channel}/Profile */Cookies"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "brave",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
          
@@ -174,6 +208,9 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.microsoft.Edge/config/microsoft-edge{channel}/Profile */Cookies",
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "chromium",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
          
@@ -187,6 +224,9 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.vivaldi.Vivaldi/config/vivaldi/Profile */Cookies"
             ],
             channels: &[""],
+            os_crypt_name: "chrome",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
          
@@ -201,6 +241,9 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.opera.Opera/config/opera-developer/Cookies"
             ],
             channels: &["Stable", "Next", "Developer"],
+            os_crypt_name: "chromium",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
 
@@ -214,6 +257,9 @@ cfg_if::cfg_if! {
                 "~/.var/app/org.chromium.Chromium/config/chromium/Profile */Cookies"
             ],
             channels: &[""],
+            os_crypt_name: "chromium",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
 
@@ -225,6 +271,9 @@ cfg_if::cfg_if! {
                 "~/.mozilla/firefox"
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
          
@@ -234,12 +283,18 @@ cfg_if::cfg_if! {
                 "~/.librewolf"
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: ""
         };
 
          
         pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[], // not available on Linux
             channels: &["", ""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: ""
         };
     }
     else if #[cfg(target_os = "macos")]  {
@@ -250,6 +305,9 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/Google/Chrome{channel}/Profile */Cookies"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "chrome",
+            osx_key_service: "Chrome Safe Storage",
+            osx_key_user: "Chrome"
         };
         
         
@@ -260,6 +318,9 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/BraveSoftware/Brave-Browser{channel}/Profile */Cookies"
             ],
             channels: &["", "-Beta", "-Dev", "-Nightly"],
+            os_crypt_name: "brave",
+            osx_key_service: "Brave Safe Storage",
+            osx_key_user: "Brave",
         };
         
         
@@ -269,6 +330,9 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/Microsoft Edge{channel}/Profile */Cookies"
             ],
             channels: &["", " Beta", " Dev", " Canary"],
+            os_crypt_name: "chromium",
+            osx_key_service: "Microsoft Edge Safe Storage",
+            osx_key_user: "Microsoft Edge"
         };
         
         
@@ -277,6 +341,9 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/Firefox"
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
         
         
@@ -285,6 +352,9 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/librewolf"
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
         
         
@@ -295,6 +365,9 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/Vivaldi/Profile */Cookies"
             ],
             channels: &[""],
+            os_crypt_name: "chrome",
+            osx_key_service: "Vivaldi Safe Storage",
+            osx_key_user: "Vivaldi"
         };
         
         
@@ -311,6 +384,9 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Vivaldi/User Data/Profile */Network/Cookies"
             ],
             channels: &["Stable", "Next", "Developer"],
+            os_crypt_name: "chromium",
+            osx_key_service: "Opera Safe Storage",
+            osx_key_user: "Opera"
         };
         
         
@@ -320,12 +396,18 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/Chromium/Profile */Cookies"
             ],
             channels: &[""],
+            os_crypt_name: "chromium",
+            osx_key_service: "Chromium Safe Storage",
+            osx_key_user: "Chromium"
         };
         
         
         pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &["~/Library/Application Support/com.operasoftware.OperaGX/Cookies"],
             channels: &["Stable", ""],
+            os_crypt_name: "chromium",
+            osx_key_service: "Opera Safe Storage",
+            osx_key_user: "Opera"
         };
         
         
@@ -336,6 +418,9 @@ cfg_if::cfg_if! {
                 "~/Library/Cookies/Cookies.binarycookies"
             ],
             channels: &[""],
+            os_crypt_name: "",
+            osx_key_service: "",
+            osx_key_user: "",
         };
         
     }

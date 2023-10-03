@@ -307,7 +307,7 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
 
         else if #[cfg(target_os = "macos")] {
             browser_types.push(opera_gx);
-            browser_types.push(chrome)
+            browser_types.push(chrome);
             browser_types.push(safari);
         }
     }

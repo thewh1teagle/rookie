@@ -1,6 +1,6 @@
 use rookie;
 
 fn main() {
-    let cookies = rookie::load(None).unwrap();
+    let cookies = rookie::brave(None).unwrap();
     println!("{:?}", cookies);
 }

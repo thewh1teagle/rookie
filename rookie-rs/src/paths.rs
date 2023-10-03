@@ -6,10 +6,9 @@ use glob;
 fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>, Box<dyn Error>> {
     let mut data_paths: Vec<PathBuf> = vec![];
     if let Some(path_str) = path.to_str() {
-        let glob_res = glob::glob(path_str)?;
-        for entry in glob_res {
+        for entry in glob::glob(path_str)? {
             if entry.is_ok() {
-                data_paths.push(path.clone());
+                data_paths.push(entry?);
             }
         }
     } 

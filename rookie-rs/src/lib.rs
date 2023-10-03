@@ -29,43 +29,6 @@ pub use safari::safari_based;
 
 
 
-
-/// Returns cookies from all browsers
-///
-/// # Arguments
-///
-/// * `domains` - A optional list that for getting specific domains only
-///
-/// # Examples
-///
-/// ```
-/// use rookie;
-/// 
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::load(Some(domains));
-/// }
-/// ```
-pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
-    let mut cookies = Vec::new();
-
-    let firefox_cookies = firefox(domains.clone()).unwrap_or(vec![]);
-    cookies.extend(firefox_cookies);
-
-
-    let chrome_cookies = chrome(domains.clone()).unwrap_or(vec![]);
-    cookies.extend(chrome_cookies);
-
-
-    let brave_cookies = brave(domains.clone()).unwrap_or(vec![]);
-    cookies.extend(brave_cookies);
-
-    let edge_cookies = edge(domains).unwrap_or(vec![]);
-    cookies.extend(edge_cookies);
-
-    Ok(cookies)
-}
-
 /// Returns cookies from firefox
 ///
 /// # Arguments
@@ -307,4 +270,52 @@ pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<
 
     let db_path = paths::find_ie_based_paths(&config::IE_CONFIG)?;
     internet_explorer_based(db_path, domains)
+}
+
+
+
+/// Returns cookies from all browsers
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// use rookie;
+/// 
+/// fn main() {
+///     let domains = vec!["google.com"];
+///     let cookies = rookie::load(Some(domains));
+/// }
+/// ```
+pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+    let mut cookies = Vec::new();
+
+    let mut browser_types = vec![firefox, libre_wolf, opera, edge, chromium, brave, vivaldi];
+    cfg_if::cfg_if! {
+        if #[cfg(target_os = "windows")] {
+            browser_types.push(chrome);
+            browser_types.push(opera_gx);
+            browser_types.push(internet_explorer);
+        }
+
+        else if #[cfg(target_os = "linux")] {
+            browser_types.push(chrome)
+        }
+
+        else if #[cfg(target_os = "macos")] {
+            browser_types.push(opera_gx);
+            browser_types.push(chrome)
+            browser_types.push(safari);
+        }
+    }
+
+    for browser_fn in browser_types.iter() {
+        let browser_cookies = browser_fn(domains.clone()).unwrap_or(vec![]);
+        cookies.extend(browser_cookies);
+    }
+
+    Ok(cookies)
 }

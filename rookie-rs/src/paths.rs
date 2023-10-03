@@ -1,28 +1,26 @@
-use std::{env, path::PathBuf};
+use std::{env, path::PathBuf, error::Error};
 use crate::{mozilla::get_default_profile, BrowserConfig};
 use glob;
 
 
-fn expand_glob_paths(path: PathBuf) -> Vec<PathBuf> {
+fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>, Box<dyn Error>> {
     let mut data_paths: Vec<PathBuf> = vec![];
-    let glob_res = glob::glob(path.to_str().unwrap()).unwrap();
-    for entry in glob_res {
-        match entry {
-            Ok(path) => {
-                data_paths.push(path);
-            },
-            Err(_) => {},
+    if let Some(path_str) = path.to_str() {
+        let glob_res = glob::glob(path_str)?;
+        for entry in glob_res {
+            if entry.is_ok() {
+                data_paths.push(path.clone());
+            }
         }
-    }
-
-    data_paths
+    } 
+    Ok(data_paths)
 }
 
 #[cfg(target_os = "windows")]
-pub fn expand_path(path: &str) -> PathBuf {
+pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
     use regex::Regex;
     // Define a regex pattern to match placeholders like %SOMETHING%
-    let re = Regex::new(r"%([^%]+)%").unwrap();
+    let re = Regex::new(r"%([^%]+)%")?;
 
     // Clone the input path for modification
     let mut expanded_path = path.to_owned();
@@ -42,7 +40,7 @@ pub fn expand_path(path: &str) -> PathBuf {
     // Convert the expanded path to a PathBuf
     let path_buf = PathBuf::from(expanded_path);
 
-    path_buf
+    Ok(path_buf)
 }
 
 #[cfg(unix)]
@@ -64,11 +62,11 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
     for path in browser_config.data_paths { // base paths
         for channel in browser_config.channels { // channels
             let path = path.replace("{channel}", &channel);
-            let db_path = expand_path(path.as_str());
-            let glob_db_paths = expand_glob_paths(db_path);
+            let db_path = expand_path(path.as_str())?;
+            let glob_db_paths = expand_glob_paths(db_path)?;
             for db_path in glob_db_paths { // glob expanded paths
                 if db_path.exists() {
-                    let parent = db_path.parent().unwrap();
+                    if let Some(parent) = db_path.parent() {
                     let key_path = ["../../Local State", "../Local State", "Local State"]
                         .iter()
                         .map(|p| parent.join(p))
@@ -76,6 +74,7 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
                         .unwrap_or_else(|| parent.join("Local State"));
                     return Ok((key_path, db_path));
                 }
+            }
             }
             
         }
@@ -89,11 +88,11 @@ pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBu
     for path in browser_config.data_paths { // base paths
         for channel in browser_config.channels { // channels
             let path = path.replace("{channel}", &channel);
-            let firefox_path = expand_path(path.as_str());
-            let glob_paths = expand_glob_paths(firefox_path);
+            let firefox_path = expand_path(path.as_str())?;
+            let glob_paths = expand_glob_paths(firefox_path)?;
             for path in glob_paths { // expanded glob paths
                 let profiles_path = path.join("profiles.ini");
-                let default_profile = get_default_profile(profiles_path.as_path()).unwrap();
+                let default_profile = get_default_profile(profiles_path.as_path()).unwrap_or("".to_string());
                 let db_path = path.join(default_profile).join("cookies.sqlite");    
                 if db_path.exists() {
                     return Ok(db_path);
@@ -133,8 +132,8 @@ pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Bo
         for channel in browser_config.channels { // channels
             
             let path = path.replace("{channel}", &channel);
-            let path = expand_path(path.as_str());
-            let glob_paths = expand_glob_paths(path);
+            let path = expand_path(path.as_str())?;
+            let glob_paths = expand_glob_paths(path)?;
             for path in glob_paths { // expanded glob paths
                 if path.exists() {
                     return Ok(path);

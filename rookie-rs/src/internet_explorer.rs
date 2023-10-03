@@ -11,7 +11,9 @@ use crate::winapi;
 #[cfg(target_os = "windows")]
 pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     unsafe {
-        winapi::release_file_lock(db_path.to_str().unwrap());
+        if let Some(path) = db_path.to_str() {
+            winapi::release_file_lock(path);
+        }
     }
     let db = EseDb::open(db_path)?;
     let mut cookies: Vec<Cookie> = vec![];
@@ -21,19 +23,19 @@ pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> 
         let name: String = table.name()?;
         
         if name.starts_with("CookieEntry") {
-            for rec in table.iter_records().unwrap() {
+            for rec in table.iter_records()? {
                 let rec = rec?;
                 let host = rec.value(8)?;
-                let host = host.as_str().unwrap();
+                let host = host.as_str().unwrap_or("");
                 let path = rec.value(9)?;
-                let path = path.as_str().unwrap();
-                let name: Vec<u8> = rec.value(10)?.as_bytes().unwrap().to_vec();
-                let name = String::from_utf8(name).unwrap().trim_matches('\0').to_string();
+                let path = path.as_str().unwrap_or("");
+                let name: Vec<u8> = rec.value(10)?.as_bytes().unwrap_or(&[]).to_vec();
+                let name = String::from_utf8(name).unwrap_or("".to_string()).trim_matches('\0').to_string();
                 let value = rec.value(11)?;
                 let same_site = 0;
-                let value = String::from_utf8(value.as_bytes().unwrap().to_vec()).unwrap_or("".to_string()).trim_matches('\0').to_string();
+                let value = String::from_utf8(value.as_bytes().unwrap_or(&[]).to_vec()).unwrap_or("".to_string()).trim_matches('\0').to_string();
                 let secure = false;
-                let expires = rec.value(4)?.to_i64().unwrap();
+                let expires = rec.value(4)?.to_i64().unwrap_or(0);
                 let http_only = false;
 
                 let should_append = domains.is_none() || domains.iter().any(|d| d.contains(&host));

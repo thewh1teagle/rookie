@@ -61,14 +61,14 @@ pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec
 }
 
 
-pub fn get_default_profile(profiles_path: &Path) -> Option<String> {
-    let conf = Ini::load_from_file(profiles_path).unwrap();  
+pub fn get_default_profile(profiles_path: &Path) -> Result<String, Box<dyn std::error::Error>> {
+    let conf = Ini::load_from_file(profiles_path)?;  
     for (sec, prop) in conf.iter() {
         let name: &str = sec.unwrap_or("");
         if name.starts_with("Profile0") {
-            let path: &str = prop.get("Path").unwrap();
-            return Some(path.to_string());
+            let path: &str = prop.get("Path").ok_or("Cant get path from profile0")?;
+            return Ok(path.to_string());
         }
     }
-    None
+    Err("Cant find any profile".into())
 }

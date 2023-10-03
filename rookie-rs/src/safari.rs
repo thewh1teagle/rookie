@@ -27,8 +27,7 @@ fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
 
         // Parse the sliced data into a Cookie struct using LittleEndian encoding
         let cookie = parsed_slice
-            .and_then(|u| parse_cookie::<LittleEndian>(u))
-            .unwrap();
+            .and_then(|u| parse_cookie::<LittleEndian>(u))?;
         cookies.push(cookie);
 
         // Return the parsed Cookie struct, or propagate an error if any step fails
@@ -87,7 +86,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Error> {
     let table_iter = table_iter.iter();
     let pages = table_iter
         .fold((count * 4 + 8, Vec::new()), |(off, mut acc), &len| {
-            let page_slice = slice(bs, off, len).unwrap();
+            let page_slice = slice(bs, off, len)?;
 
             acc.push(page_slice.to_vec()); // Convert the slice to a Vec and add it to the accumulator
             (off + len, acc)
@@ -96,7 +95,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Error> {
 
     let mut cookies: Vec<Cookie> = vec![];
     for page in pages {
-        let cookie = parse_page(page.as_slice()).unwrap();
+        let cookie = parse_page(page.as_slice())?;
         cookies.extend(cookie);
     }
     Ok(cookies)

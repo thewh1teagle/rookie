@@ -4,8 +4,8 @@ use crate::config;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {
-        use dbus::arg::messageitem::MessageItem;
-        use dbus::blocking::Connection;
+        // use dbus::arg::messageitem::MessageItem;
+        // use dbus::blocking::Connection;
         
         pub fn get_password(os_crypt_name: &str) -> Result<String, Box<dyn std::error::Error>> {
             // Attempt to get the password from libsecret

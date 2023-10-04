@@ -25,6 +25,10 @@ jobs:
       matrix:
         target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
     steps:
+      - name: Install packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libdbus-1-dev
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:

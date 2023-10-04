@@ -11,6 +11,9 @@ cfg_if::cfg_if! {
         use base64::{Engine as _, engine::general_purpose};
         use crate::winapi;
     }
+    else if #[cfg(unix)] {
+        use crate::secrets;
+    }
 }
 
 
@@ -27,16 +30,24 @@ fn get_v10_key(key64: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
 
 
 #[cfg(unix)]
-fn get_v10_key() -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+fn get_v10_key(config: &BrowserConfig) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+    // AES CBC key
     use pbkdf2::pbkdf2_hmac;
     use sha1::Sha1;
 
     let mut output = [0u8; 16];
     let salt = b"saltysalt";
     let iterations = 1;
-    let password = b"peanuts";
 
-    pbkdf2_hmac::<Sha1>(password, salt, iterations, &mut output);
+    cfg_if::cfg_if! {
+        if #[cfg(target_os = "linux")] {
+            let password = secrets::get_password(config.os_crypt_name).unwrap_or("peanuts".to_string());
+        }
+        else if #[cfg(target_os = "macos")] {
+            let password = secrets::get_osx_keychain_password(config.osx_key_service, config.osx_key_user).unwrap_or("peanuts".to_string());
+        }
+    }
+    pbkdf2_hmac::<Sha1>(password.as_bytes(), salt, iterations, &mut output);
     Ok(output.to_vec())
 }
 
@@ -173,8 +184,8 @@ pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>
 
 
 #[cfg(unix)]
-pub fn chromium_based(_: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn chromium_based(config: &BrowserConfig, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     // Simple AES
-    let v10_key = get_v10_key()?;
+    let v10_key = get_v10_key(&config)?;
     query_cookies(v10_key, db_path, domains)
 }

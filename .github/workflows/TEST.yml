@@ -45,11 +45,6 @@ jobs:
           sccache: 'true'
           manylinux: auto
           working-directory: bindings/python
-      - name: Upload wheels
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheels
-          path: bindings/python/dist
 
   windows:
     runs-on: windows-latest
@@ -69,11 +64,6 @@ jobs:
           args: --release --out dist --find-interpreter
           working-directory: bindings/python
           sccache: 'true'
-      - name: Upload wheels
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheels
-          path: bindings/python/dist
 
   macos:
     runs-on: macos-latest
@@ -92,11 +82,6 @@ jobs:
           args: --release --out dist --find-interpreter
           working-directory: bindings/python
           sccache: 'true'
-      - name: Upload wheels
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheels
-          path: bindings/python/dist
 
   sdist:
     runs-on: ubuntu-latest
@@ -108,8 +93,3 @@ jobs:
           command: sdist
           args: --out dist
           working-directory: bindings/python
-      - name: Upload sdist
-        uses: actions/upload-artifact@v3
-        with:
-          name: wheels
-          path: bindings/python/dist

@@ -59,8 +59,9 @@ pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
 
 pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBuf, PathBuf), Box<dyn std::error::Error>> {
     for path in browser_config.data_paths { // base paths
-        for channel in browser_config.channels { // channels
-            let path = path.replace("{channel}", &channel);
+        let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
+        for channel in channels { // channels
+            let path = path.replace("{channel}", channel);
             let db_path = expand_path(path.as_str())?;
             let glob_db_paths = expand_glob_paths(db_path)?;
             for db_path in glob_db_paths { // glob expanded paths
@@ -85,7 +86,8 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
 
 pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
     for path in browser_config.data_paths { // base paths
-        for channel in browser_config.channels { // channels
+        let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
+        for channel in channels { // channels
             let path = path.replace("{channel}", &channel);
             let firefox_path = expand_path(path.as_str())?;
             let glob_paths = expand_glob_paths(firefox_path)?;
@@ -127,8 +129,8 @@ pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf
 #[cfg(target_os = "windows")]
 pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
     for path in browser_config.data_paths { // base paths
-        
-        for channel in browser_config.channels { // channels
+        let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
+        for channel in channels { // channels
             
             let path = path.replace("{channel}", &channel);
             let path = expand_path(path.as_str())?;

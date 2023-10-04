@@ -6,8 +6,6 @@
 name: PY_RELEASE
 
 on:
-  tags:
-    - '*'
   pull_request:
   workflow_dispatch:
 

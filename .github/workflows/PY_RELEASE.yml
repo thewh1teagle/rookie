@@ -3,13 +3,13 @@
 #
 #    maturin generate-ci github
 #
-name: PY
+name: PY_RELEASE
 
 on:
-  push:
-    branches:
-      - main
-      - master
+  # push:
+  #   branches:
+  #     - main
+  #     - master
     tags:
       - '*'
   pull_request:

@@ -6,12 +6,8 @@
 name: PY_RELEASE
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - master
-    tags:
-      - '*'
+  tags:
+    - '*'
   pull_request:
   workflow_dispatch:
 

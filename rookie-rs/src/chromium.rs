@@ -145,7 +145,7 @@ fn query_cookies(v10_key: Vec<u8>, db_path: PathBuf, domains: Option<Vec<&str>>)
         
         let same_site: i64 = row.get(8)?;
         let cookie = Cookie {
-            host: host_key.to_string(),
+            domain: host_key.to_string(),
             path: path.to_string(),
             secure: is_secure,
             expires,

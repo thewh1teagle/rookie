@@ -56,7 +56,7 @@ def create_cookie(host, path, secure, expires, name, value, http_only):
 def to_dict(cookies: List[Any]):
     return [
         {'name': c.name,
-             'host': c.host,
+             'domain': c.domain,
              'path': c.path,
              'secure': c.secure,
              'expires': c.expires,
@@ -72,7 +72,7 @@ def to_cookiejar(cookies: List[Any]):
     
     for cookie_obj in cookies:
         c = create_cookie(
-            cookie_obj.host,
+            cookie_obj.domain,
             cookie_obj.path,
             cookie_obj.secure,
             cookie_obj.expires,

@@ -64,7 +64,7 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
     // Non-efficient workaround for println! broken pipes with | head.
     let cookie = Cookie {
         expires: unix_timestamp_to_system_time(expiry as i64),
-        host: url,
+        domain: url,
         http_only: is_http_only,
         name,
         path,
@@ -187,7 +187,7 @@ pub fn safari_based(
                 domain_filters.iter().any(|&domain| {
                     // Implement your domain matching logic here
                     // For example, you can use the `.ends_with` method to check if the cookie's domain ends with the specified domain.
-                    cookie.host.ends_with(domain)
+                    cookie.domain.ends_with(domain)
                 })
             })
             .collect();

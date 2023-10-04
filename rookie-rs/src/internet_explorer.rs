@@ -36,7 +36,7 @@ pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> 
 
                 let should_append = domains.is_none() || domains.iter().any(|d| d.contains(&host));
                 if should_append {
-                    cookies.push(Cookie { host: host.to_string(), path: path.to_string(), secure, expires: epoch_to_systemtime_micros(expires), name, value, http_only, same_site })
+                    cookies.push(Cookie { domain: host.to_string(), path: path.to_string(), secure, expires: epoch_to_systemtime_micros(expires), name, value, http_only, same_site })
                 }
                 
             }

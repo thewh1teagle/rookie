@@ -15,8 +15,8 @@ pub struct PyCookie {
 #[pymethods]
 impl PyCookie {
     #[getter]
-    fn host(&self) -> &str {
-        &self.inner.host
+    fn domain(&self) -> &str {
+        &self.inner.domain
     }
 
     #[getter]

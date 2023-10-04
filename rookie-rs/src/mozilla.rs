@@ -46,7 +46,7 @@ pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec
         
         let same_site: i64 = row.get(7)?;
         let cookie = Cookie {
-            host: host.to_string(),
+            domain: host.to_string(),
             path: path.to_string(),
             secure: is_secure,
             expires,

@@ -2,7 +2,7 @@ use std::{fmt::{self}, time::SystemTime};
 
 #[derive(Debug)]
 pub struct Cookie {
-    pub host: String,
+    pub domain: String,
     pub path:     String,
 	pub secure:   bool,
 	pub expires:  SystemTime,
@@ -17,7 +17,7 @@ impl fmt::Display for Cookie {
         write!(
             f,
             "Cookie:\n\
-             - Host: {}\n\
+             - Domain: {}\n\
              - Path: {}\n\
              - Secure: {}\n\
              - Expires: {:?}\n\
@@ -25,7 +25,7 @@ impl fmt::Display for Cookie {
              - Value: {}\n\
              - Http Only: {}\n\
              - Same Site: {}",
-            self.host, self.path, self.secure, self.expires, self.name, self.value, self.http_only, self.same_site
+            self.domain, self.path, self.secure, self.expires, self.name, self.value, self.http_only, self.same_site
         )
     }
 }

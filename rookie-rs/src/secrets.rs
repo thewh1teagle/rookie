@@ -5,6 +5,7 @@ cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {
         // use dbus::arg::messageitem::MessageItem;
         // use dbus::blocking::Connection;
+        // use std::{time::Duration};
         
         pub fn get_password(os_crypt_name: &str) -> Result<String, Box<dyn std::error::Error>> {
             // Attempt to get the password from libsecret
@@ -48,8 +49,7 @@ cfg_if::cfg_if! {
 
     }
     else if #[cfg(target_os = "macos")] {
-        use std::{time::Duration, process::Command};
-
+        use std::process::Command;
         pub fn get_osx_keychain_password(osx_key_service: &str, osx_key_user: &str) -> Result<String, Box<dyn std::error::Error>> {
             let cmd = Command::new("/usr/bin/security")
                 .args(&["-q", "find-generic-password", "-w", "-a", osx_key_user, "-s", osx_key_service])

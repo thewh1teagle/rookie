@@ -44,7 +44,9 @@ fn get_v10_key(config: &BrowserConfig) -> Result<Vec<u8>, Box<dyn std::error::Er
             let password = secrets::get_password(config.os_crypt_name.unwrap_or("")).unwrap_or("peanuts".to_string());
         }
         else if #[cfg(target_os = "macos")] {
-            let password = secrets::get_osx_keychain_password(config.osx_key_service, config.osx_key_user).unwrap_or("peanuts".to_string());
+            let key_service = config.osx_key_service.ok_or("missing osx_key_service")?;
+            let key_user = config.osx_key_user.ok_or("missing osx_key_user")?;
+            let password = secrets::get_osx_keychain_password(key_service, key_user).unwrap_or("peanuts".to_string());
         }
     }
     pbkdf2_hmac::<Sha1>(password.as_bytes(), salt, iterations, &mut output);

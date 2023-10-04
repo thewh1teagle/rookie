@@ -68,7 +68,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>, Box<dyn std::error::
             let password = secrets::get_osx_keychain_password(key_service, key_user).unwrap_or("peanuts".to_string());
 
             // keychain key
-            let key = create_pbkdf2_key(password, salt, iterations);
+            let key = create_pbkdf2_key(password.as_str(), salt, iterations);
             keys.push(key);
 
             // default keys

@@ -166,13 +166,29 @@ fn safari(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
 
 
 #[pyfunction]
+#[cfg(target_os = "windows")]
 fn chromium_based(_py: Python, key_path: String, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
     let cookies = rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains).unwrap();
-    
     let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
-
     Ok(py_cookies)
 }
+
+#[pyfunction]
+#[cfg(unix)]
+fn chromium_based(_py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+    use rookie::BrowserConfig;
+    let config = BrowserConfig {
+        channels: &[],
+        data_paths: &[],
+        os_crypt_name: "chrome", // TODO: get it from argument
+        osx_key_service: "",
+        osx_key_user: ""
+    };
+    let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains).unwrap();
+    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    Ok(py_cookies)
+}
+
 
 #[pyfunction]
 fn firefox_based(_py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {

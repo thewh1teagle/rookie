@@ -37,7 +37,7 @@ sha1 = "0.10.6"
 pbkdf2 = "0.12.2"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-# dbus = "0.9.7"
+dbus = "0.9.7"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 sha1 = "0.10.6"

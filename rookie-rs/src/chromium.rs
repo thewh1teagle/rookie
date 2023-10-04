@@ -105,7 +105,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
         let plaintext = String::from_utf8(plaintext).or(Err("cant decode encrypted value"))?;
         return Ok(plaintext);
     }
-    Err("cant decrypt")
+    Err("cant decrypt value".into())
 
 }
 

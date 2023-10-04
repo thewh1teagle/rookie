@@ -31,7 +31,9 @@ jobs:
           sccache: 'true'
           manylinux: auto
           working-directory: bindings/python
-          before-script-linux: scripts/pre_build.sh
+          before-script-linux: |
+            sudo apt-get update
+            sudo apt-get install --no-install-recommends -y libdbus-1-dev dbus at-spi2-core
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:

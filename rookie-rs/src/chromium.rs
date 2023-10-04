@@ -86,7 +86,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>, Box<dyn std::error::
 
 
 #[cfg(target_os = "windows")]
-fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], key: Vec<Vec<u8>>) -> Result<String, Box<dyn std::error::Error>> {
+fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<u8>>) -> Result<String, Box<dyn std::error::Error>> {
     // gcm
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted

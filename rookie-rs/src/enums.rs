@@ -47,7 +47,7 @@ impl CookieToString for Vec<Cookie> {
 
 #[derive(Debug)]
 pub struct BrowserConfig<'a> {
-    pub data_paths: &'a [&'static str],
+    pub data_paths: &'a[&'a str],
     pub channels: Option<&'a [&'static str]>,
     pub os_crypt_name: Option<&'static str>,
     pub osx_key_service: Option<&'static str>,

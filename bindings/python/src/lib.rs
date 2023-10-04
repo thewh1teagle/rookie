@@ -177,12 +177,14 @@ fn chromium_based(_py: Python, key_path: String, db_path: String, domains: Optio
 #[cfg(unix)]
 fn chromium_based(_py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
     use rookie::BrowserConfig;
+
+    let db_path = db_path.as_str();
     let config = BrowserConfig {
-        channels: &[],
-        data_paths: &[],
-        os_crypt_name: "chrome", // TODO: get it from argument
-        osx_key_service: "",
-        osx_key_user: ""
+        channels: None,
+        data_paths: &[db_path],
+        os_crypt_name: Some("chrome"),
+        osx_key_service: None,
+        osx_key_user: None,
     };
     let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains).unwrap();
     let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();

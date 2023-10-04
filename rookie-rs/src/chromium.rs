@@ -41,7 +41,7 @@ fn get_v10_key(config: &BrowserConfig) -> Result<Vec<u8>, Box<dyn std::error::Er
 
     cfg_if::cfg_if! {
         if #[cfg(target_os = "linux")] {
-            let password = secrets::get_password(config.os_crypt_name).unwrap_or("peanuts".to_string());
+            let password = secrets::get_password(config.os_crypt_name.unwrap_or("")).unwrap_or("peanuts".to_string());
         }
         else if #[cfg(target_os = "macos")] {
             let password = secrets::get_osx_keychain_password(config.osx_key_service, config.osx_key_user).unwrap_or("peanuts".to_string());

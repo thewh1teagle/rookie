@@ -1,4 +1,4 @@
-use std::{error::Error, path::PathBuf};
+use std::error::Error;
 mod chromium;
 mod paths;
 mod sqlite;
@@ -15,6 +15,7 @@ cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
         mod winapi;        
         mod internet_explorer;
+        use std::path::PathBuf;
     }
     else if #[cfg(target_os = "macos")] {
         mod safari;

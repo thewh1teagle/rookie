@@ -130,7 +130,14 @@ pub fn create_cookie(json_cookie: &Value) -> Result<Cookie, Box<dyn std::error::
     let value = json_cookie.get("value").and_then(|v| v.as_str()).unwrap_or("");
     let http_only = json_cookie.get("httponly").and_then(|v| v.as_bool()).unwrap_or(false);
     let expires = json_cookie.get("expiry").and_then(|v| v.as_u64()).unwrap_or(0);
-    let expires = utils::unix_timestamp_to_system_time(Duration::from_secs(expires));
+    cfg_if::cfg_if! {
+        if #[cfg(target_os = "windows")] {
+            let expires = utils::unix_timestamp_to_system_time(Duration::from_millis(expires));
+        } else {
+            let expires = utils::unix_timestamp_to_system_time(Duration::from_secs(expires));
+        }
+    }
+    
     let same_site = json_cookie.get("sameSite").and_then(|v| v.as_i64()).unwrap_or(0);
 
     let cookie = Cookie {

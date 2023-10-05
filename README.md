@@ -58,6 +58,12 @@ If you have a browser with which the library isn't working with, it may not have
 
 look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/config.rs) to see what configurations is needed.
 
+## Gotchas
+
+This library may trigger a password prompt on Linux systems when accessing browser cookies. 
+
+Be prepared to enter your administrator password when prompted.
+
 ## Testing Dates  (dd/mm/yy)
 
 Browser  |  Linux   |  MacOS   | Windows  |

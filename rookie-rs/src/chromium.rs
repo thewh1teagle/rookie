@@ -100,7 +100,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
 
     // Create a new AES block cipher.
     for key in keys {
-        let key = Key::<Aes256Gcm>::from_slice(key.clone());
+        let key = Key::<Aes256Gcm>::from_slice(key.as_slice());
         let cipher = Aes256Gcm::new(&key);
         let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
         let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).or(Err("cant decrypt using key"))?;

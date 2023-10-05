@@ -1,7 +1,7 @@
 use crate::enums::BrowserConfig;
-/*
-  *********** WINDOWS **********
-*/
+
+pub const APP_ID: &str = "rookie";
+
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
         // Initialize the CHROME_CONFIG as a static variable with specific values

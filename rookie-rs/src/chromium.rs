@@ -49,20 +49,17 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>, Box<dyn std::error::
 
     cfg_if::cfg_if! {
         if #[cfg(target_os = "linux")] {
-            if let Ok(password) = secrets::get_password(config.os_crypt_name.unwrap_or("")) {
-                
-                let key = create_pbkdf2_key(password.as_str(), salt, iterations);
-                keys.push(key);
+            if let Ok(passwords) = secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {
+                for password in passwords {
+                    let key = create_pbkdf2_key(password.as_str(), salt, iterations);
+                    keys.push(key);
+                }
             }
-
             // default keys
             let key = create_pbkdf2_key("peanuts", salt, iterations);
             keys.push(key);
             let key = create_pbkdf2_key("", salt, iterations);
             keys.push(key);
-
-
-            
         }
         else if #[cfg(target_os = "macos")] {
             let key_service = config.osx_key_service.ok_or("missing osx_key_service")?;

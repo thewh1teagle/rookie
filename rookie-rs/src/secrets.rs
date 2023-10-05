@@ -1,4 +1,5 @@
-// const APP_ID: &str = "rookie";
+use crate::{utils, config};
+
 
 
 cfg_if::cfg_if! {
@@ -7,7 +8,7 @@ cfg_if::cfg_if! {
         use zbus::{blocking::Connection, zvariant::Value, zvariant::ObjectPath, Message};
 
 
-        fn libsecret_getmethod<'a, T>(
+        fn libsecret_call<'a, T>(
             connection: &Connection,
             method: &str,
             args: T,
@@ -25,7 +26,7 @@ cfg_if::cfg_if! {
         }
         
 
-        fn kde_getmethod<'a, T>(
+        fn kwallet_call<'a, T>(
             connection: &Connection,
             method: &str,
             args: T,
@@ -43,22 +44,20 @@ cfg_if::cfg_if! {
         }
         
 
-        pub fn get_password(os_crypt_name: &str) -> Result<String, Box<dyn std::error::Error>> {
+        pub fn get_passwords(os_crypt_name: &str) -> Result<Vec<String>, Box<dyn std::error::Error>> {
             // Attempt to get the password from libsecret
+            let mut passwords: Vec<String> = vec![];
             for schema in ["chrome_libsecret_os_crypt_password_v2", "chrome_libsecret_os_crypt_password_v1"] {
                 if let Ok(libsecret_pass) = get_password_libsecret(schema, os_crypt_name) {
-                    return Ok(libsecret_pass);
+                    passwords.push(libsecret_pass);
                 }
             }
-            
-            
             // Attempt to get the password from kdewallet
-            if let Ok(kdewallet_pass) = get_password_kdewallet(os_crypt_name) {
-                return Ok(kdewallet_pass.to_string());
+            if let Ok(password) = get_password_kdewallet(os_crypt_name) {
+                passwords.push(password);
             }
         
-            // Both methods failed, return an error
-            Err("Password retrieval failed".into())
+            Ok(passwords)
         }
         
         
@@ -67,25 +66,25 @@ cfg_if::cfg_if! {
             let mut content = HashMap::<&str, &str>::new();
             content.insert("xdg:schema", schema);
             content.insert("application", crypt_name);
-            let m = libsecret_getmethod(&connection, "SearchItems", &content)?;
+            let m = libsecret_call(&connection, "SearchItems", &content)?;
             let (reply_paths, _) : (Vec<ObjectPath>, Vec<ObjectPath>) = m.body()?;
             let path = reply_paths.first().ok_or("search items empty")?;
         
         
-            let m = libsecret_getmethod(&connection, "Unlock", vec![path])?;
+            let m = libsecret_call(&connection, "Unlock", vec![path])?;
             let reply: (Vec<ObjectPath>, ObjectPath)  = m.body()?;
             let object_path = reply.0.first().ok_or("Cant unlock")?;
         
         
             let mut content = HashMap::<&str, &str>::new();
             content.insert("plain", "");
-            let m = libsecret_getmethod(&connection, "OpenSession", &("plain", Value::new("")))?;
+            let m = libsecret_call(&connection, "OpenSession", &("plain", Value::new("")))?;
         
         
-            let reply: (Value, ObjectPath)  = m.body()?;
+            let reply: (Value, ObjectPath) = m.body()?;
             let session = reply.1;
         
-            let m = libsecret_getmethod(&connection, "GetSecrets", &(vec![object_path], session))?;
+            let m = libsecret_call(&connection, "GetSecrets", &(vec![object_path], session))?;
             type Response<'a> = (ObjectPath<'a>, Vec<u8>, Vec<u8>, String);
             let reply: HashMap::<ObjectPath, Response>  = m.body()?;
             let inner = reply.get(object_path).ok_or("Cant get secrets")?;
@@ -93,41 +92,28 @@ cfg_if::cfg_if! {
             
             Ok(String::from_utf8(secret.clone())?)
         }
+  
+        
         
         fn get_password_kdewallet(crypt_name: &str)-> Result<String, Box<dyn std::error::Error>> {
-            // let connection = Connection::session()?;
-            // let folder = format!("{} Keys", crypt_name.to_uppercase());
-            // let key = format!("{} Safe Storage", crypt_name.to_uppercase());
+            let connection = Connection::session()?;
+            let folder = format!("{} Keys", utils::capitalize(crypt_name));
+            let key = format!("{} Safe Storage", utils::capitalize(crypt_name));
 
-            // let mut content = HashMap::<&str, &str>::new();
-            // content.insert("xdg:schema", schema);
-            // content.insert("application", crypt_name);
-            // let m = kde_getmethod(&connection, "SearchItems", &content)?;
-            // let (reply_paths, _) : (Vec<ObjectPath>, Vec<ObjectPath>) = m.body()?;
-            // let path = reply_paths.first().ok_or("search items empty")?;
-        
-        
-            // let m = libsecret_getmethod(&connection, "Unlock", vec![path])?;
-            // let reply: (Vec<ObjectPath>, ObjectPath)  = m.body()?;
-            // let object_path = reply.0.first().ok_or("Cant unlock")?;
-        
-        
-            // let mut content = HashMap::<&str, &str>::new();
-            // content.insert("plain", "");
-            // let m = libsecret_getmethod(&connection, "OpenSession", &("plain", Value::new("")))?;
-        
-        
-            // let reply: (Value, ObjectPath)  = m.body()?;
-            // let session = reply.1;
-        
-            // let m = libsecret_getmethod(&connection, "GetSecrets", &(vec![object_path], session))?;
-            // type Response<'a> = (ObjectPath<'a>, Vec<u8>, Vec<u8>, String);
-            // let reply: HashMap::<ObjectPath, Response>  = m.body()?;
-            // let inner = reply.get(object_path).ok_or("Cant get secrets")?;
-            // let secret = &inner.2;
+            let m = kwallet_call(&connection, "networkWallet", ())?;
+            let network_wallet: String = m.body()?;
+
+            let m = kwallet_call(&connection, "open", (network_wallet.clone(), 0 as i64, config::APP_ID))?;
+            let handle: i32 = m.body()?;
+            let m = kwallet_call(&connection, "readPassword", (handle, folder, key, config::APP_ID))?;
+            let password: String = m.body()?;
+            let m = kwallet_call(&connection, "close", (network_wallet, false))?;
+            let close_ok: i32 = m.body()?;
+            if close_ok != 1 {
+                return Err("Close failed".into());
+            }
             
-            // Ok(String::from_utf8(secret.clone())?)
-            Err("not implemented".into())
+            Ok(password)
         }
 
 

@@ -10,8 +10,8 @@ pub fn epoch_to_systemtime_micros(timestamp: i64) -> SystemTime {
     }
 }
 
-pub fn unix_timestamp_to_system_time(timestamp: i64) -> SystemTime {
-    UNIX_EPOCH + Duration::from_secs(timestamp as u64)
+pub fn unix_timestamp_to_system_time(i64_as_duration: Duration) -> SystemTime {
+    UNIX_EPOCH + i64_as_duration
 }
 
 pub fn capitalize(s: &str) -> String {

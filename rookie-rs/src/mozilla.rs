@@ -2,6 +2,7 @@ use ini::Ini;
 use serde_json::Value;
 use std::fs;
 use std::path::Path;
+use std::time::Duration;
 use std::{error::Error, path::PathBuf};
 
 use crate::{utils, enums::*, sqlite};
@@ -39,8 +40,8 @@ pub fn firefox_based(
         let host: String = row.get(0)?;
         let path: String = row.get(1)?;
         let is_secure: bool = row.get(2)?;
-        let expires_nt_time_epoch: i64 = row.get(3)?;
-        let expires = utils::unix_timestamp_to_system_time(expires_nt_time_epoch);
+        let expires_nt_time_epoch: u64 = row.get(3)?;
+        let expires = utils::unix_timestamp_to_system_time(Duration::from_secs(expires_nt_time_epoch));
 
         let name: String = row.get(4)?;
 
@@ -128,8 +129,8 @@ pub fn create_cookie(json_cookie: &Value) -> Result<Cookie, Box<dyn std::error::
     let name = json_cookie.get("name").and_then(|v| v.as_str()).unwrap_or("");
     let value = json_cookie.get("value").and_then(|v| v.as_str()).unwrap_or("");
     let http_only = json_cookie.get("httponly").and_then(|v| v.as_bool()).unwrap_or(false);
-    let expires = json_cookie.get("expiry").and_then(|v| v.as_i64()).unwrap_or(0);
-    let expires = utils::unix_timestamp_to_system_time(expires);
+    let expires = json_cookie.get("expiry").and_then(|v| v.as_u64()).unwrap_or(0);
+    let expires = utils::unix_timestamp_to_system_time(Duration::from_secs(expires));
     let same_site = json_cookie.get("sameSite").and_then(|v| v.as_i64()).unwrap_or(0);
 
     let cookie = Cookie {

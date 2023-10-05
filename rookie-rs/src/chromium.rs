@@ -50,6 +50,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>, Box<dyn std::error::
     cfg_if::cfg_if! {
         if #[cfg(target_os = "linux")] {
             if let Ok(password) = secrets::get_password(config.os_crypt_name.unwrap_or("")) {
+                
                 let key = create_pbkdf2_key(password.as_str(), salt, iterations);
                 keys.push(key);
             }
@@ -59,6 +60,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>, Box<dyn std::error::
             keys.push(key);
             let key = create_pbkdf2_key("", salt, iterations);
             keys.push(key);
+
 
             
         }
@@ -101,11 +103,11 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
         let key = Key::<Aes256Gcm>::from_slice(key.clone());
         let cipher = Aes256Gcm::new(&key);
         let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
-        let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).or(Err("cant decrypt"))?;
+        let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).or(Err("cant decrypt using key"))?;
         let plaintext = String::from_utf8(plaintext).or(Err("cant decode encrypted value"))?;
         return Ok(plaintext);
     }
-    Err("cant decrypt value".into())
+    Err("decrypt_encrypted_value failed".into())
 
 }
 
@@ -128,17 +130,17 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
     let iv: [u8; 16] = [b' '; 16];
 
 
-    for key in keys {
+    for key in &keys {
         let mut  key_array: [u8;16] = [0;16];
         key_array.copy_from_slice(&key[..16]);
         let cipher = Aes128CbcDec::new(&key_array.into(), &iv.into());
-    
-        let plaintext = cipher.decrypt_padded_mut::<Pkcs7>(encrypted_value).or(Err("cant decrypt value"))?;
-    
-    
-        return Ok(String::from_utf8(plaintext.to_vec())?);
+        let mut cloned_encrypted_value: Vec<u8> = encrypted_value.to_vec();
+        
+        if let Ok(plaintext) = cipher.decrypt_padded_mut::<Pkcs7>(&mut cloned_encrypted_value) {
+            return Ok(String::from_utf8(plaintext.to_vec())?);
+        }
     }
-    Err("cant decrypt value".into())
+    Err("decrypt_encrypted_value failed".into())
 
 }
 

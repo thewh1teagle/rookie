@@ -3,15 +3,34 @@
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {
-        // use dbus::arg::messageitem::MessageItem;
-        // use dbus::blocking::Connection;
-        // use std::{time::Duration};
+        use std::{collections::HashMap, sync::Arc};
+        use zbus::{blocking::Connection, zvariant::Value, zvariant::ObjectPath, Message};
+
+        fn libsecret_getmethod<'a, T>(
+            connection: &Connection,
+            method: &str,
+            args: T,
+        ) -> zbus::Result<Arc<Message>>
+        where
+            T: serde::ser::Serialize + zvariant::DynamicType,
+        {
+            connection.call_method(
+                Some("org.freedesktop.secrets"),
+                "/org/freedesktop/secrets",
+                Some("org.freedesktop.Secret.Service"),
+                method,
+                &args,
+            )
+        }
         
         pub fn get_password(os_crypt_name: &str) -> Result<String, Box<dyn std::error::Error>> {
             // Attempt to get the password from libsecret
-            if let Ok(libsecret_pass) = get_password_libsecret(os_crypt_name) {
-                return Ok(libsecret_pass.to_string());
+            for schema in ["chrome_libsecret_os_crypt_password_v2", "chrome_libsecret_os_crypt_password_v1"] {
+                if let Ok(libsecret_pass) = get_password_libsecret(schema, os_crypt_name) {
+                    return Ok(libsecret_pass);
+                }
             }
+            
             
             // Attempt to get the password from kdewallet
             if let Ok(kdewallet_pass) = get_password_kdewallet(os_crypt_name) {
@@ -23,23 +42,36 @@ cfg_if::cfg_if! {
         }
         
         
-        fn get_password_libsecret(_crypt_name: &str) -> Result<&str, Box<dyn std::error::Error>> {
-            // let conn = Connection::new_session()?;
-            // let schemas = ["chrome_libsecret_os_crypt_password_v2", "chrome_libsecret_os_crypt_password_v1"];
-            // for schema in schemas {
-            //     let proxy = conn.with_proxy("org.freedesktop.secrets", "/org/freedesktop/secrets", Duration::from_millis(5000));
-            //     let items: (String,) = proxy
-            //         .method_call(
-            //             "org.freedesktop.Secret.Service", 
-            //             "SearchItems", 
-            //             // ("dummy.name.without.owner",)
-            //             (("xdg:schema",schema), ("application", crypt_name))
-            //         )?;
-            //     // let (names,): (Vec<String>,) = proxy.method_call("org.freedesktop.DBus", "ListNames", ())?;
-            //     // for name in names { println!("{}", name); }
-
-            // }
-            Err("not Implemented".into())
+        fn get_password_libsecret(schema: &str, crypt_name: &str) -> Result<String, Box<dyn std::error::Error>>  {
+            let connection = Connection::session()?;
+            let mut content = HashMap::<&str, &str>::new();
+            content.insert("xdg:schema", schema);
+            content.insert("application", crypt_name);
+            let m = libsecret_getmethod(&connection, "SearchItems", &content)?;
+            let (reply_paths, _) : (Vec<ObjectPath>, Vec<ObjectPath>) = m.body()?;
+            let path = reply_paths.first().ok_or("search items empty")?;
+        
+        
+            let m = libsecret_getmethod(&connection, "Unlock", vec![path])?;
+            let reply: (Vec<ObjectPath>, ObjectPath)  = m.body()?;
+            let object_path = reply.0.first().ok_or("Cant unlock")?;
+        
+        
+            let mut content = HashMap::<&str, &str>::new();
+            content.insert("plain", "");
+            let m = libsecret_getmethod(&connection, "OpenSession", &("plain", Value::new("")))?;
+        
+        
+            let reply: (Value, ObjectPath)  = m.body()?;
+            let session = reply.1;
+        
+            let m = libsecret_getmethod(&connection, "GetSecrets", &(vec![object_path], session))?;
+            type Response<'a> = (ObjectPath<'a>, Vec<u8>, Vec<u8>, String);
+            let reply: HashMap::<ObjectPath, Response>  = m.body()?;
+            let inner = reply.get(object_path).ok_or("Cant get secrets")?;
+            let secret = &inner.2;
+            
+            Ok(String::from_utf8(secret.clone())?)
         }
         
         fn get_password_kdewallet(_crypt_name: &str)-> Result<&str, Box<dyn std::error::Error>> {

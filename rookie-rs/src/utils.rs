@@ -1,5 +1,6 @@
 use std::time::{SystemTime, Duration, UNIX_EPOCH};
 
+
 pub fn epoch_to_systemtime_micros(timestamp: i64) -> SystemTime {
     if timestamp == 0 {
         UNIX_EPOCH
@@ -9,7 +10,6 @@ pub fn epoch_to_systemtime_micros(timestamp: i64) -> SystemTime {
     }
 }
 
-#[cfg(target_os = "macos")]
 pub fn unix_timestamp_to_system_time(timestamp: i64) -> SystemTime {
     UNIX_EPOCH + Duration::from_secs(timestamp as u64)
 }
@@ -20,4 +20,16 @@ pub fn capitalize(s: &str) -> String {
         None => String::new(),
         Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
     }
+}
+
+
+pub fn is_substring_in_vec(input_vec: Option<Vec<&str>>, search_string: &str) -> bool {
+    if let Some(strings) = input_vec {
+        for s in strings {
+            if s.contains(&search_string) {
+                return true;
+            }
+        }
+    }
+    false
 }

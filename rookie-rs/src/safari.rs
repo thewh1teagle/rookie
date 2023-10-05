@@ -1,5 +1,5 @@
 use crate::enums::*;
-use crate::utils::unix_timestamp_to_system_time;
+use crate::utils;
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
 use std::io::Error;
 use std::path::PathBuf;
@@ -7,6 +7,7 @@ use std::path::PathBuf;
 use std::fs::File;
 use std::io::{self, ErrorKind, Read};
 use std::vec::Vec;
+use std::time::Duration;
 
 fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
     if slice(bs, 0, 4)? != [0x00, 0x00, 0x01, 0x00] {
@@ -51,7 +52,7 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
     let value_off = T::read_u32(&bs[0x1C..0x20]) as usize;
 
     // i/OS/X to Unix timestamp +(1 Jan 2001 epoch seconds).
-    let expiry = T::read_f64(&bs[0x28..0x30]) + 978307200f64;
+    let expires = T::read_f64(&bs[0x28..0x30]) + 978307200f64;
 
     let url = slice_to(bs, url_off, name_off).and_then(&c_str)?;
     let name = slice_to(bs, name_off, path_off).and_then(&c_str)?;
@@ -62,8 +63,9 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
     let is_http_only = flags & 0x04 == 0x04;
 
     // Non-efficient workaround for println! broken pipes with | head.
+    let expires = utils::unix_timestamp_to_system_time(Duration::from_secs(expires as u64));
     let cookie = Cookie {
-        expires: unix_timestamp_to_system_time(expiry as i64),
+        expires,
         domain: url,
         http_only: is_http_only,
         name,

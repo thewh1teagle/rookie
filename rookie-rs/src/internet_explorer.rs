@@ -1,9 +1,10 @@
 use std::error::Error;
 use std::path::PathBuf;
 use crate::Cookie;
-use crate::utils::epoch_to_systemtime_micros;
 use libesedb::EseDb;
 use crate::winapi;
+use crate::utils;
+
 
 pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
     unsafe {
@@ -36,7 +37,8 @@ pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> 
 
                 let should_append = domains.is_none() || domains.iter().any(|d| d.contains(&host));
                 if should_append {
-                    cookies.push(Cookie { domain: host.to_string(), path: path.to_string(), secure, expires: epoch_to_systemtime_micros(expires), name, value, http_only, same_site })
+                    let expires = Duration::from_micros((expires as u64 - 11_644_473_600_000_000) / 1_000);
+                    cookies.push(Cookie { domain: host.to_string(), path: path.to_string(), secure, expires: utils::unix_timestamp_to_system_time(expires), name, value, http_only, same_site })
                 }
                 
             }

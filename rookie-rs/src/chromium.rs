@@ -1,6 +1,8 @@
+use std::time::Duration;
 use std::{path::PathBuf, error::Error};
 
 use crate::enums::*;
+use crate::utils;
 use crate::utils::*;
 use crate::sqlite;
 
@@ -176,7 +178,8 @@ fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>
         let path: String = row.get(1)?;
         let is_secure: bool = row.get(2)?;
         let expires_nt_time_epoch: i64 = row.get(3)?;
-        let expires = epoch_to_systemtime_micros(expires_nt_time_epoch);
+        let expires_nt_time_epoch = Duration::from_micros((expires_nt_time_epoch as u64 - 11_644_473_600_000_000) / 1_000);
+        let expires = utils::unix_timestamp_to_system_time(expires_nt_time_epoch);
         let name: String = row.get(4)?;
         
         let value: String = row.get(5)?;

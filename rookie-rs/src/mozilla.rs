@@ -132,7 +132,7 @@ pub fn get_session_cookies_lz4(
             .and_then(|v| v.as_str())
             .unwrap_or("");
         let should_add = domains.is_none() || // add every domain
-                        domains.is_some() && utils::some_domain_in_host(domains.to_owned(), domain); // only if some domain in host
+                        utils::some_domain_in_host(domains.to_owned(), domain); // only if some domain in host
         if !should_add {
             continue;
         }

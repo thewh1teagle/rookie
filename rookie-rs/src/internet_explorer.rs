@@ -1,3 +1,4 @@
+use std::time::Duration;
 use std::error::Error;
 use std::path::PathBuf;
 use crate::Cookie;

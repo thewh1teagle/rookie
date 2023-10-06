@@ -23,10 +23,10 @@ pub fn capitalize(s: &str) -> String {
 }
 
 
-pub fn is_substring_in_vec(input_vec: Option<Vec<&str>>, search_string: &str) -> bool {
-    if let Some(strings) = input_vec {
-        for s in strings {
-            if s.contains(&search_string) {
+pub fn some_domain_in_host(domains: Option<Vec<&str>>, host: &str) -> bool {
+    if let Some(strings) = domains {
+        for d in strings {
+            if host.contains(d) {
                 return true;
             }
         }

@@ -177,8 +177,8 @@ fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>
         let host_key: String = row.get(0)?;
         let path: String = row.get(1)?;
         let is_secure: bool = row.get(2)?;
-        let expires_nt_time_epoch: i64 = row.get(3)?;
-        let expires_nt_time_epoch = Duration::from_micros((expires_nt_time_epoch as u64 - 11_644_473_600_000_000) / 1_000);
+        let expires_nt_time_epoch: u64 = row.get(3)?;
+        let expires_nt_time_epoch = Duration::from_micros(expires_nt_time_epoch);
         let expires = utils::unix_timestamp_to_system_time(expires_nt_time_epoch);
         let name: String = row.get(4)?;
         

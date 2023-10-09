@@ -8,5 +8,5 @@ Bindings for [rookie](https://github.com/thewh1teagle/rookie)
 from rookiepy import chrome
 cookies = chrome()
 for cookie in cookies:
-    print(cookie.domain, cookie.name, cookie.value)
+    print(cookie['domain'], cookie['name'], cookie['value'])
 ```

@@ -28,7 +28,7 @@ And the usage it similar to original
 import rookiepy
 cookies = rookiepy.firefox(["google.com"])
 for cookie in cookies:
-    print(cookie.domain, cookie.value)
+    print(cookie['domain'], cookie['value'])
 ```
 
 ## Examples

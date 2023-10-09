@@ -23,12 +23,12 @@ pub fn internet_explorer_timestamp(timestamp: u64) -> Option<u64> {
 
 
 #[cfg(target_os = "macos")]
-pub fn safari_timestamp(timestamp: u64) -> u64 {
+pub fn safari_timestamp(timestamp: u64) -> Option<u64> {
     if timestamp <= 0 {
         return None;
     }
     let timestamp = timestamp + 978307200f64 as u64;
-    return  unix_timestamp(timestamp);
+    unix_timestamp(timestamp)
 }
 
 fn unix_timestamp(timestamp: u64) -> Option<u64> {

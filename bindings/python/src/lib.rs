@@ -2,174 +2,141 @@
 use std::path::PathBuf;
 use rookie::{self,Cookie};
 
-use pyo3::prelude::*;
+use pyo3::{prelude::*, types::PyDict};
 
 
-// Wrapper struct for Cookie
-#[pyclass]
-pub struct PyCookie {
-    pub inner: Cookie,
-}
 
-
-#[pymethods]
-impl PyCookie {
-    #[getter]
-    fn domain(&self) -> &str {
-        &self.inner.domain
-    }
-
-    #[getter]
-    fn path(&self) -> &str {
-        &self.inner.path
-    }
-
-    #[getter]
-    fn secure(&self) -> bool {
-        self.inner.secure
-    }
-
-    #[getter]
-    fn expires(&self) -> Option<u64> {
-        self.inner.expires
-    }
+fn to_dict(py: Python, cookies: Vec<Cookie>) -> PyResult<Vec<PyObject>> {
     
+    let mut cookie_objects: Vec<PyObject> = vec![];
+    for cookie in cookies {
+        let dict = PyDict::new(py);
+        dict.set_item("domain", cookie.domain)?;
+        dict.set_item("path", cookie.path)?;
+        dict.set_item("secure", cookie.secure)?;
+        dict.set_item("http_only", cookie.http_only)?;
+        dict.set_item("same_site", cookie.same_site)?;
+        dict.set_item("expires", cookie.expires)?;
+        dict.set_item("name", cookie.name)?;
+        dict.set_item("value", cookie.value)?;
 
-    #[getter]
-    fn name(&self) -> &str {
-        &self.inner.name
+        // Add fields to cookie_dict using set_item
+        // cookie_dict.set_item(py, "field_name", field_value);
+        // Repeat for each field in the Cookie struct
+        // Finally, return the cookie_dict as a PyObject
+        cookie_objects.push(dict.to_object(py));
     }
-
-    #[getter]
-    fn value(&self) -> &str {
-        &self.inner.value
-    }
-
-    #[getter]
-    fn http_only(&self) -> bool {
-        self.inner.http_only
-    }
-
-    #[getter]
-    fn same_site(&self) -> i64 {
-        self.inner.same_site
-    }
+    Ok(cookie_objects)
 }
 
 #[pyfunction]
-fn firefox(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn firefox(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::firefox(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn libre_wolf(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn libre_wolf(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::libre_wolf(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn chrome(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn chrome(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::chrome(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 
 #[pyfunction]
-fn brave(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn brave(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::brave(domains).unwrap();
     
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn edge(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn edge(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::edge(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn opera(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn opera(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::opera(domains).unwrap();
     
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn opera_gx(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn opera_gx(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::opera_gx(domains).unwrap();
     
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn chromium(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn chromium(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::chromium(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn vivaldi(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn vivaldi(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::vivaldi(domains).unwrap();
     
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
 #[cfg(target_os = "windows")]
-fn internet_explorer(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn internet_explorer(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::internet_explorer(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
 #[cfg(target_os = "macos")]
-fn safari(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn safari(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::safari(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 
 #[pyfunction]
 #[cfg(target_os = "windows")]
-fn chromium_based(_py: Python, key_path: String, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn chromium_based(py: Python, key_path: String, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains).unwrap();
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
-    Ok(py_cookies)
+    let cookies = to_dict(py, cookies)?;
+
+    Ok(cookies)
 }
 
 #[pyfunction]
 #[cfg(unix)]
-fn chromium_based(_py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn chromium_based(py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     use rookie::BrowserConfig;
 
     let db_path = db_path.as_str();
@@ -181,27 +148,26 @@ fn chromium_based(_py: Python, db_path: String, domains: Option<Vec<&str>>) -> P
         osx_key_user: None,
     };
     let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains).unwrap();
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
-    Ok(py_cookies)
+    let cookies = to_dict(py, cookies)?;
+
+    Ok(cookies)
 }
 
 
 #[pyfunction]
-fn firefox_based(_py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn firefox_based(py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::firefox_based(PathBuf::from(db_path), domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pyfunction]
-fn load(_py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyCookie>> {
+fn load(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::load(domains).unwrap();
-    
-    let py_cookies: Vec<PyCookie> = cookies.into_iter().map(|cookie| PyCookie { inner: cookie }).collect();
+    let cookies = to_dict(py, cookies)?;
 
-    Ok(py_cookies)
+    Ok(cookies)
 }
 
 #[pymodule]

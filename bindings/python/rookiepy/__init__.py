@@ -53,32 +53,19 @@ def create_cookie(host, path, secure, expires, name, value, http_only):
                                  {'HTTPOnly': ''} if http_only else {})
 
 
-def to_dict(cookies: List[Any]):
-    return [
-        {'name': c.name,
-             'domain': c.domain,
-             'path': c.path,
-             'secure': c.secure,
-             'expires': c.expires,
-             'value': c.value,
-             'http_only': c.http_only,
-             'same_site': c.same_site
-        } 
-        for c in cookies
-    ]
 
-def to_cookiejar(cookies: List[Any]):
+def to_cookiejar(cookies: List[dict]):
     cj = http.cookiejar.CookieJar()
     
     for cookie_obj in cookies:
         c = create_cookie(
-            cookie_obj.domain,
-            cookie_obj.path,
-            cookie_obj.secure,
-            cookie_obj.expires,
-            cookie_obj.name,
-            cookie_obj.value,
-            cookie_obj.http_only,
+            cookie_obj['domain'],
+            cookie_obj['path'],
+            cookie_obj['secure'],
+            cookie_obj['expires'],
+            cookie_obj['name'],
+            cookie_obj['value'],
+            cookie_obj['http_only'],
 
         )
         cj.set_cookie(c)

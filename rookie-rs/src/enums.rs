@@ -1,11 +1,11 @@
-use std::{fmt::{self}, time::SystemTime};
+use std::fmt;
 
 #[derive(Debug)]
 pub struct Cookie {
     pub domain: String,
     pub path:     String,
 	pub secure:   bool,
-	pub expires:  SystemTime,
+	pub expires:  Option<u64>,
 	pub name:     String,
 	pub value:    String,
 	pub http_only: bool,

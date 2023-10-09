@@ -1,5 +1,5 @@
 
-use std::{time::SystemTime, path::PathBuf};
+use std::path::PathBuf;
 use rookie::{self,Cookie};
 
 use pyo3::prelude::*;
@@ -30,14 +30,8 @@ impl PyCookie {
     }
 
     #[getter]
-    fn expires(&self) -> PyResult<u128> {
-        match self.inner.expires.duration_since(SystemTime::UNIX_EPOCH) {
-            Ok(duration) => {
-                let ms = duration.as_millis();
-                Ok(ms)
-            }
-            Err(_) => Ok(0)
-        }
+    fn expires(&self) -> Option<u64> {
+        self.inner.expires
     }
     
 

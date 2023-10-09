@@ -9,6 +9,7 @@ pub fn some_domain_in_host(domains: Option<Vec<&str>>, host: &str) -> bool {
     false
 }
 
+#[cfg(target_os = "linux")]
 pub fn capitalize(s: &str) -> String {
     let mut c = s.chars();
     match c.next() {

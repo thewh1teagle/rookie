@@ -5,7 +5,7 @@ use std::path::Path;
 use std::time::Duration;
 use std::{error::Error, path::PathBuf};
 
-use crate::{enums::*, sqlite, utils};
+use crate::{enums::*, sqlite, utils, date};
 use lz4_flex::block::decompress_size_prepended;
 
 pub fn firefox_based(
@@ -40,9 +40,8 @@ pub fn firefox_based(
         let host: String = row.get(0)?;
         let path: String = row.get(1)?;
         let is_secure: bool = row.get(2)?;
-        let expires_nt_time_epoch: u64 = row.get(3)?;
-        let expires =
-            utils::unix_timestamp_to_system_time(Duration::from_secs(expires_nt_time_epoch));
+        let expires: u64 = row.get(3)?;
+        let expires = date::mozilla_timestamp(expires);
 
         let name: String = row.get(4)?;
 

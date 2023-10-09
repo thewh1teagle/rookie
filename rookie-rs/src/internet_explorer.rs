@@ -1,10 +1,9 @@
-use std::time::Duration;
 use std::error::Error;
 use std::path::PathBuf;
 use crate::Cookie;
+use crate::date;
 use libesedb::EseDb;
 use crate::winapi;
-use crate::utils;
 
 
 pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
@@ -33,13 +32,13 @@ pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> 
                 let same_site = 0;
                 let value = String::from_utf8(value.as_bytes().unwrap_or(&[]).to_vec()).unwrap_or("".to_string()).trim_matches('\0').to_string();
                 let secure = false;
-                let expires = rec.value(4)?.to_i64().unwrap_or(0);
+                let expires = rec.value(4)?.to_u64().unwrap_or(0);
+                let expires = date::internet_explorer_timestamp(expires);
                 let http_only = false;
 
                 let should_append = domains.is_none() || domains.iter().any(|d| d.contains(&host));
                 if should_append {
-                    let expires = Duration::from_micros((expires as u64 - 11_644_473_600_000_000) / 1_000);
-                    cookies.push(Cookie { domain: host.to_string(), path: path.to_string(), secure, expires: utils::unix_timestamp_to_system_time(expires), name, value, http_only, same_site })
+                    cookies.push(Cookie { domain: host.to_string(), path: path.to_string(), secure, expires, name, value, http_only, same_site })
                 }
                 
             }

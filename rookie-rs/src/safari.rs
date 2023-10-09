@@ -1,5 +1,5 @@
 use crate::enums::*;
-use crate::utils;
+use crate::{utils, date};
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
 use std::io::Error;
 use std::path::PathBuf;
@@ -52,7 +52,8 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
     let value_off = T::read_u32(&bs[0x1C..0x20]) as usize;
 
     // i/OS/X to Unix timestamp +(1 Jan 2001 epoch seconds).
-    let expires = T::read_f64(&bs[0x28..0x30]) + 978307200f64;
+    let expires = T::read_u64(&bs[0x28..0x30]);
+    let expires = date::safari_timestamp(expires);
 
     let url = slice_to(bs, url_off, name_off).and_then(&c_str)?;
     let name = slice_to(bs, name_off, path_off).and_then(&c_str)?;
@@ -62,8 +63,6 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
     let is_secure = flags & 0x01 == 0x01;
     let is_http_only = flags & 0x04 == 0x04;
 
-    // Non-efficient workaround for println! broken pipes with | head.
-    let expires = utils::unix_timestamp_to_system_time(Duration::from_secs(expires as u64));
     let cookie = Cookie {
         expires,
         domain: url,

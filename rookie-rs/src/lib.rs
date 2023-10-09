@@ -6,10 +6,12 @@ mod mozilla;
 mod utils;
 mod enums;
 mod config;
+mod date;
 
 pub use chromium::chromium_based;
 pub use mozilla::firefox_based;
 pub use enums::*;
+
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {

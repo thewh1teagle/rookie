@@ -2,9 +2,7 @@ use ini::Ini;
 use serde_json::Value;
 use std::fs;
 use std::path::Path;
-use std::time::Duration;
 use std::{error::Error, path::PathBuf};
-
 use crate::{enums::*, sqlite, utils, date};
 use lz4_flex::block::decompress_size_prepended;
 
@@ -171,13 +169,7 @@ pub fn create_cookie(json_cookie: &Value) -> Result<Cookie, Box<dyn std::error::
         .get("expiry")
         .and_then(|v| v.as_u64())
         .unwrap_or(0);
-    cfg_if::cfg_if! {
-        if #[cfg(target_os = "windows")] {
-            let expires = utils::unix_timestamp_to_system_time(Duration::from_millis(expires));
-        } else {
-            let expires = utils::unix_timestamp_to_system_time(Duration::from_secs(expires));
-        }
-    }
+    let expires = date::mozilla_timestamp(expires);
 
     let same_site = json_cookie
         .get("sameSite")

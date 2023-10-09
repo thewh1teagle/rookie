@@ -10,6 +10,7 @@ pub fn mozilla_timestamp(timestamp: u64) -> SystemTime {
     return unix_timestamp(timestamp);
 }
 
+#[cfg(target_os = "windows")]
 pub fn internet_explorer_timestamp(timestamp: u64) -> SystemTime {
     let mut timestamp = timestamp - 116444736000000000;
     timestamp /= 10000000;

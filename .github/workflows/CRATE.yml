@@ -1,13 +1,8 @@
 name: CRATE
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  #     - master
-  #   tags:
-  #     - '*'
-  pull_request:
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:

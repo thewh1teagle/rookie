@@ -139,7 +139,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
                     return Ok(decoded);
                 }
                 Err(_) => {
-                    eprintln!("error in decode decrypt value with utf8");
+                    eprintln!("[WARN] error in decode decrypt value with utf8");
                     return Ok("".into());
                 }
             }

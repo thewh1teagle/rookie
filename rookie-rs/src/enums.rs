@@ -1,6 +1,6 @@
-use std::fmt;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Cookie {
     pub domain: String,
     pub path:     String,
@@ -12,23 +12,6 @@ pub struct Cookie {
 	pub same_site: i64
 }
 
-impl fmt::Display for Cookie {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "Cookie:\n\
-             - Domain: {}\n\
-             - Path: {}\n\
-             - Secure: {}\n\
-             - Expires: {:?}\n\
-             - Name: {}\n\
-             - Value: {}\n\
-             - Http Only: {}\n\
-             - Same Site: {}",
-            self.domain, self.path, self.secure, self.expires, self.name, self.value, self.http_only, self.same_site
-        )
-    }
-}
 
 
 pub trait CookieToString {

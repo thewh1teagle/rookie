@@ -5,7 +5,7 @@ mod sqlite;
 mod mozilla;
 mod utils;
 mod enums;
-mod config;
+pub mod config;
 mod date;
 
 pub use chromium::chromium_based;

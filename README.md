@@ -36,6 +36,10 @@ For [Python](https://github.com/thewh1teagle/rookie/tree/main/examples)
 
 For [Rust](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
 
+## CLI
+You can use rookie as a `CLI` tool which will decrypt the cookies and print it as `JSON`  
+See [cli](https://github.com/thewh1teagle/rookie/tree/main/cli) folder
+
 ## Contribute
 So far the following platforms are supported:
 
@@ -63,6 +67,17 @@ look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/s
 This library may trigger a password prompt on Linux systems when accessing browser cookies. 
 
 Be prepared to enter your administrator password when prompted.
+
+## Using on Unsupported platforms
+To use rookie on other platforms for instance on `Android`,  
+Copy the Cookies file from the mobile phone, you can search using
+```shell
+find /data/data -type f -name Cookies
+```
+And pull the Cookies file you want and then execute `CLI` on that file
+```shell
+./cli --path <Cookies path>
+```
 
 ## Testing Dates  (dd/mm/yy)
 

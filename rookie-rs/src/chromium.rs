@@ -132,7 +132,17 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
         let mut cloned_encrypted_value: Vec<u8> = encrypted_value.to_vec();
         
         if let Ok(plaintext) = cipher.decrypt_padded_mut::<Pkcs7>(&mut cloned_encrypted_value) {
-            return Ok(String::from_utf8(plaintext.to_vec())?);
+            
+            let decoded = String::from_utf8(plaintext.to_vec());
+            match decoded {
+                Ok(decoded) => {
+                    return Ok(decoded);
+                }
+                Err(_) => {
+                    eprintln!("error in decode decrypt value with utf8");
+                    return Ok("".into());
+                }
+            }
         }
     }
     Err("decrypt_encrypted_value failed".into())

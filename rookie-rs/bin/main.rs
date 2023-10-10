@@ -1,6 +1,6 @@
 use rookie;
 
 fn main() {
-    let cookies = rookie::brave(Some(vec!["github.com"])).unwrap();
+    let cookies = rookie::brave(None).unwrap();
     println!("{:?}", cookies);
 }

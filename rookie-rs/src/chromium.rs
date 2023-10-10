@@ -109,8 +109,14 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
 #[cfg(unix)]
 fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<u8>>) -> Result<String, Box<dyn std::error::Error>> {
     // cbc
+    if !value.is_empty() { // unknown key_type or value isn't encrypted
+        return Ok(value);
+    }
+    if encrypted_value.len() <= 0 {
+        return Ok("".into());
+    }
     let key_type = &encrypted_value[..3];
-    if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
+    if !(key_type == b"v11" || key_type == b"v10") {
         return Ok(value);
     }
     use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, KeyIvInit};

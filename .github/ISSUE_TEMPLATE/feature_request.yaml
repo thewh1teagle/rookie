@@ -16,6 +16,5 @@ body:
       label: Describe the feature
       description: Also tell us why you think it useful
       placeholder: Description...
-      value: ""
     validations:
       required: true

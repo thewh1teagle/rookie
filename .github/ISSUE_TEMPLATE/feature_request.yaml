@@ -9,7 +9,8 @@ body:
     attributes:
       value: |
         💚💜 Thank you for interest. ❤️💛
-        Please make sure to check for more efficient package management. *Please prioritize checking existing issues first. I will repay with higher-quality code.*
+        *Please prioritize checking existing issues first.  
+        I will repay with higher-quality code.*
   - type: textarea
     id: describe-the-feature
     attributes:

@@ -83,6 +83,41 @@ And pull the Cookies file you want and then execute `CLI` on that file
 ./cli --path <Cookies path>
 ```
 
+## Manually import website cookies
+To import cookies from rookiepy into the browser,
+
+you can execute short javascript code in the browser console 
+
+and construct the cookies manually,
+
+but you must execute it while the specific domain it opened.
+```python
+import rookiepy
+from datetime import datetime, timezone, timedelta
+
+def create_js_code(cookies):
+    expires = datetime.now(timezone.utc)
+    expires += timedelta(days=365) # one year expires
+    expires = expires.strftime('%a, %d %b %Y %H:%M:%S %Z')
+    js_code = ''
+
+    for cookie in cookies:
+        name = cookie.get("name", "")
+        value = cookie.get("value", "")
+        if name and value:
+            js_code += f'document.cookie = "{name}={value};expires={expires};"\n'
+    js_code += 'location.reload()\n'
+    return js_code
+
+cookies = rookiepy.brave(["github.com"])
+print(create_js_code(cookies))
+```
+In this example, I extracted the cookies from the `Brave` browser from the domain 'github.com.'
+
+I cleared all of my browser cookies, executed the code, copied the output. 
+
+Then, I opened `github.com` in the browser and pasted it into the console. As a result, I was logged in into my account.
+
 ## Testing Dates  (dd/mm/yy)
 
 Browser  |  Linux   |  MacOS   | Windows  |

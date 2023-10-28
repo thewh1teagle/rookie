@@ -269,7 +269,8 @@ cfg_if::cfg_if! {
         pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/snap/firefox/common/.mozilla/firefox",
-                "~/.mozilla/firefox"
+                "~/.mozilla/firefox",
+                "~/.var/app/org.mozilla.firefox/.mozilla/firefox"
             ],
             channels: None,
             os_crypt_name: None,

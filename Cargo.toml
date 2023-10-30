@@ -1,0 +1,7 @@
+[workspace]
+resolver = "2"
+members = [
+    "bindings/python",
+    "cli",
+    "rookie-rs",
+]

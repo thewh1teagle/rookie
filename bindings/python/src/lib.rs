@@ -170,6 +170,14 @@ fn load(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     Ok(cookies)
 }
 
+#[pyfunction]
+fn any_browser(py: Python, db_path: &str, domains: Option<Vec<&str>>, key_path: Option<&str>) -> PyResult<Vec<PyObject>> {
+    let cookies = rookie::any_browser(db_path, domains, key_path).unwrap();
+    let cookies = to_dict(py, cookies)?;
+
+    Ok(cookies)
+}
+
 #[pymodule]
 fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(firefox, m)?)?;
@@ -184,6 +192,7 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(chromium_based, m)?)?;
     m.add_function(wrap_pyfunction!(firefox_based, m)?)?;
     m.add_function(wrap_pyfunction!(load, m)?)?;
+    m.add_function(wrap_pyfunction!(any_browser, m)?)?;
     
     #[cfg(target_os = "windows")]
     m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;

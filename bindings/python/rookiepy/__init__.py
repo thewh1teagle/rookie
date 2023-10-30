@@ -12,7 +12,8 @@ from .rookiepy import (
     vivaldi,
     opera_gx,
     libre_wolf,
-    load
+    load,
+    any_browser
 )
 
 __all__ = [
@@ -30,7 +31,8 @@ __all__ = [
     "to_dict",
     "to_cookiejar",
     "create_cookie",
-    "load"
+    "load",
+    "any_browser"
 ]
 
 

@@ -373,7 +373,7 @@ pub fn any_browser(
     cfg_if::cfg_if! {
         // Linux Chromium
         if #[cfg(unix)] {
-            use rookie::config;
+            use crate::config;
             let chrome_configs = &[
                 &config::CHROME_CONFIG,
                 &config::BRAVE_CONFIG,
@@ -384,7 +384,7 @@ pub fn any_browser(
                 &config::VIVALDI_CONFIG,
             ];
             for browser_config in chrome_configs {
-                if let Ok(cookies) = chromium_based(&browser_config, args.path.clone().into(), Some(domains.clone())) {
+                if let Ok(cookies) = chromium_based(&browser_config, cookies_path.into(), domains.clone()) {
                     return Ok(cookies);
                 }
             }

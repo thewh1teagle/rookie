@@ -392,7 +392,7 @@ pub fn any_browser(
         else if #[cfg(target_os = "macos")] {
             // try safari based
             if let Ok(cookies) = safari_based(cookies_path.into(), domains) {
-                return cookies;
+                return Ok(cookies);
             }
         }
     }

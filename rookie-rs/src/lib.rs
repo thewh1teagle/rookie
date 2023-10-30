@@ -371,6 +371,7 @@ pub fn any_browser(
 
     // chromium based
     cfg_if::cfg_if! {
+        // Linux Chromium
         if #[cfg(unix)] {
             use rookie::config;
             let chrome_configs = &[
@@ -383,10 +384,13 @@ pub fn any_browser(
                 &config::VIVALDI_CONFIG,
             ];
             for browser_config in chrome_configs {
-                let res_cookies = chromium_based(&browser_config, args.path.clone().into(), Some(domains.clone()))?;
-                cookies.extend(res_cookies);
+                if let Ok(cookies) = chromium_based(&browser_config, args.path.clone().into(), Some(domains.clone())) {
+                    return Ok(cookies);
+                }
             }
-        } else {
+        } 
+        // Windows chromium
+        else {
             if let Some(key_path) = key_path {
                 if let Ok(cookies) = chromium_based(PathBuf::from(key_path), cookies_path.into(), domains.clone()) {
                     return Ok(cookies);
@@ -395,18 +399,19 @@ pub fn any_browser(
         }
     }
 
-    // try mozilla based
+    // Firefox
     if let Ok(cookies) = firefox_based(cookies_path.into(), domains.clone()) {
         return Ok(cookies);
     }
 
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
-            // try internet_explorer based
+            // Internet Explorer
             if let Ok(cookies) = internet_explorer_based(cookies_path.into(), domains.clone()) {
                 return Ok(cookies);
             }
         }
+        // Safari
         else if #[cfg(target_os = "macos")] {
             // try safari based
             if let Ok(cookies) = safari_based(cookies_path.into(), domains) {

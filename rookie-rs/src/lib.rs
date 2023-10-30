@@ -369,11 +369,29 @@ pub fn any_browser(
     key_path: Option<&str>,
 ) -> Result<Vec<Cookie>, Box<dyn Error>> {
 
-    // try chromium_based
-    if let Some(key_path) = key_path {
-        let key = PathBuf::from(key_path);
-        if let Ok(cookies) = chromium_based(key, cookies_path.into(), domains.clone()) {
-            return Ok(cookies);
+    // chromium based
+    cfg_if::cfg_if! {
+        if #[cfg(unix)] {
+            use rookie::config;
+            let chrome_configs = &[
+                &config::CHROME_CONFIG,
+                &config::BRAVE_CONFIG,
+                &config::CHROMIUM_CONFIG,
+                &config::EDGE_CONFIG,
+                &config::OPERA_CONFIG,
+                &config::OPERA_GX_CONFIG,
+                &config::VIVALDI_CONFIG,
+            ];
+            for browser_config in chrome_configs {
+                let res_cookies = chromium_based(&browser_config, args.path.clone().into(), Some(domains.clone()))?;
+                cookies.extend(res_cookies);
+            }
+        } else {
+            if let Some(key_path) = key_path {
+                if let Ok(cookies) = chromium_based(PathBuf::from(key_path), cookies_path.into(), domains.clone()) {
+                    return Ok(cookies);
+                }
+            }
         }
     }
 

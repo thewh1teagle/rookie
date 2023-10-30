@@ -12,12 +12,12 @@ cfg_if::cfg_if! {
                 "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Default/Cookies",
                 "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Default/Network/Cookies",
                 "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Profile */Cookies",
-                "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookie",
+                "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookies",
 
                 "%APPDATA%/Google/Chrome{channel}/User Data/Default/Cookies",
                 "%APPDATA%/Google/Chrome{channel}/User Data/Default/Network/Cookies",
                 "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Cookies",
-                "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookie"
+                "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookies"
             ],
             channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
             os_crypt_name: None,

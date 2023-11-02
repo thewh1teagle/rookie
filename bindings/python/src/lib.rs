@@ -180,6 +180,7 @@ fn any_browser(py: Python, db_path: &str, domains: Option<Vec<&str>>, key_path: 
 
 #[pymodule]
 fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
+    pyo3_log::init();
     m.add_function(wrap_pyfunction!(firefox, m)?)?;
     m.add_function(wrap_pyfunction!(libre_wolf, m)?)?;
     m.add_function(wrap_pyfunction!(chrome, m)?)?;

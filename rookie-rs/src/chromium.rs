@@ -1,6 +1,7 @@
 use std::{path::PathBuf, error::Error};
 use crate::{enums::*, date};
 use crate::sqlite;
+use log::warn;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
@@ -145,7 +146,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
                     return Ok(decoded);
                 }
                 Err(_) => {
-                    eprintln!("[WARN] error in decode decrypt value with utf8");
+                    warn!("Error in decode decrypt value with utf8");
                     return Ok("".into());
                 }
             }
@@ -160,7 +161,7 @@ fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let db_path_str = db_path.to_str().ok_or("Cant convert db path to str")?;
-            eprintln!("[WARN] Unlocking chrome database, it may take a while (sometimes up to minute)");
+            warn!("Unlocking chrome database, it may take a while (sometimes up to minute)");
             unsafe {winapi::release_file_lock(db_path_str);}
         }
     }

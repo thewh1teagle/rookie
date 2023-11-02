@@ -1,6 +1,7 @@
 use clap::Parser;
 use rookie::{Cookie, any_browser, load};
 use serde_json;
+use pretty_env_logger;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -24,6 +25,7 @@ fn print_cookies(cookies: Vec<Cookie>) {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
+    pretty_env_logger::init();
     let domains = args.domains.iter().map(String::as_str).collect();
     if let Some(path) = args.path {
         let cookies = any_browser(path.as_str(), Some(domains), args.key_path.as_deref())?;

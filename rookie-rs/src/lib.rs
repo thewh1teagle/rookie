@@ -16,8 +16,7 @@ cfg_if::cfg_if! {
         pub use internet_explorer::internet_explorer_based;
     }
     else if #[cfg(target_os = "macos")] {
-        mod safari;
-        pub use safari::safari_based;
+        use browser::safari::safari_based;
         use common::secrets;
     }
     else if #[cfg(target_os = "linux")] {

@@ -1,12 +1,9 @@
-use crate::common::enums::*;
-use crate::common::{utils, date};
+use crate::common::{date, enums::*};
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
+use std::io::Read;
 use std::path::PathBuf;
-
 use std::fs::File;
-use std::io::{self, ErrorKind, Read};
 use std::vec::Vec;
-use std::time::Duration;
 use anyhow::{Result, anyhow, bail};
 
 fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {

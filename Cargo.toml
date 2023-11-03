@@ -8,5 +8,3 @@ members = [
     "rookie-rs/examples/http",
     "rookie-rs/examples/logging"
 ]
-
-

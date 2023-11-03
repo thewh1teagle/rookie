@@ -125,7 +125,7 @@ pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf
     }
     
 
-    Err(("cant find any brave cookies file").into())
+    Err(anyhow!("cant find any brave cookies file"))
 }
 
 #[cfg(target_os = "windows")]

@@ -146,7 +146,7 @@ fn chromium_based(py: Python, db_path: String, domains: Option<Vec<&str>>) -> Py
         osx_key_service: None,
         osx_key_user: None,
     };
-    let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains).unwrap();
+    let cookies = browser::chromium::chromium_based(&config, PathBuf::from(db_path), domains).unwrap();
     let cookies = to_dict(py, cookies)?;
 
     Ok(cookies)

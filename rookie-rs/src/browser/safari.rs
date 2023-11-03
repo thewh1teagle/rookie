@@ -7,11 +7,11 @@ use std::fs::File;
 use std::io::{self, ErrorKind, Read};
 use std::vec::Vec;
 use std::time::Duration;
-use anyhow::{Result, anyhow};
+use anyhow::{Result, anyhow, bail};
 
 fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
     if slice(bs, 0, 4)? != [0x00, 0x00, 0x01, 0x00] {
-        return Err(anyhow!("bad page header"));
+        bail!("bad page header");
     }
 
     let count = slice(bs, 4, 4).map(LittleEndian::read_u32)? as usize;
@@ -35,14 +35,14 @@ fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
     }
 
     if slice(bs, count * 4 + 8, 4)? != [0x00, 0x00, 0x00, 0x00] {
-        return Err(anyhow!("bad page trailer"));
+        bail!("bad page trailer");
     }
     Ok(cookies)
 }
 
 fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> Result<Cookie> {
     if bs.len() < 0x30 {
-        return Err(anyhow!("cookie data underflow"));
+        bail!("cookie data underflow");
     }
     let flags = T::read_u32(&bs[0x08..0x0C]);
 
@@ -79,7 +79,7 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> Result<Cookie> {
 pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
     // Magic bytes: "COOK" = 0x636F6F6B
     if slice(bs, 0, 4)? != [0x63, 0x6F, 0x6F, 0x6B] {
-        return Err(anyhow!("not a cookie file"));
+        bail!("not a cookie file");
     }
 
     let count = slice(bs, 4, 4).map(BigEndian::read_u32)? as usize;
@@ -93,7 +93,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
             Ok(slice) => slice,
             Err(_) => {
                 // Handle the error here, e.g., by returning the error.
-                return Err(anyhow!("cant get slice from page"));
+                bail!("cant get slice from page");
             }
         };
     
@@ -111,7 +111,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
 
 fn slice(bs: &[u8], off: usize, len: usize) -> Result<&[u8]> {
     if off + len > bs.len() {
-        Err(anyhow!(format!("data underflow: {}", off + len - bs.len())))
+        bail!("data underflow: {}", off + len - bs.len())
     } else {
         Ok(&bs[off..off + len])
     }
@@ -120,7 +120,7 @@ fn slice(bs: &[u8], off: usize, len: usize) -> Result<&[u8]> {
 fn parse_table<T: ByteOrder>(bs: &[u8], count: usize) -> Result<Vec<usize>> {
     let end = count * 4;
     if end > bs.len() {
-        return Err(anyhow!("table data underflow"));
+        bail!("table data underflow");
     }
     let data = (&bs[..end])
         .chunks(4)
@@ -131,7 +131,7 @@ fn parse_table<T: ByteOrder>(bs: &[u8], count: usize) -> Result<Vec<usize>> {
 
 fn slice_to(bs: &[u8], off: usize, to: usize) -> Result<&[u8]> {
     if to < off {
-        Err(anyhow!(format!("negative data length: {}", to - off)))
+        bail!("negative data length: {}", to - off)
     } else {
         slice(bs, off, to - off)
     }
@@ -144,7 +144,7 @@ fn c_str(bs: &[u8]) -> Result<String> {
             if last == 0x00 {
                 Ok(elements)
             } else {
-                Err(anyhow!("c string non null terminator"))
+                bail!("c string non null terminator")
             }
         })
         .and_then(|elements| {

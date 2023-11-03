@@ -1,3 +1,4 @@
+use anyhow::bail;
 use anyhow::{Result, anyhow};
 use ini::Ini;
 use serde_json::Value;
@@ -199,5 +200,5 @@ pub fn get_default_profile(profiles_path: &Path) -> Result<String> {
             return Ok(path.to_string());
         }
     }
-    Err(anyhow!("Cant find any profile"))
+    bail!("Cant find any profile")
 }

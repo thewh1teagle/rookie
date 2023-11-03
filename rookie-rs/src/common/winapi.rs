@@ -11,7 +11,7 @@ use windows::{Win32::{System::RestartManager::{
     CCH_RM_SESSION_KEY,
     RM_PROCESS_INFO
 }, Foundation::{ERROR_SUCCESS, WIN32_ERROR, ERROR_MORE_DATA}}, core::{PWSTR, PCWSTR, HSTRING}};
-use anyhow::{Result, anyhow};
+use anyhow::{Result, anyhow, bail};
 
 pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
     // https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata
@@ -43,7 +43,7 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
         };
     }
     if data_out.pbData.is_null() {
-        return Err(anyhow!("CryptUnprotectData returned a null pointer"));
+        bail!("CryptUnprotectData returned a null pointer");
     }
     
     let decrypted_data = unsafe {

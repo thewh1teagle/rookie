@@ -5,7 +5,8 @@ members = [
     "cli",
     "rookie-rs",
     "rookie-rs/examples/chrome",
-    "rookie-rs/examples/http"
+    "rookie-rs/examples/http",
+    "rookie-rs/examples/logging"
 ]
 
 

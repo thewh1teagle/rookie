@@ -1,15 +1,11 @@
-use anyhow::{Result, anyhow};
 pub mod config;
 pub mod common;
 pub mod browser;
+
+use anyhow::{Result, bail};
 use common::enums::Cookie;
 use common::paths;
 use std::path::PathBuf;
-
-
-
-
-
 use browser::mozilla::firefox_based;
 use browser::chromium::chromium_based;
 
@@ -420,5 +416,5 @@ pub fn any_browser(
             }
         }
     }
-    return Err(anyhow!("cant find any cookies"));
+    bail!("cant find any cookies");
 }

@@ -109,7 +109,7 @@ cfg_if::cfg_if! {
             let m = kwallet_call(&connection, "close", (network_wallet, false))?;
             let close_ok: i32 = m.body()?;
             if close_ok != 1 {
-                return Err(anyhow!("Close failed"));
+                bail!("Close failed");
             }
             
             Ok(password)
@@ -130,10 +130,10 @@ cfg_if::cfg_if! {
                         let password = String::from_utf8(output.stdout)?;
                         Ok(password.trim().to_string())
                     } else {
-                        Err(anyhow!("Failed to retrieve password from OSX Keychain"))
+                        bail!("Failed to retrieve password from OSX Keychain")
                     }
                 }
-                Err(e) => Err(anyhow!(format!("Error executing security command: {}", e))),
+                Err(e) => Err(anyhow!("Error executing security command: {}", e)),
             }
         }
     }

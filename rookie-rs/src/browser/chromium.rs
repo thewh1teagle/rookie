@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use crate::common::{enums::*, date, sqlite};
-use log::warn;
-use anyhow::{Result, anyhow};
+use log::{warn, info};
+use anyhow::{Result, anyhow, bail};
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
@@ -103,7 +103,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
         let plaintext = String::from_utf8(plaintext).or(Err(anyhow!("cant decode encrypted value")))?;
         return Ok(plaintext);
     }
-    Err(anyhow!("decrypt_encrypted_value failed"))
+    bail!("decrypt_encrypted_value failed")
 
 }
 
@@ -152,7 +152,7 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
             }
         }
     }
-    Err(anyhow!("decrypt_encrypted_value failed"))
+    bail!("decrypt_encrypted_value failed")
 
 }
 
@@ -165,6 +165,9 @@ fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>
             unsafe {winapi::release_file_lock(db_path_str);}
         }
     }
+
+    
+    info!("Creating sqlite connection to {}", db_path.to_str().unwrap_or(""));
     let connection = sqlite::connect(db_path)?;
     let mut query = "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
 

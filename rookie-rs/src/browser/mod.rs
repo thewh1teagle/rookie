@@ -5,4 +5,4 @@ pub mod mozilla;
 pub mod internet_explorer;
 
 #[cfg(macos)]
-use crate::safari;
+pub mod safari;

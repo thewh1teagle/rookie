@@ -136,7 +136,7 @@ fn chromium_based(py: Python, key_path: String, db_path: String, domains: Option
 #[pyfunction]
 #[cfg(unix)]
 fn chromium_based(py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    use rookie::BrowserConfig;
+    use rookie::common::enums::BrowserConfig;
 
     let db_path = db_path.as_str();
     let config = BrowserConfig {

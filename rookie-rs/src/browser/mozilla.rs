@@ -1,6 +1,7 @@
 use anyhow::bail;
 use anyhow::{Result, anyhow};
 use ini::Ini;
+use log::warn;
 use serde_json::Value;
 use std::fs;
 use std::path::Path;
@@ -37,7 +38,12 @@ pub fn firefox_based(
     let mut rows = stmt.query([])?;
 
     while let Some(row) = rows.next()? {
-        let host: String = row.get(0)?;
+        let host: Result<String, _> = row.get(0);
+        if host.is_err() { // ignore null rows
+            warn!("host is NULL in row");
+            continue;
+        }
+        let host = host?;
         let path: String = row.get(1)?;
         let is_secure: bool = row.get(2)?;
         let expires: u64 = row.get(3)?;

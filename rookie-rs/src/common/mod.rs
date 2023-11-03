@@ -7,5 +7,5 @@ pub mod paths;
 #[cfg(unix)]
 pub mod secrets;
 
-#[cfg(windows)]
+#[cfg(target_os = "windows")]
 pub mod winapi;

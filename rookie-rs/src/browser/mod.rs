@@ -1,8 +1,8 @@
 pub mod chromium;
 pub mod mozilla;
 
-#[cfg(windows)]
+#[cfg(target_os = "windows")]
 pub mod internet_explorer;
 
-#[cfg(macos)]
+#[cfg(target_os = "macos")]
 pub mod safari;

@@ -1,3 +1,8 @@
+[![PyPi Downloads][PyPi-downloads]][PyPi-url]
+[![PyPi Version][PyPi-version]][PyPi-url]
+[![License][License-shield]][License-url]
+
+
 # rookie
 Load cookies from any browser on any platform
 
@@ -135,3 +140,11 @@ Chromium | 1/10/23  |    -     |  1/10/23 |
 Brave    | 1/10/23  |    -     |  1/10/23 |
 Vivaldi  | 1/10/23  |    -     |  1/10/23 |
 Safari   |   N/A    |  2/10/23 |    N/A   |
+
+
+
+[PyPi-downloads]: https://img.shields.io/pypi/dm/rookiepy
+[PyPi-version]: https://img.shields.io/pypi/v/rookiepy?color=00aa00
+[PyPi-url]: https://pypi.org/project/rookiepy/
+[License-shield]: https://img.shields.io/github/license/thewh1teagle/rookie?color=00aaaa
+[License-url]: https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/MIT-LICENSE.txt

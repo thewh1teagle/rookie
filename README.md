@@ -13,7 +13,7 @@ use rookie::{self, Cookie};
 fn main() {
     let domains = Some(vec!["google.com"]); // set to None to get all
     let cookies: Vec<Cookie> = rookie::chrome(domains).unwrap();
-    println!("{:?}", cookies);
+    println!("{cookies:?}");
 }
 ```
 

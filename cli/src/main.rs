@@ -19,7 +19,7 @@ struct Args {
 
 fn print_cookies(cookies: Vec<Cookie>) {
     if let Ok(str) = serde_json::to_string_pretty(&cookies) {
-        println!("{}", str);
+        println!("{str}");
     }
 }
 

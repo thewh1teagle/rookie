@@ -11,8 +11,9 @@ use windows::{Win32::{System::RestartManager::{
     CCH_RM_SESSION_KEY,
     RM_PROCESS_INFO
 }, Foundation::{ERROR_SUCCESS, WIN32_ERROR, ERROR_MORE_DATA}}, core::{PWSTR, PCWSTR, HSTRING}};
+use anyhow::{Result, anyhow};
 
-pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>, String> {
+pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
     // https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata
     // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-localfree
     // https://docs.rs/winapi/latest/winapi/um/dpapi/index.html
@@ -38,11 +39,11 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>, String> {
             &mut data_out,
         ) {
             Ok(_) => Ok(()),
-            Err(_) => Err("CryptUnprotectData failed"),
+            Err(_) => Err(anyhow!("CryptUnprotectData failed")),
         };
     }
     if data_out.pbData.is_null() {
-        return Err("CryptUnprotectData returned a null pointer".to_string());
+        return Err(anyhow!("CryptUnprotectData returned a null pointer"));
     }
     
     let decrypted_data = unsafe {
@@ -52,7 +53,7 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>, String> {
     unsafe {
         let _ = match Foundation::LocalFree(pbdata_hlocal) {
             Ok(_) => Ok(()),
-            Err(_) => Err("LocalFree failed")
+            Err(_) => Err(anyhow!("LocalFree failed"))
         };
     };
     Ok(decrypted_data)

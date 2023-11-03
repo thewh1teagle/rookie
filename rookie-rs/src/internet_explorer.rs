@@ -1,12 +1,12 @@
-use std::error::Error;
 use std::path::PathBuf;
 use crate::Cookie;
 use crate::date;
 use libesedb::EseDb;
 use crate::winapi;
+use anyhow::Result;
 
 
-pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn internet_explorer_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     unsafe {
         if let Some(path) = db_path.to_str() {
             winapi::release_file_lock(path);

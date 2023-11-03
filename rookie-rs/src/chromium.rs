@@ -1,7 +1,8 @@
-use std::{path::PathBuf, error::Error};
+use std::path::PathBuf;
 use crate::{enums::*, date};
 use crate::sqlite;
 use log::warn;
+use anyhow::{Result, anyhow};
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
@@ -17,7 +18,7 @@ cfg_if::cfg_if! {
 
 
 #[cfg(target_os = "windows")]
-fn get_keys(key64: &str) -> Result<Vec<Vec<u8>>, Box<dyn std::error::Error>> {
+fn get_keys(key64: &str) -> Result<Vec<Vec<u8>>> {
     let mut keydpapi: Vec<u8> = general_purpose::STANDARD.decode(&key64)?;
     let keydpapi = &mut keydpapi[5..];
     let v10_key = winapi::decrypt(keydpapi)?;
@@ -37,7 +38,7 @@ fn create_pbkdf2_key(password: &str, salt: &[u8; 9], iterations: u32) -> Vec<u8>
 }
 
 #[cfg(unix)]
-fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>, Box<dyn std::error::Error>> {
+fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
     // AES CBC key
 
     let salt = b"saltysalt";
@@ -84,7 +85,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>, Box<dyn std::error::
 
 
 #[cfg(target_os = "windows")]
-fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<u8>>) -> Result<String, Box<dyn std::error::Error>> {
+fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<u8>>) -> Result<String> {
     // gcm
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") { // unknown key_type or value isn't encrypted
@@ -99,16 +100,16 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
         let key = Key::<Aes256Gcm>::from_slice(key.as_slice());
         let cipher = Aes256Gcm::new(&key);
         let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
-        let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).or(Err("cant decrypt using key"))?;
-        let plaintext = String::from_utf8(plaintext).or(Err("cant decode encrypted value"))?;
+        let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).or(Err(anyhow!("cant decrypt using key")))?;
+        let plaintext = String::from_utf8(plaintext).or(Err(anyhow!("cant decode encrypted value")))?;
         return Ok(plaintext);
     }
-    Err("decrypt_encrypted_value failed".into())
+    Err(anyhow!("decrypt_encrypted_value failed"))
 
 }
 
 #[cfg(unix)]
-fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<u8>>) -> Result<String, Box<dyn std::error::Error>> {
+fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<u8>>) -> Result<String> {
     // cbc
     if !value.is_empty() { // unknown key_type or value isn't encrypted
         return Ok(value);
@@ -152,15 +153,15 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
             }
         }
     }
-    Err("decrypt_encrypted_value failed".into())
+    Err(anyhow!("decrypt_encrypted_value failed"))
 
 }
 
 
-fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {    
+fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {    
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
-            let db_path_str = db_path.to_str().ok_or("Cant convert db path to str")?;
+            let db_path_str = db_path.to_str().ok_or(anyhow!("Cant convert db path to str"))?;
             warn!("Unlocking chrome database, it may take a while (sometimes up to minute)");
             unsafe {winapi::release_file_lock(db_path_str);}
         }
@@ -219,19 +220,19 @@ fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>
 
 
 #[cfg(target_os = "windows")]
-pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     // Use DPAPI
     let content = std::fs::read_to_string(&key)?;
-    let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).or(Err("Cant read json file"))?;
+    let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).or(Err(anyhow!("Cant read json file")))?;
 
     let os_crypt = key_dict
         .get("os_crypt")
-        .ok_or("can't get os crypt")?;
+        .ok_or(anyhow!("can't get os crypt"))?;
 
     let key64 = os_crypt.get("encrypted_key")
-        .ok_or("cant get encrypted_key")?
+        .ok_or(anyhow!("cant get encrypted_key"))?
         .as_str()
-        .ok_or("Cant convert encrypted_key to str")?;
+        .ok_or(anyhow!("Cant convert encrypted_key to str"))?;
 
     let keys = get_keys(key64)?;
     query_cookies(keys, db_path, domains)
@@ -239,7 +240,7 @@ pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>
 
 
 #[cfg(unix)]
-pub fn chromium_based(config: &BrowserConfig, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn chromium_based(config: &BrowserConfig, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     // Simple AES
     let keys = get_keys(&config)?;
     query_cookies(keys, db_path, domains)

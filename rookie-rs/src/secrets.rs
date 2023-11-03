@@ -1,5 +1,5 @@
 use crate::{utils, config};
-
+use anyhow::{Result, anyhow};
 
 
 cfg_if::cfg_if! {
@@ -44,7 +44,7 @@ cfg_if::cfg_if! {
         }
         
 
-        pub fn get_passwords(os_crypt_name: &str) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+        pub fn get_passwords(os_crypt_name: &str) -> Result<Vec<String>> {
             // Attempt to get the password from libsecret
             let mut passwords: Vec<String> = vec![];
             for schema in ["chrome_libsecret_os_crypt_password_v2", "chrome_libsecret_os_crypt_password_v1"] {
@@ -61,7 +61,7 @@ cfg_if::cfg_if! {
         }
         
         
-        fn get_password_libsecret(schema: &str, crypt_name: &str) -> Result<String, Box<dyn std::error::Error>>  {
+        fn get_password_libsecret(schema: &str, crypt_name: &str) -> Result<String>  {
             let connection = Connection::session()?;
             let mut content = HashMap::<&str, &str>::new();
             content.insert("xdg:schema", schema);
@@ -95,7 +95,7 @@ cfg_if::cfg_if! {
   
         
         
-        fn get_password_kdewallet(crypt_name: &str)-> Result<String, Box<dyn std::error::Error>> {
+        fn get_password_kdewallet(crypt_name: &str)-> Result<String> {
             let connection = Connection::session()?;
             let folder = format!("{} Keys", utils::capitalize(crypt_name));
             let key = format!("{} Safe Storage", utils::capitalize(crypt_name));
@@ -110,7 +110,7 @@ cfg_if::cfg_if! {
             let m = kwallet_call(&connection, "close", (network_wallet, false))?;
             let close_ok: i32 = m.body()?;
             if close_ok != 1 {
-                return Err("Close failed".into());
+                return Err(anyhow!("Close failed"));
             }
             
             Ok(password)
@@ -120,7 +120,7 @@ cfg_if::cfg_if! {
     }
     else if #[cfg(target_os = "macos")] {
         use std::process::Command;
-        pub fn get_osx_keychain_password(osx_key_service: &str, osx_key_user: &str) -> Result<String, Box<dyn std::error::Error>> {
+        pub fn get_osx_keychain_password(osx_key_service: &str, osx_key_user: &str) -> Result<String> {
             let cmd = Command::new("/usr/bin/security")
                 .args(&["-q", "find-generic-password", "-w", "-a", osx_key_user, "-s", osx_key_service])
                 .output();
@@ -131,10 +131,10 @@ cfg_if::cfg_if! {
                         let password = String::from_utf8(output.stdout)?;
                         Ok(password.trim().to_string())
                     } else {
-                        Err("Failed to retrieve password from OSX Keychain".into())
+                        Err(anyhow!("Failed to retrieve password from OSX Keychain"))
                     }
                 }
-                Err(e) => Err(format!("Error executing security command: {}", e).into()),
+                Err(e) => Err(anyhow!(format!("Error executing security command: {}", e))),
             }
         }
     }

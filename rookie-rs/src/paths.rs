@@ -1,9 +1,10 @@
-use std::{env, path::PathBuf, error::Error};
+use std::{env, path::PathBuf};
 use crate::{mozilla::get_default_profile, BrowserConfig};
 use glob;
+use anyhow::{Result, anyhow};
 
 
-fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>, Box<dyn Error>> {
+fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>> {
     let mut data_paths: Vec<PathBuf> = vec![];
     if let Some(path_str) = path.to_str() {
         for entry in glob::glob(path_str)? {
@@ -16,7 +17,7 @@ fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>, Box<dyn Error>> {
 }
 
 #[cfg(target_os = "windows")]
-pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
+pub fn expand_path(path: &str) -> Result<PathBuf> {
     use regex::Regex;
     // Define a regex pattern to match placeholders like %SOMETHING%
     let re = Regex::new(r"%([^%]+)%")?;
@@ -43,7 +44,7 @@ pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
 }
 
 #[cfg(unix)]
-pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
+pub fn expand_path(path: &str) -> Result<PathBuf> {
         // Get the value of the HOME environment variable
     let home = env::var("HOME")?;
 
@@ -57,7 +58,7 @@ pub fn expand_path(path: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
 }
 
 
-pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBuf, PathBuf), Box<dyn std::error::Error>> {
+pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBuf, PathBuf)> {
     for path in browser_config.data_paths { // base paths
         let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
         for channel in channels { // channels
@@ -79,12 +80,12 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
             
         }
     }
-    Err(("can't find any cookies file").into())
+    Err(anyhow!("can't find any cookies file"))
 }
 
 
 
-pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
+pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
     for path in browser_config.data_paths { // base paths
         let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
         for channel in channels { // channels
@@ -103,12 +104,12 @@ pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBu
     }
     
 
-    Err(("cant find any brave cookies file").into())
+    Err(anyhow!("cant find any brave cookies file"))
 }
 
 
 #[cfg(target_os = "macos")]
-pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
+pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
     for path in browser_config.data_paths { // base paths
         let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
         for channel in channels { // channels
@@ -128,7 +129,7 @@ pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf
 }
 
 #[cfg(target_os = "windows")]
-pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
+pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
     for path in browser_config.data_paths { // base paths
         let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
         for channel in channels { // channels
@@ -145,5 +146,5 @@ pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf, Bo
     }
     
 
-    Err(("cant find any IE cookies file").into())
+    Err(anyhow!("cant find any IE cookies file"))
 }

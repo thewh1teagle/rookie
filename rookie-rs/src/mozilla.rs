@@ -1,15 +1,16 @@
+use anyhow::{Result, anyhow};
 use ini::Ini;
 use serde_json::Value;
 use std::fs;
 use std::path::Path;
-use std::{error::Error, path::PathBuf};
+use std::path::PathBuf;
 use crate::{enums::*, sqlite, utils, date};
 use lz4_flex::block::decompress_size_prepended;
 
 pub fn firefox_based(
     db_path: PathBuf,
     domains: Option<Vec<&str>>,
-) -> Result<Vec<Cookie>, Box<dyn Error>> {
+) -> Result<Vec<Cookie>> {
     let connection = sqlite::connect(db_path.clone())?;
     let mut query = "
         SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies 
@@ -75,16 +76,16 @@ pub fn firefox_based(
 pub fn get_session_cookies(
     domains: Option<Vec<&str>>,
     cookies_dir: PathBuf,
-) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
+) -> Result<Vec<Cookie>> {
     let mut cookies: Vec<Cookie> = vec![];
     let session_file = cookies_dir.join("sessionstore.js");
     let plain = fs::read_to_string(session_file)?;
     let json: Value = serde_json::from_str(&plain)?;
     let windows = json
         .get("windows")
-        .ok_or("no windows in json")?
+        .ok_or(anyhow!("no windows in json"))?
         .as_array()
-        .ok_or("windows are not array")?;
+        .ok_or(anyhow!("windows are not array"))?;
     for window in windows {
         let may_cookies_json = window.get("cookies");
         if let Some(cookies_json) = may_cookies_json {
@@ -113,7 +114,7 @@ pub fn get_session_cookies(
 pub fn get_session_cookies_lz4(
     domains: Option<Vec<&str>>,
     cookies_dir: PathBuf,
-) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
+) -> Result<Vec<Cookie>> {
     let mut cookies: Vec<Cookie> = vec![];
     let session_file_lz4 = cookies_dir.join("sessionstore-backups/recovery.jsonlz4");
     let compressed = fs::read(session_file_lz4)?;
@@ -121,8 +122,8 @@ pub fn get_session_cookies_lz4(
     let decompressed = decompress_size_prepended(&compressed)?;
     let plain = String::from_utf8(decompressed)?;
     let json: Value = serde_json::from_str(&plain)?;
-    let cookies_json = json.get("cookies").ok_or("no cookies in json")?;
-    let cookies_json = cookies_json.as_array().ok_or("cookies is not list")?;
+    let cookies_json = json.get("cookies").ok_or(anyhow!("no cookies in json"))?;
+    let cookies_json = cookies_json.as_array().ok_or(anyhow!("cookies is not list"))?;
     for json_cookie in cookies_json {
         let domain = json_cookie
             .get("host")
@@ -140,7 +141,7 @@ pub fn get_session_cookies_lz4(
     Ok(cookies)
 }
 
-pub fn create_cookie(json_cookie: &Value) -> Result<Cookie, Box<dyn std::error::Error>> {
+pub fn create_cookie(json_cookie: &Value) -> Result<Cookie> {
     let host = json_cookie
         .get("host")
         .and_then(|v| v.as_str())
@@ -189,14 +190,14 @@ pub fn create_cookie(json_cookie: &Value) -> Result<Cookie, Box<dyn std::error::
     Ok(cookie)
 }
 
-pub fn get_default_profile(profiles_path: &Path) -> Result<String, Box<dyn std::error::Error>> {
+pub fn get_default_profile(profiles_path: &Path) -> Result<String> {
     let conf = Ini::load_from_file(profiles_path)?;
     for (sec, prop) in conf.iter() {
         let name: &str = sec.unwrap_or("");
         if name.starts_with("Profile0") {
-            let path: &str = prop.get("Path").ok_or("Cant get path from profile0")?;
+            let path: &str = prop.get("Path").ok_or(anyhow!("Cant get path from profile0"))?;
             return Ok(path.to_string());
         }
     }
-    Err("Cant find any profile".into())
+    Err(anyhow!("Cant find any profile"))
 }

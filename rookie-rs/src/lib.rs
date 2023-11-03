@@ -1,4 +1,4 @@
-use std::error::Error;
+use anyhow::{Result, anyhow};
 mod chromium;
 pub mod config;
 mod date;
@@ -43,7 +43,7 @@ cfg_if::cfg_if! {
 ///     let cookies = rookie::firefox(Some(domains));
 /// }
 /// ```
-pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let db_path = paths::find_mozilla_based_paths(&config::FIREFOX_CONFIG)?;
     firefox_based(db_path, domains)
 }
@@ -63,7 +63,7 @@ pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>
 ///     let cookies = rookie::libre_wolf(Some(domains));
 /// }
 /// ```
-pub fn libre_wolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn libre_wolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let db_path = paths::find_mozilla_based_paths(&config::LIBRE_WOLF_CONFIG)?;
     firefox_based(db_path, domains)
 }
@@ -83,7 +83,7 @@ pub fn libre_wolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Err
 ///     let cookies = rookie::chrome(Some(domains));
 /// }
 /// ```
-pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let (key, db_path) = paths::find_chrome_based_paths(&config::CHROME_CONFIG)?;
@@ -110,7 +110,7 @@ pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>>
 ///     let cookies = rookie::chromium(Some(domains));
 /// }
 /// ```
-pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let (key, db_path) = paths::find_chrome_based_paths(&config::CHROMIUM_CONFIG)?;
@@ -137,7 +137,7 @@ pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error
 ///     let cookies = rookie::brave(Some(domains));
 /// }
 /// ```
-pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let (key, db_path) = paths::find_chrome_based_paths(&config::BRAVE_CONFIG)?;
@@ -164,7 +164,7 @@ pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> 
 ///     let cookies = rookie::edge(Some(domains));
 /// }
 /// ```
-pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let (key, db_path) = paths::find_chrome_based_paths(&config::EDGE_CONFIG)?;
@@ -191,7 +191,7 @@ pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
 ///     let cookies = rookie::vivaldi(Some(domains));
 /// }
 /// ```
-pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let (key, db_path) = paths::find_chrome_based_paths(&config::VIVALDI_CONFIG)?;
@@ -218,7 +218,7 @@ pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>
 ///     let cookies = rookie::opera(Some(domains));
 /// }
 /// ```
-pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_CONFIG)?;
@@ -245,7 +245,7 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> 
 ///     let cookies = rookie::opera_gx(Some(domains));
 /// }
 /// ```
-pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
@@ -273,7 +273,7 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error
 /// }
 /// ```
 #[cfg(target_os = "macos")]
-pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let db_path = paths::find_safari_based_paths(&config::SAFARI_CONFIG)?;
     safari_based(db_path, domains)
 }
@@ -294,7 +294,7 @@ pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>>
 /// }
 /// ```
 #[cfg(target_os = "windows")]
-pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let db_path = paths::find_ie_based_paths(&config::IE_CONFIG)?;
     internet_explorer_based(db_path, domains)
 }
@@ -314,7 +314,7 @@ pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<
 ///     let cookies = rookie::load(Some(domains));
 /// }
 /// ```
-pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>, Box<dyn Error>> {
+pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let mut cookies = Vec::new();
 
     let mut browser_types = vec![firefox, libre_wolf, opera, edge, chromium, brave, vivaldi];
@@ -367,7 +367,7 @@ pub fn any_browser(
     cookies_path: &str,
     domains: Option<Vec<&str>>,
     key_path: Option<&str>,
-) -> Result<Vec<Cookie>, Box<dyn Error>> {
+) -> Result<Vec<Cookie>> {
 
     // chromium based
     cfg_if::cfg_if! {
@@ -419,5 +419,5 @@ pub fn any_browser(
             }
         }
     }
-    return Err("cant find any cookies".into());
+    return Err(anyhow!("cant find any cookies"));
 }

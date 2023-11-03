@@ -14,7 +14,7 @@ fn extract_username(html: &str) -> &str {
     ""
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     // Create a custom cookie store
     let client = Client::new();
     let cookies = firefox(Some(vec!["github.com"]))?;

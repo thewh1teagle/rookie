@@ -1,17 +1,17 @@
 use crate::enums::*;
 use crate::{utils, date};
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
-use std::io::Error;
 use std::path::PathBuf;
 
 use std::fs::File;
 use std::io::{self, ErrorKind, Read};
 use std::vec::Vec;
 use std::time::Duration;
+use anyhow::{Result, anyhow};
 
-fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
+fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
     if slice(bs, 0, 4)? != [0x00, 0x00, 0x01, 0x00] {
-        return Err("bad page header".into());
+        return Err(anyhow!("bad page header"));
     }
 
     let count = slice(bs, 4, 4).map(LittleEndian::read_u32)? as usize;
@@ -35,14 +35,14 @@ fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
     }
 
     if slice(bs, count * 4 + 8, 4)? != [0x00, 0x00, 0x00, 0x00] {
-        return Err("bad page trailer".into());
+        return Err(anyhow!("bad page trailer"));
     }
     Ok(cookies)
 }
 
-fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
+fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> Result<Cookie> {
     if bs.len() < 0x30 {
-        return Err(Error::new(ErrorKind::InvalidData, "cookie data underflow"));
+        return Err(anyhow!("cookie data underflow"));
     }
     let flags = T::read_u32(&bs[0x08..0x0C]);
 
@@ -76,10 +76,10 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> io::Result<Cookie> {
     Ok(cookie)
 }
 
-pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
+pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
     // Magic bytes: "COOK" = 0x636F6F6B
     if slice(bs, 0, 4)? != [0x63, 0x6F, 0x6F, 0x6B] {
-        return Err("not a cookie file".into());
+        return Err(anyhow!("not a cookie file"));
     }
 
     let count = slice(bs, 4, 4).map(BigEndian::read_u32)? as usize;
@@ -93,7 +93,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error
             Ok(slice) => slice,
             Err(_) => {
                 // Handle the error here, e.g., by returning the error.
-                return Err("cant get slice from page".into());
+                return Err(anyhow!("cant get slice from page"));
             }
         };
     
@@ -109,21 +109,18 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>, Box<dyn std::error::Error
     Ok(cookies)
 }
 
-fn slice(bs: &[u8], off: usize, len: usize) -> io::Result<&[u8]> {
+fn slice(bs: &[u8], off: usize, len: usize) -> Result<&[u8]> {
     if off + len > bs.len() {
-        Err(Error::new(
-            ErrorKind::InvalidData,
-            format!("data underflow: {}", off + len - bs.len()),
-        ))
+        Err(anyhow!(format!("data underflow: {}", off + len - bs.len())))
     } else {
         Ok(&bs[off..off + len])
     }
 }
 
-fn parse_table<T: ByteOrder>(bs: &[u8], count: usize) -> io::Result<Vec<usize>> {
+fn parse_table<T: ByteOrder>(bs: &[u8], count: usize) -> Result<Vec<usize>> {
     let end = count * 4;
     if end > bs.len() {
-        return Err(Error::new(ErrorKind::InvalidData, "table data underflow"));
+        return Err(anyhow!("table data underflow"));
     }
     let data = (&bs[..end])
         .chunks(4)
@@ -132,40 +129,34 @@ fn parse_table<T: ByteOrder>(bs: &[u8], count: usize) -> io::Result<Vec<usize>> 
     Ok(data)
 }
 
-fn slice_to(bs: &[u8], off: usize, to: usize) -> io::Result<&[u8]> {
+fn slice_to(bs: &[u8], off: usize, to: usize) -> Result<&[u8]> {
     if to < off {
-        Err(Error::new(
-            ErrorKind::InvalidData,
-            format!("negative data length: {}", to - off),
-        ))
+        Err(anyhow!(format!("negative data length: {}", to - off)))
     } else {
         slice(bs, off, to - off)
     }
 }
 
-fn c_str(bs: &[u8]) -> io::Result<String> {
+fn c_str(bs: &[u8]) -> Result<String> {
     bs.split_last()
-        .ok_or_else(|| Error::new(ErrorKind::InvalidData, "null c string"))
+        .ok_or_else(|| anyhow!("null c string"))
         .and_then(|(&last, elements)| {
             if last == 0x00 {
                 Ok(elements)
             } else {
-                Err(Error::new(
-                    ErrorKind::InvalidData,
-                    "c string non null terminator",
-                ))
+                Err(anyhow!("c string non null terminator"))
             }
         })
         .and_then(|elements| {
             String::from_utf8(elements.to_vec())
-                .map_err(|err| Error::new(ErrorKind::InvalidData, err.to_string()))
+                .map_err(|err| anyhow!(err.to_string()))
         })
 }
 
 pub fn safari_based(
     db_path: PathBuf,
     domains: Option<Vec<&str>>,
-) -> Result<Vec<Cookie>, Box<dyn std::error::Error>> {
+) -> Result<Vec<Cookie>> {
     // 1. open cookies file
     // 2. parse headers
     // 3. parse pages (total from headers)

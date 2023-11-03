@@ -1,5 +1,6 @@
 [![PyPi Downloads][PyPi-downloads]][PyPi-url]
 [![PyPi Version][PyPi-version]][PyPi-url]
+[![Crates][Crates-badge]][Crates-url]
 [![License][License-shield]][License-url]
 
 
@@ -146,5 +147,7 @@ Safari   |   N/A    |  2/10/23 |    N/A   |
 [PyPi-downloads]: https://img.shields.io/pypi/dm/rookiepy
 [PyPi-version]: https://img.shields.io/pypi/v/rookiepy?color=00aa00
 [PyPi-url]: https://pypi.org/project/rookiepy/
+[Crates-badge]: https://img.shields.io/crates/v/rookie
+[Crates-url]: https://crates.io/crates/rookie/
 [License-shield]: https://img.shields.io/github/license/thewh1teagle/rookie?color=00aaaa
 [License-url]: https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/MIT-LICENSE.txt

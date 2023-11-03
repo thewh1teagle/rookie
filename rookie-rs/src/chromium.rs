@@ -62,8 +62,8 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
             keys.push(key);
         }
         else if #[cfg(target_os = "macos")] {
-            let key_service = config.osx_key_service.ok_or("missing osx_key_service")?;
-            let key_user = config.osx_key_user.ok_or("missing osx_key_user")?;
+            let key_service = config.osx_key_service.ok_or(anyhow!("missing osx_key_service"))?;
+            let key_user = config.osx_key_user.ok_or(anyhow!("missing osx_key_user"))?;
             let password = secrets::get_osx_keychain_password(key_service, key_user).unwrap_or("peanuts".to_string());
 
             // keychain key

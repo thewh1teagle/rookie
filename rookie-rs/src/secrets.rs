@@ -68,12 +68,12 @@ cfg_if::cfg_if! {
             content.insert("application", crypt_name);
             let m = libsecret_call(&connection, "SearchItems", &content)?;
             let (reply_paths, _) : (Vec<ObjectPath>, Vec<ObjectPath>) = m.body()?;
-            let path = reply_paths.first().ok_or("search items empty")?;
+            let path = reply_paths.first().ok_or(anyhow!("search items empty"))?;
         
         
             let m = libsecret_call(&connection, "Unlock", vec![path])?;
             let reply: (Vec<ObjectPath>, ObjectPath)  = m.body()?;
-            let object_path = reply.0.first().ok_or("Cant unlock")?;
+            let object_path = reply.0.first().ok_or(anyhow!("Cant unlock"))?;
         
         
             let mut content = HashMap::<&str, &str>::new();
@@ -87,7 +87,7 @@ cfg_if::cfg_if! {
             let m = libsecret_call(&connection, "GetSecrets", &(vec![object_path], session))?;
             type Response<'a> = (ObjectPath<'a>, Vec<u8>, Vec<u8>, String);
             let reply: HashMap::<ObjectPath, Response>  = m.body()?;
-            let inner = reply.get(object_path).ok_or("Cant get secrets")?;
+            let inner = reply.get(object_path).ok_or(anyhow!("Cant get secrets"))?;
             let secret = &inner.2;
             
             Ok(String::from_utf8(secret.clone())?)

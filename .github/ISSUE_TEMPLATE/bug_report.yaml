@@ -57,6 +57,9 @@ body:
         import logging
         logging.basicConfig(level=logging.DEBUG)
         ```
-        If you use rust try enabling by setting environment variable RUST_LOG=trace
+        If you use rust try enabling by setting environment variable 
+        ```shell
+        RUST_LOG=trace
+        ```
         
       render: shell

@@ -1,5 +1,5 @@
 #[cfg(unix)]
-use anyhow::{Result, anyhow};
+use anyhow::{Result, anyhow, bail};
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {

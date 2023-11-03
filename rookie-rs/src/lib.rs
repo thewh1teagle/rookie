@@ -18,10 +18,10 @@ cfg_if::cfg_if! {
     else if #[cfg(target_os = "macos")] {
         mod safari;
         pub use safari::safari_based;
-        mod secrets;
+        use common::secrets;
     }
     else if #[cfg(target_os = "linux")] {
-        mod secrets;
+        use common::secrets;
     }
 }
 

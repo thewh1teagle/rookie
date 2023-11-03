@@ -11,7 +11,7 @@ cfg_if::cfg_if! {
         use crate::winapi;
     }
     else if #[cfg(unix)] {
-        use crate::secrets;
+        use crate::common::secrets;
     }
 }
 

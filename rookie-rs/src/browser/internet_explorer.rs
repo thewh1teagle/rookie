@@ -1,6 +1,6 @@
 use std::path::PathBuf;
-use crate::Cookie;
-use crate::date;
+use crate::common::enums::Cookie;
+use crate::common::date;
 use libesedb::EseDb;
 use crate::winapi;
 use anyhow::Result;

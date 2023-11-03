@@ -1,7 +1,6 @@
 
 use std::path::PathBuf;
-use rookie::{self,Cookie};
-
+use rookie::{self, browser, common::enums::Cookie};
 use pyo3::{prelude::*, types::PyDict};
 
 
@@ -128,7 +127,7 @@ fn safari(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
 #[pyfunction]
 #[cfg(target_os = "windows")]
 fn chromium_based(py: Python, key_path: String, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains).unwrap();
+    let cookies = browser::chromium::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains).unwrap();
     let cookies = to_dict(py, cookies)?;
 
     Ok(cookies)
@@ -156,7 +155,7 @@ fn chromium_based(py: Python, db_path: String, domains: Option<Vec<&str>>) -> Py
 
 #[pyfunction]
 fn firefox_based(py: Python, db_path: String, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::firefox_based(PathBuf::from(db_path), domains).unwrap();
+    let cookies = browser::mozilla::firefox_based(PathBuf::from(db_path), domains).unwrap();
     let cookies = to_dict(py, cookies)?;
 
     Ok(cookies)

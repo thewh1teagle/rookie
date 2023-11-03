@@ -1,4 +1,6 @@
-use crate::enums::BrowserConfig;
+use crate::common::enums::BrowserConfig;
+
+
 
 #[cfg(target_os = "linux")]
 pub const APP_ID: &str = "rookie";

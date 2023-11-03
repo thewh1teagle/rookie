@@ -1,5 +1,5 @@
 use std::{env, path::PathBuf};
-use crate::{mozilla::get_default_profile, BrowserConfig};
+use crate::{browser::mozilla::get_default_profile, common::enums::BrowserConfig};
 use glob;
 use anyhow::{Result, anyhow};
 

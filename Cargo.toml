@@ -4,4 +4,8 @@ members = [
     "bindings/python",
     "cli",
     "rookie-rs",
+    "rookie-rs/examples/chrome",
+    "rookie-rs/examples/http"
 ]
+
+

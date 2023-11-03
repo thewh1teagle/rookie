@@ -1,21 +1,22 @@
 use anyhow::{Result, anyhow};
-mod chromium;
 pub mod config;
-mod date;
-mod enums;
-mod mozilla;
-mod paths;
-mod sqlite;
-mod utils;
+pub mod common;
+pub mod browser;
+use common::enums::Cookie;
+use common::paths;
 use std::path::PathBuf;
-pub use chromium::chromium_based;
-pub use enums::*;
-pub use mozilla::firefox_based;
+
+
+
+
+
+use browser::mozilla::firefox_based;
+use browser::chromium::chromium_based;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
-        mod winapi;
-        mod internet_explorer;
+        use common::winapi;
+        use browser::internet_explorer;
         pub use internet_explorer::internet_explorer_based;
     }
     else if #[cfg(target_os = "macos")] {

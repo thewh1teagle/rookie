@@ -1,5 +1,5 @@
 use clap::Parser;
-use rookie::{Cookie, any_browser, load};
+use rookie::{any_browser, load, common::enums::Cookie};
 use serde_json;
 use pretty_env_logger;
 

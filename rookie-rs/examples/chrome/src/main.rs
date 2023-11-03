@@ -1,6 +1,6 @@
-use rookie::{self, Cookie};
+use rookie;
 
 fn main() {
-    let cookies: Vec<Cookie> = rookie::chrome(None).unwrap();
+    let cookies = rookie::chrome(None).unwrap();
     println!("{:?}", cookies);
 }

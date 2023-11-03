@@ -1,9 +1,8 @@
-use crate::{utils, config};
-use anyhow::{Result, anyhow};
-
-
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {
+        use crate::common::utils;
+        use crate::config;
+        use anyhow::{Result, anyhow};
         use std::{collections::HashMap, sync::Arc};
         use zbus::{blocking::Connection, zvariant::Value, zvariant::ObjectPath, Message};
 

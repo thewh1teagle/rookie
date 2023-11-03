@@ -4,7 +4,7 @@ use serde_json::Value;
 use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
-use crate::{enums::*, sqlite, utils, date};
+use crate::common::{enums::*, sqlite, utils, date};
 use lz4_flex::block::decompress_size_prepended;
 
 pub fn firefox_based(

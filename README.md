@@ -44,7 +44,7 @@ For [Rust](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
 
 ## Docs
 Docs currenly available for `Rust` at [docs.rs/rookie](https://docs.rs/rookie)  
-For `Python` you can see examples folder, it's has very simple usage.
+For `Python` you can see examples folder, it has very simple usage.
 
 ## CLI
 You can use rookie as a `CLI` tool which will decrypt the cookies and print it as `JSON`  

@@ -40,6 +40,7 @@ __all__ = [
 if platform == "win32":
     from .rookiepy import internet_explorer
     __all__.append("internet_explorer")
+    __all__.append("octo_browser") # only windows supported for now
 
 # MacOS
 if platform == "darwin":

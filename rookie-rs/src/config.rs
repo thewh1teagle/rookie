@@ -147,6 +147,17 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
+        pub static OCTO_BROWSER_CONFIG: BrowserConfig<'static> = BrowserConfig {
+            data_paths: &[
+                "%LOCALAPPDATA%/Octo Browser/tmp/*/Default/Network/Cookies",
+                "%APPDATA%/Octo Browser/tmp/*/Default/Network/Cookies",
+            ],
+            channels: Some(&["Stable", ""]),
+            os_crypt_name: None,
+            osx_key_service: None,
+            osx_key_user: None,
+        };
+
         
         pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[

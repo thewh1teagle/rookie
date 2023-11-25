@@ -128,19 +128,19 @@ Then, I opened `github.com` in the browser and pasted it into the console. As a 
 
 ## Testing Dates  (dd/mm/yy)
 
-Browser  |  Linux   |  MacOS   | Windows  |
-:------  | :------: | :------: | :------: |
-Chrome   | 1/10/23  |    -     |  1/10/23 |
-Firefox  | 1/10/23  |    -     |  1/10/23 |
-LibreWolf| 1/10/23  |    -     |  1/10/23 |
-Opera    | 1/10/23  |    -     |  1/10/23 |
-Opera GX |   N/A    |    -     |  1/10/23 |
-Edge     | 1/10/23  |    -     |  1/10/23 |
-IE       |   N/A    |   N/A    |  1/10/23 |
-Chromium | 1/10/23  |    -     |  1/10/23 |
-Brave    | 1/10/23  |    -     |  1/10/23 |
-Vivaldi  | 1/10/23  |    -     |  1/10/23 |
-Safari   |   N/A    |  2/10/23 |    N/A   |
+Browser  |  Linux    |  MacOS   | Windows  |
+:------  | :------:  | :------: | :------: |
+Chrome   | 01/10/23  | 25/11/23 |  1/10/23 |
+Firefox  | 01/10/23  | 25/11/23 |  1/10/23 |
+LibreWolf| 01/10/23  | 25/11/23 |  1/10/23 |
+Opera    | 01/10/23  |    -     |  1/10/23 |
+Opera GX |   N/A     |    -     |  1/10/23 |
+Edge     | 01/10/23  |    -     |  1/10/23 |
+IE       |   N/A     |   N/A    |  1/10/23 |
+Chromium | 01/10/23  | 25/11/23 |  1/10/23 |
+Brave    | 01/10/23  | 25/11/23 |  1/10/23 |
+Vivaldi  | 01/10/23  | 25/11/23 |  1/10/23 |
+Safari   |   N/A     | 02/10/23 |    N/A   |
 
 
 

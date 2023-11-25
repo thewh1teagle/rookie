@@ -41,15 +41,15 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
     // AES CBC key
 
     let salt = b"saltysalt";
-    
+    let iterations: u32;
     #[cfg(target_os = "linux")]
     {
-        let iterations = 1;
+        iterations = 1;
     }
 
     #[cfg(target_os = "macos")]
     {
-        let iterations = 1003;
+        iterations = 1003;
     }
 
     let mut keys: Vec<Vec<u8>> = vec![];

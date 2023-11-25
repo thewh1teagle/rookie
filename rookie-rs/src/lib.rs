@@ -268,15 +268,10 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 ///     let cookies = rookie::octo(Some(domains));
 /// }
 /// ```
+#[cfg(target_os = "windows")]
 pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
-    cfg_if::cfg_if! {
-        if #[cfg(target_os = "windows")] {
-            let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
-            chromium_based(PathBuf::from(key), db_path, domains)
-        } else {
-            return Err("Not implemented for this platform");
-        }
-    }
+    let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
+    chromium_based(PathBuf::from(key), db_path, domains)
 }
 
 /// Returns cookies from safari (MacOS only)

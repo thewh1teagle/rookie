@@ -4,7 +4,6 @@ use rookie::{self, browser, common::enums::Cookie};
 use pyo3::{prelude::*, types::PyDict};
 
 
-
 fn to_dict(py: Python, cookies: Vec<Cookie>) -> PyResult<Vec<PyObject>> {
     
     let mut cookie_objects: Vec<PyObject> = vec![];
@@ -205,11 +204,13 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(load, m)?)?;
     m.add_function(wrap_pyfunction!(any_browser, m)?)?;
     
-    #[cfg(target_os = "windows")]
-    m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;
-
-    #[cfg(target_os = "macos")]
-    m.add_function(wrap_pyfunction!(safari, m)?)?;
-
+    cfg_if::cfg_if! {
+        if #[cfg(target_os = "windows")] {
+            m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;
+        }
+        else if #[cfg(target_os = "macos")] {
+            m.add_function(wrap_pyfunction!(safari, m)?)?;
+        }
+    }    
     Ok(())
 }

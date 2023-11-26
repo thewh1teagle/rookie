@@ -73,8 +73,8 @@ If you have a browser with which the library isn't working with, it may not have
 look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/config.rs) to see what configurations is needed.
 
 ## Gotchas
-### Password prompt with kde-wallet on linux
-This library may trigger a password prompt on Linux systems when accessing browser cookies. 
+### Password prompt
+This library may trigger a password prompt with kde-wallet on linux / MacOS with chromium based browsers when accessing browser cookies. 
 ### Session Cookies Retrieval
 Chrome-based browsers have a security feature that prevents external access to their cookies file. To bypass this security measure, we restart the browser seamlessly. As a result, session cookies are retrieved and can be used, but they will expire once the browser is closed again.
 

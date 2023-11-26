@@ -197,7 +197,7 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(edge, m)?)?;
     m.add_function(wrap_pyfunction!(opera, m)?)?;
     m.add_function(wrap_pyfunction!(opera_gx, m)?)?;
-    m.add_function(wrap_pyfunction!(octo_browser, m)?)?;
+    
     m.add_function(wrap_pyfunction!(chromium, m)?)?;
     m.add_function(wrap_pyfunction!(vivaldi, m)?)?;
     m.add_function(wrap_pyfunction!(chromium_based, m)?)?;
@@ -208,6 +208,7 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;
+            m.add_function(wrap_pyfunction!(octo_browser, m)?)?;
         }
         else if #[cfg(target_os = "macos")] {
             m.add_function(wrap_pyfunction!(safari, m)?)?;

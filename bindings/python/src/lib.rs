@@ -88,6 +88,7 @@ fn opera_gx(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
 }
 
 #[pyfunction]
+#[cfg(target_os = "windows")]
 fn octo_browser(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::octo_browser(domains).unwrap();
     

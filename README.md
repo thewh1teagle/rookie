@@ -26,13 +26,15 @@ for cookie in cookies:
 ```
 
 ## Examples
-For [Python](https://github.com/thewh1teagle/rookie/tree/main/examples)
+`Python` [examples](https://github.com/thewh1teagle/rookie/tree/main/examples)
 
-For [Rust](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
+`Rust` [rookie-rs/examples](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
 
 ## Docs
-`Rust` [docs.rs/rookie](https://docs.rs/rookie)  
 `Python` [docs/Python.md](docs/Python.md)
+
+`Rust` [docs.rs/rookie](https://docs.rs/rookie)  
+
 
 ## Features
 - Fast, written in `Rust`

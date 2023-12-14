@@ -31,9 +31,13 @@ for cookie in cookies:
 `Rust` [rookie-rs/examples](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
 
 ## Docs
-`Python` [docs/Python.md](docs/Python.md)
+`Python` 
+- [docs/Python.md](docs/Python.md)
 
-`Rust` [docs.rs/rookie](https://docs.rs/rookie)  
+`Rust` 
+- [docs/Rust.md](docs/Rust.md)
+- [docs.rs/rookie](https://docs.rs/rookie)  
+
 
 
 ## Features

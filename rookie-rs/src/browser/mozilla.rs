@@ -199,11 +199,34 @@ pub fn create_cookie(json_cookie: &Value) -> Result<Cookie> {
 
 pub fn get_default_profile(profiles_path: &Path) -> Result<String> {
     let conf = Ini::load_from_file(profiles_path)?;
-    for (sec, prop) in conf.iter() {
-        let name: &str = sec.unwrap_or("");
-        if name.starts_with("Profile0") {
-            let path: &str = prop.get("Path").ok_or(anyhow!("Cant get path from profile0"))?;
-            return Ok(path.to_string());
+    let installs: Vec<_> = conf
+        .iter()
+        .filter(|(name_option, _)| name_option.
+            unwrap_or_default()
+            .starts_with("Install"))
+            .collect();
+    if !installs.is_empty() {
+        let (_, props) = installs.first().unwrap();
+        return Ok(props.get("Default").unwrap_or_default().into());
+
+    } else {
+        let profiles: Vec<_> = conf
+            .iter()
+            .filter(|(name_option, _)| name_option
+            .unwrap_or_default()
+            .starts_with("Profile"))
+            .collect();
+        for (_, props) in &profiles {
+            if props.get("Default").unwrap_or_default() == "1" {
+                return Ok(props.get("Path").unwrap_or_default().into());
+            }
+        }
+
+        // still not found? last time try to get any Profile with Path.
+        for (_, props) in &profiles {
+            if let Some(path) = props.get("Path") {
+                return Ok(path.into());
+            }
         }
     }
     bail!("Cant find any profile")

@@ -1,11 +1,13 @@
 # Rookie Rust Docs
 
-### Install
+## Install
+
 ```console
 cargo add rookie
 ```
 
-### Basic Usage
+## Basic Usage
+
 ```rust
 use rookie;
 
@@ -15,8 +17,10 @@ fn main() {
 }
 ```
 
-### Logging
+## Logging
+
 Logging level can be controlled by chaing `RUST_LOG` ENV variable
+
 ```console
 RUST_LOG=trace cargo run
 ```

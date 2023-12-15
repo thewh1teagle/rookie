@@ -1,9 +1,10 @@
 # rookiepy
+
 Extract cookies from web browsers
 Bindings for [rookie](https://github.com/thewh1teagle/rookie)
 
+## Usage
 
-# Usage
 ```python
 from rookiepy import chrome
 cookies = chrome()

@@ -1,24 +1,29 @@
 # Rookie Python Docs
 
-### Install
+## Install
+
 ```typescript
 pip3 install -U rookiepy
 ```
 
-### Basic Usage
+## Basic Usage
+
 ```python
 import rookiepy
 cookies = rookiepy.chrome() # Load cookies from chrome
 ```
 
+## Logging
 
-### Logging
 Logging level can be controlled by using `logging` module
+
 ```python
 import logging
 logging.getLogger('rookie').setLevel(logging.DEBUG)
 ```
+
 For disable `rookiepy` logging you can set the level to `CRITICAL`
+
 ```
 import logging
 logging.getLogger('rookie').setLevel(logging.CRITICAL)

@@ -10,6 +10,10 @@ repository = "https://github.com/thewh1teagle/rookie"
 readme = "../README.md"
 keywords = ["windows", "cookies", "rust", "web"]
 
+[lib]
+name = "rookie"
+path = "src/lib.rs"
+
 [[bin]]
 name = "main"
 path = "bin/main.rs"

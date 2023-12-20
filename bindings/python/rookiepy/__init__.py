@@ -1,8 +1,9 @@
 from sys import platform
-from typing import List, Any
+from typing import List
 import http.cookiejar
 from .rookiepy import (
-    firefox, 
+    firefox,
+    firefox_based,
     brave, 
     edge, 
     chrome, 
@@ -38,14 +39,18 @@ __all__ = [
 
 # Windows
 if platform == "win32":
-    from .rookiepy import internet_explorer
-    __all__.append("internet_explorer")
-    __all__.append("octo_browser") # only windows supported for now
+    from .rookiepy import internet_explorer, octo_browser
+    __all__.extend([
+        "internet_explorer",
+        "octo_browser"
+    ])
 
 # MacOS
 if platform == "darwin":
     from .rookiepy import safari
-    __all__.append("safari")
+    __all__.extend([
+        "safari"
+    ])
 
 
 def create_cookie(host, path, secure, expires, name, value, http_only):
@@ -54,8 +59,6 @@ def create_cookie(host, path, secure, expires, name, value, http_only):
     return http.cookiejar.Cookie(0, name, value, None, False, host, host.startswith('.'), host.startswith('.'), path,
                                  True, secure, expires, False, None, None,
                                  {'HTTPOnly': ''} if http_only else {})
-
-
 
 def to_cookiejar(cookies: List[dict]):
     cj = http.cookiejar.CookieJar()

@@ -1,10 +1,9 @@
 [workspace]
-resolver = "2"
 members = [
+    "rookie-rs",
     "bindings/python",
     "cli",
-    "rookie-rs",
-    "rookie-rs/examples/chrome",
-    "rookie-rs/examples/http",
-    "rookie-rs/examples/logging"
+    "rookie-rs/examples/*",
 ]
+default-members = ["rookie-rs", "bindings/python"]
+resolver = "2"

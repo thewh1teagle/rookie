@@ -24,7 +24,7 @@ logging.getLogger('rookie').setLevel(logging.DEBUG)
 
 For disable `rookiepy` logging you can set the level to `CRITICAL`
 
-```
+```python
 import logging
 logging.getLogger('rookie').setLevel(logging.CRITICAL)
 ```

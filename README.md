@@ -7,13 +7,13 @@
 
 Load cookies from any browser on any platform
 
-## Install
+## Install ⚙️
 
 ```shell
 cargo add rookie
 ```
 
-## Bindings
+## Bindings 📚
 
 There's Python bindings to `rookie`
 
@@ -30,13 +30,13 @@ for cookie in cookies:
     print(cookie['domain'], cookie['value'])
 ```
 
-## Examples
+## Examples 📋
 
 `Python` [examples](https://github.com/thewh1teagle/rookie/tree/main/examples)
 
 `Rust` [rookie-rs/examples](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
 
-## Docs
+## Docs 📘
 
 `Python`
 
@@ -47,18 +47,18 @@ for cookie in cookies:
 - [docs/Rust.md](docs/Rust.md)
 - [docs.rs/rookie](https://docs.rs/rookie)  
 
-## Features
+## Features 🚀
 
 - Fast, written in `Rust`
 - Bypass `Chrome` restriction like file locking
 - Wide platforms and browsers support
 
-## CLI
+## CLI 💻
 
 You can use rookie as a `CLI` tool which will decrypt the cookies and print it as `JSON`  
 See [cli](https://github.com/thewh1teagle/rookie/tree/main/cli) folder
 
-## Contribute
+## Contribute 🤝
 
 So far the following platforms are supported:
 
@@ -76,13 +76,13 @@ So far the following platforms are supported:
 
 You are welcome to contribute support for other browsers, or other platforms.
 
-## Support new browsers
+## Support new browsers 🌐
 
 If you have a browser with which the library isn't working with, it may not have been added to the list of supported browsers configs. You can create a pull request (PR) or an issue with the path to the cookies file on your computer, and I will add it.
 
 look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/config.rs) to see what configurations is needed.
 
-## Testing Dates  (dd/mm/yy)
+## Testing Dates  (dd/mm/yy) 📅
 
 Browser  |  Linux    |  MacOS   | Windows  |
 :------  | :------:  | :------: | :------: |
@@ -97,6 +97,9 @@ Chromium | 01/10/23  | 25/11/23 |  1/10/23 |
 Brave    | 01/10/23  | 25/11/23 |  1/10/23 |
 Vivaldi  | 01/10/23  | 25/11/23 |  1/10/23 |
 Safari   |   N/A     | 02/10/23 |    N/A   |
+
+## Credits 🙌
+[github.com/borisbabic/browser_cookie3](https://github.com/borisbabic/browser_cookie3)
 
 [PyPi-downloads]: https://img.shields.io/pypi/dm/rookiepy
 [PyPi-version]: https://img.shields.io/pypi/v/rookiepy?color=00aa00

@@ -1,8 +1,9 @@
-from typing import List
+from typing import Any, Dict, List, Optional
 from sys import platform
 
+CookieList = List[Dict[str, Any]]
 
-def firefox(domains: List[str] = None) -> List[dict]:
+def firefox(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Firefox
 
@@ -12,7 +13,7 @@ def firefox(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def firefox_based(key_path: str, db_path: str, domains: List[str] = None) -> List[dict]:
+def firefox_based(key_path: str, db_path: str, domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Firefox-based browsers
 
@@ -24,7 +25,7 @@ def firefox_based(key_path: str, db_path: str, domains: List[str] = None) -> Lis
     ...
 
 
-def brave(domains: List[str] = None) -> List[dict]:
+def brave(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Brave browser
 
@@ -34,7 +35,7 @@ def brave(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def edge(domains: List[str] = None) -> List[dict]:
+def edge(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Microsoft Edge browser
 
@@ -44,7 +45,7 @@ def edge(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def chrome(domains: List[str] = None) -> List[dict]:
+def chrome(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Google Chrome browser
 
@@ -54,7 +55,7 @@ def chrome(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def chromium_based(db_path: str, domains: List[str] = None) -> List[dict]:
+def chromium_based(db_path: str, domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Chromium-based browsers
 
@@ -65,7 +66,7 @@ def chromium_based(db_path: str, domains: List[str] = None) -> List[dict]:
     ...
 
 
-def chromium(domains: List[str] = None) -> List[dict]:
+def chromium(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Chromium browser
 
@@ -75,7 +76,7 @@ def chromium(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def opera(domains: List[str] = None) -> List[dict]:
+def opera(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Opera browser
 
@@ -85,7 +86,7 @@ def opera(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def vivaldi(domains: List[str] = None) -> List[dict]:
+def vivaldi(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Vivaldi browser
 
@@ -95,7 +96,7 @@ def vivaldi(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def opera_gx(domains: List[str] = None) -> List[dict]:
+def opera_gx(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Opera GX browser
 
@@ -105,7 +106,7 @@ def opera_gx(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def libre_wolf(domains: List[str] = None) -> List[dict]:
+def libre_wolf(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from LibreWolf browser
 
@@ -115,7 +116,7 @@ def libre_wolf(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def load(domains: List[str] = None) -> List[dict]:
+def load(domains: Optional[List[str]] = None) -> CookieList:
     """
     Load Cookies from a browser
 
@@ -125,7 +126,7 @@ def load(domains: List[str] = None) -> List[dict]:
     ...
 
 
-def any_browser(domains: List[str] = None) -> List[dict]:
+def any_browser(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from any browser
 
@@ -137,7 +138,7 @@ def any_browser(domains: List[str] = None) -> List[dict]:
 
 # Windows
 if platform == "win32":
-    def internet_explorer(domains: List[str] = None) -> List[dict]:
+    def internet_explorer(domains: Optional[List[str]] = None) -> CookieList:
         """
         Extract Cookies from Internet Explorer
 
@@ -146,7 +147,7 @@ if platform == "win32":
         """
         ...
 
-    def octo_browser(domains: List[str] = None) -> List[dict]:
+    def octo_browser(domains: Optional[List[str]] = None) -> CookieList:
         """
         Extract Cookies from Octo browser
 
@@ -158,7 +159,7 @@ if platform == "win32":
 
 # MacOS
 if platform == "darwin":
-    def safari(domains: List[str] = None) -> List[dict]:
+    def safari(domains: Optional[List[str]] = None) -> CookieList:
         """
         Extract Cookies from Safari browser
 

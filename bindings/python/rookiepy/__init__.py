@@ -1,5 +1,5 @@
 from sys import platform
-from typing import List
+from typing import Any, Dict, List, Optional
 import http.cookiejar
 from .rookiepy import (
     firefox,
@@ -29,12 +29,15 @@ __all__ = [
     "vivaldi",
     "chromium_based",
     "firefox_based",
-    "to_dict",
+    "to_dict", # type: ignore
     "to_cookiejar",
     "create_cookie",
     "load",
     "any_browser"
 ]
+
+
+CookieList = List[Dict[str, Any]]
 
 
 # Windows
@@ -53,25 +56,48 @@ if platform == "darwin":
     ])
 
 
-def create_cookie(host, path, secure, expires, name, value, http_only):
+def create_cookie(
+        host: str,
+        path: str,
+        secure: bool,
+        expires: Optional[int],
+        name: str,
+        value: Optional[str],
+        http_only: bool,
+        ) -> http.cookiejar.Cookie:
     """
     Create a Cookie object with the specified attributes.
 
-    :param host: The domain for which the cookie is valid
-    :param path: The path within the domain for which the cookie is valid
-    :param secure: True if the cookie should only be sent over secure connections (HTTPS)
-    :param expires: Unix timestamp indicating when the cookie expires
-    :param name: The name of the cookie
-    :param value: The value of the cookie
-    :param http_only: True if the cookie should only be accessible via HTTP and not JavaScript
+    :param str host: The domain for which the cookie is valid
+    :param str path: The path within the domain for which the cookie is valid
+    :param bool secure: True if the cookie should only be sent over secure connections (HTTPS)
+    :param Optional[int] expires: Unix timestamp indicating when the cookie expires
+    :param str name: The name of the cookie
+    :param Optional[str] value: The value of the cookie
+    :param bool http_only: True if the cookie should only be accessible via HTTP and not JavaScript
     :return: A Cookie object
+    :rtype: http.cookiejar.Cookie
     """
     # HTTPOnly flag goes in _rest, if present (see https://github.com/python/cpython/pull/17471/files#r511187060)
-    return http.cookiejar.Cookie(0, name, value, None, False, host, host.startswith('.'), host.startswith('.'), path,
-                                 True, secure, expires, False, None, None,
-                                 {'HTTPOnly': ''} if http_only else {})
+    return http.cookiejar.Cookie(version=0,
+                                 name=name,
+                                 value=value,
+                                 port=None,
+                                 port_specified=False,
+                                 domain=host,
+                                 domain_specified=host.startswith('.'),
+                                 domain_initial_dot=host.startswith('.'),
+                                 path=path,
+                                 path_specified=True,
+                                 secure=secure,
+                                 expires=expires,
+                                 discard=False,
+                                 comment=None,
+                                 comment_url=None,
+                                 rest={'HTTPOnly': ''} if http_only else {}
+                                 )
 
-def to_cookiejar(cookies: List[dict]):
+def to_cookiejar(cookies: CookieList) -> http.cookiejar.CookieJar:
     """
     Convert a list of dictionaries representing cookies to a CookieJar.
 

@@ -12,14 +12,14 @@ from .rookiepy import (
     opera, 
     vivaldi,
     opera_gx,
-    libre_wolf,
+    librewolf,
     load,
     any_browser
 )
 
 __all__ = [
     "firefox",
-    "libre_wolf",
+    "librewolf",
     "brave",
     "edge",
     "chrome",

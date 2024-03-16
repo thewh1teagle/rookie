@@ -56,11 +56,11 @@ pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 ///
 /// fn main() {
 ///     let domains = vec!["google.com"];
-///     let cookies = rookie::libre_wolf(Some(domains));
+///     let cookies = rookie::librewolf(Some(domains));
 /// }
 /// ```
-pub fn libre_wolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
-    let db_path = paths::find_mozilla_based_paths(&config::LIBRE_WOLF_CONFIG)?;
+pub fn librewolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
+    let db_path = paths::find_mozilla_based_paths(&config::LIBREWOLF_CONFIG)?;
     firefox_based(db_path, domains)
 }
 

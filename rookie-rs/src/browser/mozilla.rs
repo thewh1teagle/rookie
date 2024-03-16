@@ -229,5 +229,5 @@ pub fn get_default_profile(profiles_path: &Path) -> Result<String> {
             }
         }
     }
-    bail!("Cant find any profile")
+    bail!("Can't find any profile")
 }

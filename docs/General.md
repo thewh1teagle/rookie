@@ -2,7 +2,7 @@
 
 ## Password prompt
 
-This library may trigger a password prompt with kde-wallet on linux / MacOS with chromium based browsers when accessing browser cookies. 
+This library may trigger a password prompt with kde-wallet on linux / macOS with chromium based browsers when accessing browser cookies. 
 
 ## Session Cookies Retrieval
 

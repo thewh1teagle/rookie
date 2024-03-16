@@ -19,7 +19,7 @@ fn main() {
 
 ## Logging
 
-Logging level can be controlled by chaing `RUST_LOG` ENV variable
+Logging level can be controlled by changing `RUST_LOG` ENV variable
 
 ```console
 RUST_LOG=trace cargo run

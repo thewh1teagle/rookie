@@ -48,7 +48,7 @@ if platform == "win32":
         "octo_browser"
     ])
 
-# MacOS
+# macOS
 if platform == "darwin":
     from .rookiepy import safari
     __all__.extend([

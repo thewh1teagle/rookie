@@ -12,14 +12,14 @@ from .rookiepy import (
     opera, 
     vivaldi,
     opera_gx,
-    libre_wolf,
+    librewolf,
     load,
     any_browser
 )
 
 __all__ = [
     "firefox",
-    "libre_wolf",
+    "librewolf",
     "brave",
     "edge",
     "chrome",
@@ -48,7 +48,7 @@ if platform == "win32":
         "octo_browser"
     ])
 
-# MacOS
+# macOS
 if platform == "darwin":
     from .rookiepy import safari
     __all__.extend([

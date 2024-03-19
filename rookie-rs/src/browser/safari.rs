@@ -90,7 +90,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
             Ok(slice) => slice,
             Err(_) => {
                 // Handle the error here, e.g., by returning the error.
-                bail!("cant get slice from page");
+                bail!("Can't get slice from page");
             }
         };
     

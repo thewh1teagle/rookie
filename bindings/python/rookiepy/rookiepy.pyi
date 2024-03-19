@@ -106,7 +106,7 @@ def opera_gx(domains: Optional[List[str]] = None) -> CookieList:
     ...
 
 
-def libre_wolf(domains: Optional[List[str]] = None) -> CookieList:
+def librewolf(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from LibreWolf browser
 

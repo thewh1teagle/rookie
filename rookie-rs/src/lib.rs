@@ -24,7 +24,7 @@ cfg_if::cfg_if! {
     }
 }
 
-/// Returns cookies from firefox
+/// Returns cookies from Firefox
 ///
 /// # Arguments
 ///
@@ -44,7 +44,7 @@ pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     firefox_based(db_path, domains)
 }
 
-/// Returns cookies from libre wolf
+/// Returns cookies from LibreWolf
 ///
 /// # Arguments
 ///
@@ -56,15 +56,15 @@ pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 ///
 /// fn main() {
 ///     let domains = vec!["google.com"];
-///     let cookies = rookie::libre_wolf(Some(domains));
+///     let cookies = rookie::librewolf(Some(domains));
 /// }
 /// ```
-pub fn libre_wolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
-    let db_path = paths::find_mozilla_based_paths(&config::LIBRE_WOLF_CONFIG)?;
+pub fn librewolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
+    let db_path = paths::find_mozilla_based_paths(&config::LIBREWOLF_CONFIG)?;
     firefox_based(db_path, domains)
 }
 
-/// Returns cookies from chrome
+/// Returns cookies from Chrome
 ///
 /// # Arguments
 ///
@@ -91,7 +91,7 @@ pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     }
 }
 
-/// Returns cookies from chromium
+/// Returns cookies from Chromium
 ///
 /// # Arguments
 ///
@@ -118,7 +118,7 @@ pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     }
 }
 
-/// Returns cookies from brave
+/// Returns cookies from Brave
 ///
 /// # Arguments
 ///
@@ -145,7 +145,7 @@ pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     }
 }
 
-/// Returns cookies from edge
+/// Returns cookies from Edge
 ///
 /// # Arguments
 ///
@@ -172,7 +172,7 @@ pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     }
 }
 
-/// Returns cookies from vivaldi
+/// Returns cookies from Vivaldi
 ///
 /// # Arguments
 ///
@@ -199,7 +199,7 @@ pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     }
 }
 
-/// Returns cookies from opera
+/// Returns cookies from Opera
 ///
 /// # Arguments
 ///
@@ -226,7 +226,7 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     }
 }
 
-/// Returns cookies from opera gx
+/// Returns cookies from Opera GX
 ///
 /// # Arguments
 ///
@@ -253,7 +253,7 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     }
 }
 
-/// Returns cookies from octo browser
+/// Returns cookies from Octo Browser
 ///
 /// # Arguments
 ///
@@ -265,7 +265,7 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 ///
 /// fn main() {
 ///     let domains = vec!["google.com"];
-///     let cookies = rookie::octo(Some(domains));
+///     let cookies = rookie::octo_browser(Some(domains));
 /// }
 /// ```
 #[cfg(target_os = "windows")]
@@ -274,7 +274,7 @@ pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     chromium_based(PathBuf::from(key), db_path, domains)
 }
 
-/// Returns cookies from safari (MacOS only)
+/// Returns cookies from Safari (macOS only)
 ///
 /// # Arguments
 ///
@@ -295,7 +295,7 @@ pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     safari_based(db_path, domains)
 }
 
-/// Returns cookies from internet explorer (Windows only)
+/// Returns cookies from Internet Explorer (Windows only)
 ///
 /// # Arguments
 ///
@@ -334,7 +334,7 @@ pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let mut cookies = Vec::new();
 
-    let mut browser_types = vec![firefox, libre_wolf, opera, edge, chromium, brave, vivaldi];
+    let mut browser_types = vec![firefox, librewolf, opera, edge, chromium, brave, vivaldi];
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             browser_types.push(chrome);
@@ -436,5 +436,5 @@ pub fn any_browser(
             }
         }
     }
-    bail!("cant find any cookies");
+    bail!("Can't find any cookies");
 }

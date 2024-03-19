@@ -159,7 +159,7 @@ cfg_if::cfg_if! {
         };
 
         
-        pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
+        pub static LIBREWOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/librewolf",
                 "%APPDATA%/librewolf",
@@ -292,7 +292,7 @@ cfg_if::cfg_if! {
         };
 
          
-        pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
+        pub static LIBREWOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/snap/librewolf/common/.librewolf",
                 "~/.librewolf"
@@ -362,7 +362,7 @@ cfg_if::cfg_if! {
         };
         
         
-        pub static LIBRE_WOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
+        pub static LIBREWOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/librewolf"
             ],

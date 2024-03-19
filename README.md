@@ -62,17 +62,17 @@ See [cli](https://github.com/thewh1teagle/rookie/tree/main/cli) folder
 
 So far the following platforms are supported:
 
-- **Chrome:** `Linux`, `MacOS`, `Windows`
-- **Firefox:** `Linux`, `MacOS`, `Windows`
-- **LibreWolf:** `Linux`, `MacOS`, `Windows`
-- **Opera:** `Linux`, `MacOS`, `Windows`
-- **Opera GX:** `MacOS`, `Windows`
-- **Edge:** Linux, `MacOS`, `Windows`
+- **Chrome:** `Linux`, `macOS`, `Windows`
+- **Firefox:** `Linux`, `macOS`, `Windows`
+- **LibreWolf:** `Linux`, `macOS`, `Windows`
+- **Opera:** `Linux`, `macOS`, `Windows`
+- **Opera GX:** `macOS`, `Windows`
+- **Edge:** `Linux`, `macOS`, `Windows`
 - **Internet Explorer:** `Windows`
-- **Chromium:** `Linux`, `MacOS`, `Windows`
-- **Brave:** `Linux`, `MacOS`, `Windows`
-- **Vivaldi:** `Linux`, `MacOS`, `Windows`
-- **Safari:** `MacOS`
+- **Chromium:** `Linux`, `macOS`, `Windows`
+- **Brave:** `Linux`, `macOS`, `Windows`
+- **Vivaldi:** `Linux`, `macOS`, `Windows`
+- **Safari:** `macOS`
 
 You are welcome to contribute support for other browsers, or other platforms.
 
@@ -82,21 +82,21 @@ If you have a browser with which the library isn't working with, it may not have
 
 look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/config.rs) to see what configurations is needed.
 
-## Testing Dates  (dd/mm/yy) 📅
+## Testing Dates  (DD/MM/YY) 📅
 
-Browser  |  Linux    |  MacOS   | Windows  |
-:------  | :------:  | :------: | :------: |
-Chrome   | 01/10/23  | 25/11/23 |  1/10/23 |
-Firefox  | 01/10/23  | 25/11/23 |  1/10/23 |
-LibreWolf| 01/10/23  | 25/11/23 |  1/10/23 |
-Opera    | 01/10/23  |    -     |  1/10/23 |
-Opera GX |   N/A     |    -     |  1/10/23 |
-Edge     | 01/10/23  |    -     |  1/10/23 |
-IE       |   N/A     |   N/A    |  1/10/23 |
-Chromium | 01/10/23  | 25/11/23 |  1/10/23 |
-Brave    | 01/10/23  | 25/11/23 |  1/10/23 |
-Vivaldi  | 01/10/23  | 25/11/23 |  1/10/23 |
-Safari   |   N/A     | 02/10/23 |    N/A   |
+| Browser   |  Linux   |  macOS   | Windows  |
+|:----------|:--------:|:--------:|:--------:|
+| Chrome    | 01/10/23 | 25/11/23 | 16/03/24 |
+| Firefox   | 01/10/23 | 25/11/23 | 16/03/24 |
+| LibreWolf | 01/10/23 | 25/11/23 | 01/10/23 |
+| Opera     | 01/10/23 |    -     | 01/10/23 |
+| Opera GX  |   N/A    |    -     | 01/10/23 |
+| Edge      | 01/10/23 |    -     | 01/10/23 |
+| IE        |   N/A    |   N/A    | 01/10/23 |
+| Chromium  | 01/10/23 | 25/11/23 | 01/10/23 |
+| Brave     | 01/10/23 | 25/11/23 | 01/10/23 |
+| Vivaldi   | 01/10/23 | 25/11/23 | 01/10/23 |
+| Safari    |   N/A    | 02/10/23 |   N/A    |
 
 ## Credits 🙌
 [github.com/borisbabic/browser_cookie3](https://github.com/borisbabic/browser_cookie3)

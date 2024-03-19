@@ -27,8 +27,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let content = response.text()?;
     let username = extract_username(content.as_str());
     match username {
-        "" => println!("Not logged in to Github"),
-        _ => println!("Logged in to Github as {username}")
+        "" => println!("Not logged in to GitHub"),
+        _ => println!("Logged in to GitHub as {username}")
     };
     Ok(())
 }

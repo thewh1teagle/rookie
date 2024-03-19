@@ -10,19 +10,19 @@ pip3 install -U rookiepy
 
 ```python
 import rookiepy
-cookies = rookiepy.chrome() # Load cookies from chrome
+cookies = rookiepy.chrome() # Load cookies from Chrome
 ```
 
 ## Logging
 
-Logging level can be controlled by using `logging` module
+Logging level can be controlled by using the `logging` module
 
 ```python
 import logging
 logging.getLogger('rookie').setLevel(logging.DEBUG)
 ```
 
-For disable `rookiepy` logging you can set the level to `CRITICAL`
+To fully disable `rookiepy` logging you can set the level to `CRITICAL`
 
 ```python
 import logging

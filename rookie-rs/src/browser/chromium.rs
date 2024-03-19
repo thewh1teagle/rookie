@@ -108,8 +108,8 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
         let key = Key::<Aes256Gcm>::from_slice(key.as_slice());
         let cipher = Aes256Gcm::new(&key);
         let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
-        let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).or(Err(anyhow!("cant decrypt using key")))?;
-        let plaintext = String::from_utf8(plaintext).or(Err(anyhow!("cant decode encrypted value")))?;
+        let plaintext = cipher.decrypt(nonce, ciphertext.as_ref()).or(Err(anyhow!("Can't decrypt using key")))?;
+        let plaintext = String::from_utf8(plaintext).or(Err(anyhow!("Can't decode encrypted value")))?;
         return Ok(plaintext);
     }
     bail!("decrypt_encrypted_value failed")
@@ -169,14 +169,14 @@ fn decrypt_encrypted_value(value: String, encrypted_value: &[u8], keys: Vec<Vec<
 fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {    
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
-            let db_path_str = db_path.to_str().ok_or(anyhow!("Cant convert db path to str"))?;
-            warn!("Unlocking chrome database, it may take a while (sometimes up to minute)");
+            let db_path_str = db_path.to_str().ok_or(anyhow!("Can't convert db path to str"))?;
+            warn!("Unlocking Chrome database, it may take a while (sometimes up to minute)");
             unsafe {winapi::release_file_lock(db_path_str);}
         }
     }
 
     
-    info!("Creating sqlite connection to {}", db_path.to_str().unwrap_or(""));
+    info!("Creating SQLite connection to {}", db_path.to_str().unwrap_or(""));
     let connection = sqlite::connect(db_path)?;
     let mut query = "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
 
@@ -234,16 +234,16 @@ fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>
 pub fn chromium_based(key: PathBuf, db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     // Use DPAPI
     let content = std::fs::read_to_string(&key)?;
-    let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).or(Err(anyhow!("Cant read json file")))?;
+    let key_dict: serde_json::Value = serde_json::from_str(content.as_str()).or(Err(anyhow!("Can't read json file")))?;
 
     let os_crypt = key_dict
         .get("os_crypt")
-        .ok_or(anyhow!("can't get os crypt"))?;
+        .ok_or(anyhow!("Can't get os crypt"))?;
 
     let key64 = os_crypt.get("encrypted_key")
-        .ok_or(anyhow!("cant get encrypted_key"))?
+        .ok_or(anyhow!("Can't get encrypted_key"))?
         .as_str()
-        .ok_or(anyhow!("Cant convert encrypted_key to str"))?;
+        .ok_or(anyhow!("Can't convert encrypted_key to str"))?;
 
     let keys = get_keys(key64)?;
     query_cookies(keys, db_path, domains)

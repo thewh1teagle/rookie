@@ -170,7 +170,7 @@ fn query_cookies(keys: Vec<Vec<u8>>, db_path: PathBuf, domains: Option<Vec<&str>
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             let db_path_str = db_path.to_str().ok_or(anyhow!("Can't convert db path to str"))?;
-            warn!("Unlocking Chrome database, it may take a while (sometimes up to minute)");
+            warn!("Unlocking Chrome database... This may take a while (sometimes up to a minute)");
             unsafe {winapi::release_file_lock(db_path_str);}
         }
     }

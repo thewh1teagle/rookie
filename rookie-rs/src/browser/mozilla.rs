@@ -1,18 +1,15 @@
+use crate::common::{date, enums::*, sqlite, utils};
 use anyhow::bail;
-use anyhow::{Result, anyhow};
+use anyhow::{anyhow, Result};
 use ini::Ini;
 use log::warn;
+use lz4_flex::block::decompress_size_prepended;
 use serde_json::Value;
 use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
-use crate::common::{enums::*, sqlite, utils, date};
-use lz4_flex::block::decompress_size_prepended;
 
-pub fn firefox_based(
-    db_path: PathBuf,
-    domains: Option<Vec<&str>>,
-) -> Result<Vec<Cookie>> {
+pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let connection = sqlite::connect(db_path.clone())?;
     let mut query = "
         SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies 
@@ -39,7 +36,8 @@ pub fn firefox_based(
 
     while let Some(row) = rows.next()? {
         let host: Result<String, _> = row.get(0);
-        if host.is_err() { // ignore null rows
+        if host.is_err() {
+            // ignore null rows
             warn!("host is NULL in row");
             continue;
         }
@@ -130,7 +128,9 @@ pub fn get_session_cookies_lz4(
     let plain = String::from_utf8(decompressed)?;
     let json: Value = serde_json::from_str(&plain)?;
     let cookies_json = json.get("cookies").ok_or(anyhow!("no cookies in json"))?;
-    let cookies_json = cookies_json.as_array().ok_or(anyhow!("cookies is not list"))?;
+    let cookies_json = cookies_json
+        .as_array()
+        .ok_or(anyhow!("cookies is not list"))?;
     for json_cookie in cookies_json {
         let domain = json_cookie
             .get("host")
@@ -201,20 +201,15 @@ pub fn get_default_profile(profiles_path: &Path) -> Result<String> {
     let conf = Ini::load_from_file(profiles_path)?;
     let installs: Vec<_> = conf
         .iter()
-        .filter(|(name_option, _)| name_option.
-            unwrap_or_default()
-            .starts_with("Install"))
-            .collect();
+        .filter(|(name_option, _)| name_option.unwrap_or_default().starts_with("Install"))
+        .collect();
     if !installs.is_empty() {
         let (_, props) = installs.first().unwrap();
         return Ok(props.get("Default").unwrap_or_default().into());
-
     } else {
         let profiles: Vec<_> = conf
             .iter()
-            .filter(|(name_option, _)| name_option
-            .unwrap_or_default()
-            .starts_with("Profile"))
+            .filter(|(name_option, _)| name_option.unwrap_or_default().starts_with("Profile"))
             .collect();
         for (_, props) in &profiles {
             if props.get("Default").unwrap_or_default() == "1" {

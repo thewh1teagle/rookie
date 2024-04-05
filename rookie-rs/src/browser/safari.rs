@@ -1,10 +1,10 @@
 use crate::common::{date, enums::*};
+use anyhow::{anyhow, bail, Result};
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
+use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
-use std::fs::File;
 use std::vec::Vec;
-use anyhow::{Result, anyhow, bail};
 
 fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
     if slice(bs, 0, 4)? != [0x00, 0x00, 0x01, 0x00] {
@@ -24,8 +24,7 @@ fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
         let parsed_slice = u32_value.and_then(|len| slice(bs, off, len as usize));
 
         // Parse the sliced data into a Cookie struct using LittleEndian encoding
-        let cookie = parsed_slice
-            .and_then(|u| parse_cookie::<LittleEndian>(u))?;
+        let cookie = parsed_slice.and_then(|u| parse_cookie::<LittleEndian>(u))?;
         cookies.push(cookie);
 
         // Return the parsed Cookie struct, or propagate an error if any step fails
@@ -84,7 +83,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
     let table_iter = table_iter.iter();
     let mut pages = Vec::new();
     let mut off = count * 4 + 8;
-    
+
     for &len in table_iter {
         let page_slice = match slice(bs, off, len) {
             Ok(slice) => slice,
@@ -93,7 +92,7 @@ pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
                 bail!("Can't get slice from page");
             }
         };
-    
+
         pages.push(page_slice.to_vec());
         off += len;
     }
@@ -145,15 +144,11 @@ fn c_str(bs: &[u8]) -> Result<String> {
             }
         })
         .and_then(|elements| {
-            String::from_utf8(elements.to_vec())
-                .map_err(|err| anyhow!(err.to_string()))
+            String::from_utf8(elements.to_vec()).map_err(|err| anyhow!(err.to_string()))
         })
 }
 
-pub fn safari_based(
-    db_path: PathBuf,
-    domains: Option<Vec<&str>>,
-) -> Result<Vec<Cookie>> {
+pub fn safari_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     // 1. open cookies file
     // 2. parse headers
     // 3. parse pages (total from headers)
@@ -164,8 +159,6 @@ pub fn safari_based(
     let mut bs: Vec<u8> = Vec::new();
     file.read_to_end(&mut bs)?;
     let cookies = parse_content(&bs)?;
-
-
 
     // Filter cookies by domain if domains are specified
     if let Some(domain_filters) = domains {

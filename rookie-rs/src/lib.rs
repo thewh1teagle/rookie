@@ -1,13 +1,12 @@
-pub mod config;
-pub mod common;
 pub mod browser;
+pub mod common;
+pub mod config;
 
-use anyhow::{Result, bail};
+use anyhow::{bail, Result};
+use browser::chromium::chromium_based;
+use browser::mozilla::firefox_based;
 use common::enums::Cookie;
 use common::paths;
-use std::path::PathBuf;
-use browser::mozilla::firefox_based;
-use browser::chromium::chromium_based;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
@@ -19,9 +18,9 @@ cfg_if::cfg_if! {
         use browser::safari::safari_based;
         use common::secrets;
     }
-    else if #[cfg(target_os = "linux")] {
-        use common::secrets;
-    }
+    // else if #[cfg(target_os = "linux")] {
+    //     use common::secrets; // Unused
+    // }
 }
 
 /// Returns cookies from Firefox
@@ -33,11 +32,8 @@ cfg_if::cfg_if! {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::firefox(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::firefox(Some(domains));
 /// ```
 pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let db_path = paths::find_mozilla_based_paths(&config::FIREFOX_CONFIG)?;
@@ -53,11 +49,8 @@ pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::librewolf(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::librewolf(Some(domains));
 /// ```
 pub fn librewolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let db_path = paths::find_mozilla_based_paths(&config::LIBREWOLF_CONFIG)?;
@@ -73,11 +66,8 @@ pub fn librewolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::chrome(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::chrome(Some(domains));
 /// ```
 pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
@@ -100,11 +90,8 @@ pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::chromium(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::chromium(Some(domains));
 /// ```
 pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
@@ -127,11 +114,8 @@ pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::brave(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::brave(Some(domains));
 /// ```
 pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
@@ -154,11 +138,8 @@ pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::edge(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::edge(Some(domains));
 /// ```
 pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
@@ -181,11 +162,8 @@ pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::vivaldi(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::vivaldi(Some(domains));
 /// ```
 pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
@@ -208,11 +186,8 @@ pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::opera(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::opera(Some(domains));
 /// ```
 pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
@@ -235,11 +210,8 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::opera_gx(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::opera_gx(Some(domains));
 /// ```
 pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
@@ -262,11 +234,8 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::octo_browser(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::octo_browser(Some(domains));
 /// ```
 #[cfg(target_os = "windows")]
 pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
@@ -283,11 +252,8 @@ pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::safari(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::safari(Some(domains));
 /// ```
 #[cfg(target_os = "macos")]
 pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
@@ -304,11 +270,8 @@ pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::internet_explorer(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::internet_explorer(Some(domains));
 /// ```
 #[cfg(target_os = "windows")]
 pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
@@ -325,11 +288,8 @@ pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies = rookie::load(Some(domains));
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::load(Some(domains));
 /// ```
 pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let mut cookies = Vec::new();
@@ -372,20 +332,16 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// # Examples
 ///
 /// ```
-///
-/// fn main() {
-///     let domains = vec!["google.com"];
-///     let cookies_path = "C:\\Users\\User\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\default\\network\\Cookies";
-///     let key_path = "C:\\Users\\User\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Local State";
-///     let cookies = rookie::any_browser(cookies_path, None, Some(key_path)).unwrap();
-/// }
+/// let domains = vec!["google.com"];
+/// let cookies_path = "C:\\Users\\User\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\default\\network\\Cookies";
+/// let key_path = "C:\\Users\\User\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Local State";
+/// let cookies = rookie::any_browser(cookies_path, None, Some(key_path)).unwrap();
 /// ```
 pub fn any_browser(
     cookies_path: &str,
     domains: Option<Vec<&str>>,
-    key_path: Option<&str>,
+    _key_path: Option<&str>,
 ) -> Result<Vec<Cookie>> {
-
     // chromium based
     cfg_if::cfg_if! {
         // Linux Chromium
@@ -401,11 +357,11 @@ pub fn any_browser(
                 &config::VIVALDI_CONFIG,
             ];
             for browser_config in chrome_configs {
-                if let Ok(cookies) = chromium_based(&browser_config, cookies_path.into(), domains.clone()) {
+                if let Ok(cookies) = chromium_based(browser_config, cookies_path.into(), domains.clone()) {
                     return Ok(cookies);
                 }
             }
-        } 
+        }
         // Windows chromium
         else {
             if let Some(key_path) = key_path {

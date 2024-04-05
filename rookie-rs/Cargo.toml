@@ -19,36 +19,40 @@ name = "main"
 path = "bin/main.rs"
 
 [dependencies]
-aes = "0.8.3"
-aes-gcm = "0.10.3"
-byteorder = "1.4.3"
-cbc = "0.1.2"
-cfg-if = "1.0.0"
-glob = "0.3.1"
-regex = "1.9.6"
-rusqlite = { version = "0.31.0", features = ["bundled"] }
-rust-ini = "0.21.0"
-url = "2.4.1"
-serde = { version = "1.0.188", features = ["derive"] }
-serde_json = "1.0.107"
-zvariant = "3.15.2"
-lz4_flex = "0.11.1"
-log = "0.4.20"
-anyhow = "1.0.75"
-
+aes = "0.8"
+aes-gcm = "0.10"
+anyhow = "1"
+byteorder = "1"
+cbc = "0.1"
+cfg-if = "1"
+glob = "0.3"
+log = "0.4"
+lz4_flex = "0.11"
+regex = "1"
+rusqlite = { version = "0.31", features = ["bundled"] }
+rust-ini = "0.21"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+url = "2"
+zvariant = "3"
 
 [target.'cfg(unix)'.dependencies]
-sha1 = "0.10.6"
-pbkdf2 = "0.12.2"
+pbkdf2 = "0.12"
+sha1 = "0.10"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-zbus = "3.15.2"
+zbus = "3"
 
 [target.'cfg(target_os = "macos")'.dependencies]
-sha1 = "0.10.6"
-pbkdf2 = "0.12.2"
+pbkdf2 = "0.12"
+sha1 = "0.10"
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.51.1", features = ["Win32_Security_Cryptography", "Win32_Foundation", "Win32_System", "Win32_System_RestartManager"] }
-base64 = "0.22.0"
-libesedb = "0.2.4"
+base64 = "0.22"
+libesedb = "0.2"
+windows = { version = "0.51", features = [
+    "Win32_Security_Cryptography",
+    "Win32_Foundation",
+    "Win32_System",
+    "Win32_System_RestartManager",
+] }

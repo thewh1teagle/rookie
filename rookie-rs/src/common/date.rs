@@ -1,5 +1,5 @@
 pub fn chromium_timestamp(timestamp: u64) -> Option<u64> {
-    if timestamp <= 0 {
+    if timestamp == 0 {
         return None;
     }
     let mut timestamp = timestamp - 11_644_473_600_000_000;
@@ -21,10 +21,8 @@ pub fn internet_explorer_timestamp(timestamp: u64) -> Option<u64> {
     unix_timestamp(timestamp)
 }
 
-
-
 pub fn safari_timestamp(timestamp: u64) -> Option<u64> {
-    if timestamp <= 0 {
+    if timestamp == 0 {
         return None;
     }
     let unix_timestamp = timestamp + 978_307_200;
@@ -34,8 +32,8 @@ pub fn safari_timestamp(timestamp: u64) -> Option<u64> {
 }
 
 fn unix_timestamp(timestamp: u64) -> Option<u64> {
-    if timestamp <= 0 {
+    if timestamp == 0 {
         return None;
     }
-    return Some(timestamp);
+    Some(timestamp)
 }

@@ -1,5 +1,5 @@
 #[cfg(unix)]
-use anyhow::{Result, anyhow, bail};
+use anyhow::{anyhow, bail, Result};
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {
@@ -9,7 +9,7 @@ cfg_if::cfg_if! {
         use zbus::{blocking::Connection, zvariant::Value, zvariant::ObjectPath, Message};
 
 
-        fn libsecret_call<'a, T>(
+        fn libsecret_call<T>(
             connection: &Connection,
             method: &str,
             args: T,
@@ -25,9 +25,9 @@ cfg_if::cfg_if! {
                 &args,
             )
         }
-        
 
-        fn kwallet_call<'a, T>(
+
+        fn kwallet_call<T>(
             connection: &Connection,
             method: &str,
             args: T,
@@ -43,7 +43,7 @@ cfg_if::cfg_if! {
                 &args,
             )
         }
-        
+
 
         pub fn get_passwords(os_crypt_name: &str) -> Result<Vec<String>> {
             // Attempt to get the password from libsecret
@@ -57,11 +57,11 @@ cfg_if::cfg_if! {
             if let Ok(password) = get_password_kdewallet(os_crypt_name) {
                 passwords.push(password);
             }
-        
+
             Ok(passwords)
         }
-        
-        
+
+
         fn get_password_libsecret(schema: &str, crypt_name: &str) -> Result<String>  {
             let connection = Connection::session()?;
             let mut content = HashMap::<&str, &str>::new();
@@ -70,32 +70,32 @@ cfg_if::cfg_if! {
             let m = libsecret_call(&connection, "SearchItems", &content)?;
             let (reply_paths, _) : (Vec<ObjectPath>, Vec<ObjectPath>) = m.body()?;
             let path = reply_paths.first().ok_or(anyhow!("search items empty"))?;
-        
-        
+
+
             let m = libsecret_call(&connection, "Unlock", vec![path])?;
             let reply: (Vec<ObjectPath>, ObjectPath)  = m.body()?;
             let object_path = reply.0.first().ok_or(anyhow!("Can't unlock"))?;
-        
-        
+
+
             let mut content = HashMap::<&str, &str>::new();
             content.insert("plain", "");
             let m = libsecret_call(&connection, "OpenSession", &("plain", Value::new("")))?;
-        
-        
+
+
             let reply: (Value, ObjectPath) = m.body()?;
             let session = reply.1;
-        
+
             let m = libsecret_call(&connection, "GetSecrets", &(vec![object_path], session))?;
             type Response<'a> = (ObjectPath<'a>, Vec<u8>, Vec<u8>, String);
             let reply: HashMap::<ObjectPath, Response>  = m.body()?;
             let inner = reply.get(object_path).ok_or(anyhow!("Can't get secrets"))?;
             let secret = &inner.2;
-            
+
             Ok(String::from_utf8(secret.clone())?)
         }
-  
-        
-        
+
+
+
         fn get_password_kdewallet(crypt_name: &str)-> Result<String> {
             let connection = Connection::session()?;
             let folder = format!("{} Keys", utils::capitalize(crypt_name));
@@ -104,7 +104,7 @@ cfg_if::cfg_if! {
             let m = kwallet_call(&connection, "networkWallet", ())?;
             let network_wallet: String = m.body()?;
 
-            let m = kwallet_call(&connection, "open", (network_wallet.clone(), 0 as i64, config::APP_ID))?;
+            let m = kwallet_call(&connection, "open", (network_wallet.clone(), 0_i64, config::APP_ID))?;
             let handle: i32 = m.body()?;
             let m = kwallet_call(&connection, "readPassword", (handle, folder, key, config::APP_ID))?;
             let password: String = m.body()?;
@@ -113,7 +113,7 @@ cfg_if::cfg_if! {
             if close_ok != 1 {
                 bail!("Close failed");
             }
-            
+
             Ok(password)
         }
 
@@ -125,7 +125,7 @@ cfg_if::cfg_if! {
             let cmd = Command::new("/usr/bin/security")
                 .args(&["-q", "find-generic-password", "-w", "-a", osx_key_user, "-s", osx_key_service])
                 .output();
-        
+
             match cmd {
                 Ok(output) => {
                     if output.status.success() {
@@ -140,4 +140,3 @@ cfg_if::cfg_if! {
         }
     }
 }
-

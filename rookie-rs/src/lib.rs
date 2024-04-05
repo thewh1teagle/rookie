@@ -57,6 +57,24 @@ pub fn librewolf(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     firefox_based(db_path, domains)
 }
 
+/// Returns cookies from Cachy Browser (Linux only)
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::cachy(Some(domains));
+/// ```
+#[cfg(target_os = "linux")]
+pub fn cachy(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
+    let db_path = paths::find_mozilla_based_paths(&config::CACHY_CONFIG)?;
+    firefox_based(db_path, domains)
+}
+
 /// Returns cookies from Chrome
 ///
 /// # Arguments

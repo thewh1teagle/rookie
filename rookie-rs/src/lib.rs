@@ -316,17 +316,18 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
             browser_types.push(chrome);
-            browser_types.push(opera_gx);
             browser_types.push(internet_explorer);
+            browser_types.push(opera_gx);
         }
 
         else if #[cfg(target_os = "linux")] {
             browser_types.push(chrome)
+            browser_types.push(cachy)
         }
 
         else if #[cfg(target_os = "macos")] {
-            browser_types.push(opera_gx);
             browser_types.push(chrome);
+            browser_types.push(opera_gx);
             browser_types.push(safari);
         }
     }

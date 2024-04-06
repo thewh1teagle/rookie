@@ -1,7 +1,5 @@
 use clap::Parser;
-use rookie::{any_browser, load, common::enums::Cookie};
-use serde_json;
-use pretty_env_logger;
+use rookie::{any_browser, common::enums::Cookie, load};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -14,7 +12,7 @@ struct Args {
     key_path: Option<String>,
 
     #[arg(short, long)]
-    domains: Vec<String>
+    domains: Vec<String>,
 }
 
 fn print_cookies(cookies: Vec<Cookie>) {

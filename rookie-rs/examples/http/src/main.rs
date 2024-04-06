@@ -1,8 +1,6 @@
-use reqwest::blocking::Client;
-use rookie::firefox;
-use rookie::common::enums::CookieToString;
 use regex::Regex;
-
+use reqwest::blocking::Client;
+use rookie::{common::enums::CookieToString, firefox};
 
 fn extract_username(html: &str) -> &str {
     let re = Regex::new(r#"dashboard\/ajax_context_list\?current_context=(.+)""#).unwrap();
@@ -23,12 +21,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     .header("Cookie", cookies.to_string()) // <- try to comment
     .send()?;
 
-    
     let content = response.text()?;
     let username = extract_username(content.as_str());
     match username {
         "" => println!("Not logged in to GitHub"),
-        _ => println!("Logged in to GitHub as {username}")
+        _ => println!("Logged in to GitHub as {username}"),
     };
     Ok(())
 }

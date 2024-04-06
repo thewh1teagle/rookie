@@ -1,17 +1,18 @@
-use std::{ptr, ffi::c_void};
+use std::{ffi::c_void, ptr};
 
-use windows::Win32::{Foundation, Security::Cryptography};
-use windows::{Win32::{System::RestartManager::{
-    RmStartSession,
-    RmRegisterResources,
-    RmEndSession, 
-    RmGetList,
-    RmShutdown,
-    RmForceShutdown,
-    CCH_RM_SESSION_KEY,
-    RM_PROCESS_INFO
-}, Foundation::{ERROR_SUCCESS, WIN32_ERROR, ERROR_MORE_DATA}}, core::{PWSTR, PCWSTR, HSTRING}};
-use anyhow::{Result, anyhow, bail};
+use anyhow::{anyhow, bail, Result};
+use windows::{
+    core::{HSTRING, PCWSTR, PWSTR},
+    Win32::{
+        Foundation,
+        Foundation::{ERROR_MORE_DATA, ERROR_SUCCESS, WIN32_ERROR},
+        Security::Cryptography,
+        System::RestartManager::{
+            RmEndSession, RmForceShutdown, RmGetList, RmRegisterResources, RmShutdown,
+            RmStartSession, CCH_RM_SESSION_KEY, RM_PROCESS_INFO,
+        },
+    },
+};
 
 pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
     // https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata
@@ -25,7 +26,7 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
     };
     let mut data_out = Cryptography::CRYPT_INTEGER_BLOB {
         cbData: 0,
-        pbData: ptr::null_mut()
+        pbData: ptr::null_mut(),
     };
 
     unsafe {
@@ -45,21 +46,18 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
     if data_out.pbData.is_null() {
         bail!("CryptUnprotectData returned a null pointer");
     }
-    
-    let decrypted_data = unsafe {
-        std::slice::from_raw_parts(data_out.pbData, data_out.cbData as usize).to_vec()
-    };
+
+    let decrypted_data =
+        unsafe { std::slice::from_raw_parts(data_out.pbData, data_out.cbData as usize).to_vec() };
     let pbdata_hlocal = Foundation::HLOCAL(data_out.pbData as *mut c_void);
     unsafe {
         let _ = match Foundation::LocalFree(pbdata_hlocal) {
             Ok(_) => Ok(()),
-            Err(_) => Err(anyhow!("LocalFree failed"))
+            Err(_) => Err(anyhow!("LocalFree failed")),
         };
     };
     Ok(decrypted_data)
 }
-
-
 
 pub unsafe fn release_file_lock(file_path: &str) -> bool {
     let file_path = HSTRING::from(file_path);
@@ -68,18 +66,21 @@ pub unsafe fn release_file_lock(file_path: &str) -> bool {
     let session_key = PWSTR(session_key_buffer.as_mut_ptr());
     let result = RmStartSession(&mut session, 0, session_key);
     if WIN32_ERROR(result) == ERROR_SUCCESS {
-        let result = RmRegisterResources(
-            session,
-             Some(&[PCWSTR(file_path.as_ptr())]), 
-             None, 
-             None
-        );
+        let result = RmRegisterResources(session, Some(&[PCWSTR(file_path.as_ptr())]), None, None);
         if WIN32_ERROR(result) == ERROR_SUCCESS {
             let mut pnprocinfoneeded: u32 = 0;
-            let mut rgaffectedapps: [RM_PROCESS_INFO; 1] = [RM_PROCESS_INFO{..Default::default()}];
+            let mut rgaffectedapps: [RM_PROCESS_INFO; 1] = [RM_PROCESS_INFO {
+                ..Default::default()
+            }];
             let mut lpdwrebootreasons: u32 = 0;
             let mut pnprocinfo: u32 = 0;
-            let result = RmGetList(session, &mut pnprocinfoneeded, &mut pnprocinfo, Some(rgaffectedapps.as_mut_ptr()), &mut lpdwrebootreasons);
+            let result = RmGetList(
+                session,
+                &mut pnprocinfoneeded,
+                &mut pnprocinfo,
+                Some(rgaffectedapps.as_mut_ptr()),
+                &mut lpdwrebootreasons,
+            );
             if WIN32_ERROR(result) == ERROR_SUCCESS || WIN32_ERROR(result) == ERROR_MORE_DATA {
                 if pnprocinfoneeded > 0 {
                     // If current process does not have enough privileges to close one of

@@ -65,6 +65,7 @@ So far the following platforms are supported:
 - **Chrome:** `Linux`, `macOS`, `Windows`
 - **Firefox:** `Linux`, `macOS`, `Windows`
 - **LibreWolf:** `Linux`, `macOS`, `Windows`
+- **Cachy:** `Linux`
 - **Opera:** `Linux`, `macOS`, `Windows`
 - **Opera GX:** `macOS`, `Windows`
 - **Edge:** `Linux`, `macOS`, `Windows`
@@ -89,6 +90,7 @@ look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/s
 | Chrome    | 01/10/23 | 25/11/23 | 16/03/24 |
 | Firefox   | 01/10/23 | 25/11/23 | 16/03/24 |
 | LibreWolf | 01/10/23 | 25/11/23 | 01/10/23 |
+| Cachy     | 04/06/24 |   N/A    |   N/A    |
 | Opera     | 01/10/23 |    -     | 01/10/23 |
 | Opera GX  |   N/A    |    -     | 01/10/23 |
 | Edge      | 01/10/23 |    -     | 01/10/23 |

@@ -1,14 +1,11 @@
 use crate::common::enums::BrowserConfig;
 
-
-
 #[cfg(target_os = "linux")]
 pub const APP_ID: &str = "rookie";
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
         // Initialize the CHROME_CONFIG as a static variable with specific values
-        
         pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Default/Cookies",
@@ -27,8 +24,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-
-        
         pub static BRAVE_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Default/Cookies",
@@ -47,7 +42,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-        
         pub static EDGE_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/Microsoft/Edge{channel}/User Data/Default/Cookies",
@@ -66,7 +60,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-        
         pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
             "%APPDATA%/Mozilla/Firefox",
@@ -78,7 +71,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-        
         pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/Vivaldi/User Data/Default/Cookies",
@@ -97,7 +89,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-        
         pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/Opera Software/Opera {channel}/Cookies",
@@ -112,7 +103,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-        
         pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/Chromium/User Data/Default/Cookies",
@@ -131,8 +121,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-
-        
         pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/Opera Software/Opera GX {channel}/Cookies",
@@ -158,7 +146,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-        
         pub static LIBREWOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%LOCALAPPDATA%/librewolf",
@@ -170,7 +157,6 @@ cfg_if::cfg_if! {
             osx_key_user: None,
         };
 
-        
         pub static IE_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "%APPDATA%/Microsoft/Windows/WebCache/WebCacheV01.dat",
@@ -181,9 +167,8 @@ cfg_if::cfg_if! {
             osx_key_service: None,
             osx_key_user: None,
         };
-
     }
-    else if #[cfg(target_os = "linux")] {         
+    else if #[cfg(target_os = "linux")] {
         pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/.config/google-chrome{channel}/Default/Cookies",
@@ -197,8 +182,6 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-
-         
         pub static BRAVE_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/snap/brave/*/.config/BraveSoftware/Brave-Browser/Default/Cookies",
@@ -213,7 +196,6 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-         
         pub static EDGE_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/.config/microsoft-edge{channel}/Default/Cookies",
@@ -227,7 +209,6 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-         
         pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/.config/vivaldi/Default/Cookies",
@@ -243,7 +224,6 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-         
         pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/snap/opera/*/.config/opera/Cookies",
@@ -260,8 +240,6 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-
-         
         pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/snap/chromium/common/chromium/Default/Cookies",
@@ -276,9 +254,6 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-
-
-         
         pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/snap/firefox/common/.mozilla/firefox",
@@ -291,7 +266,6 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-         
         pub static LIBREWOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/snap/librewolf/common/.librewolf",
@@ -303,7 +277,16 @@ cfg_if::cfg_if! {
             osx_key_user: None
         };
 
-         
+        pub static CACHY_CONFIG: BrowserConfig<'static> = BrowserConfig {
+            data_paths: &[
+                "~/.cachy"
+            ],
+            channels: None,
+            os_crypt_name: None,
+            osx_key_service: None,
+            osx_key_user: None
+        };
+
         pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[], // not available on Linux
             channels: Some(&["", ""]),
@@ -313,7 +296,6 @@ cfg_if::cfg_if! {
         };
     }
     else if #[cfg(target_os = "macos")]  {
-        
         pub static CHROME_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/Google/Chrome{channel}/Default/Cookies",
@@ -324,9 +306,7 @@ cfg_if::cfg_if! {
             osx_key_service: Some("Chrome Safe Storage"),
             osx_key_user: Some("Chrome"),
         };
-        
-        
-        
+
         pub static BRAVE_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/BraveSoftware/Brave-Browser{channel}/Default/Cookies",
@@ -337,8 +317,7 @@ cfg_if::cfg_if! {
             osx_key_service: Some("Brave Safe Storage"),
             osx_key_user: Some("Brave"),
         };
-        
-        
+
         pub static EDGE_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/Microsoft Edge{channel}/Default/Cookies",
@@ -349,8 +328,7 @@ cfg_if::cfg_if! {
             osx_key_service: Some("Microsoft Edge Safe Storage"),
             osx_key_user: Some("Microsoft Edge")
         };
-        
-        
+
         pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/Firefox"
@@ -360,8 +338,7 @@ cfg_if::cfg_if! {
             osx_key_service: None,
             osx_key_user: None,
         };
-        
-        
+
         pub static LIBREWOLF_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/librewolf"
@@ -371,9 +348,7 @@ cfg_if::cfg_if! {
             osx_key_service: None,
             osx_key_user: None,
         };
-        
-        
-        
+
         pub static VIVALDI_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/Vivaldi/Default/Cookies",
@@ -384,8 +359,7 @@ cfg_if::cfg_if! {
             osx_key_service: Some("Vivaldi Safe Storage"),
             osx_key_user: Some("Vivaldi")
         };
-        
-        
+
         pub static OPERA_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/com.operasoftware.Opera/Cookies",
@@ -397,8 +371,7 @@ cfg_if::cfg_if! {
             osx_key_service: Some("Opera Safe Storage"),
             osx_key_user: Some("Opera")
         };
-        
-        
+
         pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Application Support/Chromium/Default/Cookies",
@@ -409,8 +382,7 @@ cfg_if::cfg_if! {
             osx_key_service: Some("Chromium Safe Storage"),
             osx_key_user: Some("Chromium")
         };
-        
-        
+
         pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &["~/Library/Application Support/com.operasoftware.OperaGX/Cookies"],
             channels: Some(&["Stable", ""]),
@@ -418,9 +390,7 @@ cfg_if::cfg_if! {
             osx_key_service: Some("Opera Safe Storage"),
             osx_key_user: Some("Opera")
         };
-        
-        
-        
+
         pub static SAFARI_CONFIG: BrowserConfig<'static> = BrowserConfig {
             data_paths: &[
                 "~/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies",
@@ -431,6 +401,5 @@ cfg_if::cfg_if! {
             osx_key_service: None,
             osx_key_user: None,
         };
-        
     }
 }

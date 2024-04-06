@@ -21,7 +21,7 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Cookies",
                 "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookies"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: None,
             osx_key_service: None,
             osx_key_user: None,
@@ -41,7 +41,7 @@ cfg_if::cfg_if! {
                 "%APPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Profile */Cookies",
                 "%APPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Profile */Network/Cookies"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: None,
             osx_key_service: None,
             osx_key_user: None,
@@ -60,7 +60,7 @@ cfg_if::cfg_if! {
                 "%APPDATA%/Microsoft/Edge{channel}/User Data/Profile */Cookies",
                 "%APPDATA%/Microsoft/Edge{channel}/User Data/Profile */Network/Cookies"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: None,
             osx_key_service: None,
             osx_key_user: None,
@@ -72,7 +72,7 @@ cfg_if::cfg_if! {
             "%APPDATA%/Mozilla/Firefox",
             "%LOCALAPPDATA%/Mozilla/Firefox"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: None,
             osx_key_service: None,
             osx_key_user: None,
@@ -191,7 +191,7 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.google.Chrome/config/google-chrome{channel}/Default/Cookies",
                 "~/.var/app/com.google.Chrome/config/google-chrome{channel}/Profile */Cookies"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: Some("chrome"),
             osx_key_service: None,
             osx_key_user: None
@@ -207,7 +207,7 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.brave.Browser/config/BraveSoftware/Brave-Browser{channel}/Default/Cookies",
                 "~/.var/app/com.brave.Browser/config/BraveSoftware/Brave-Browser{channel}/Profile */Cookies"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: Some("brave"),
             osx_key_service: None,
             osx_key_user: None
@@ -221,7 +221,7 @@ cfg_if::cfg_if! {
                 "~/.var/app/com.microsoft.Edge/config/microsoft-edge{channel}/Default/Cookies",
                 "~/.var/app/com.microsoft.Edge/config/microsoft-edge{channel}/Profile */Cookies",
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: Some("chromium"),
             osx_key_service: None,
             osx_key_user: None
@@ -319,7 +319,7 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/Google/Chrome{channel}/Default/Cookies",
                 "~/Library/Application Support/Google/Chrome{channel}/Profile */Cookies"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: Some("chrome"),
             osx_key_service: Some("Chrome Safe Storage"),
             osx_key_user: Some("Chrome"),
@@ -332,7 +332,7 @@ cfg_if::cfg_if! {
                 "~/Library/Application Support/BraveSoftware/Brave-Browser{channel}/Default/Cookies",
                 "~/Library/Application Support/BraveSoftware/Brave-Browser{channel}/Profile */Cookies"
             ],
-            channels: Some(&["", "-Beta", "-Dev", "-Nightly"]),
+            channels: Some(&["", "-beta", "-dev", "-nightly"]),
             os_crypt_name: Some("brave"),
             osx_key_service: Some("Brave Safe Storage"),
             osx_key_user: Some("Brave"),

@@ -216,6 +216,9 @@ fn query_cookies(
 
         let value: String = row.get(5)?;
         let encrypted_value: Vec<u8> = row.get(6)?;
+        if encrypted_value.is_empty() {
+            continue;
+        }
         let decrypted_value = decrypt_encrypted_value(value, &encrypted_value, keys.to_owned())?;
         let http_only: bool = row.get(7)?;
 

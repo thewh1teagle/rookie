@@ -1,10 +1,7 @@
 use crate::common::{date, enums::*};
 use anyhow::{anyhow, bail, Result};
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
-use std::fs::File;
-use std::io::Read;
-use std::path::PathBuf;
-use std::vec::Vec;
+use std::{fs::File, io::Read, path::PathBuf, vec::Vec};
 
 fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
     if slice(bs, 0, 4)? != [0x00, 0x00, 0x01, 0x00] {

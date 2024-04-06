@@ -1,11 +1,12 @@
 use std::{ffi::c_void, ptr};
 
 use anyhow::{anyhow, bail, Result};
-use windows::Win32::{Foundation, Security::Cryptography};
 use windows::{
     core::{HSTRING, PCWSTR, PWSTR},
     Win32::{
+        Foundation,
         Foundation::{ERROR_MORE_DATA, ERROR_SUCCESS, WIN32_ERROR},
+        Security::Cryptography,
         System::RestartManager::{
             RmEndSession, RmForceShutdown, RmGetList, RmRegisterResources, RmShutdown,
             RmStartSession, CCH_RM_SESSION_KEY, RM_PROCESS_INFO,

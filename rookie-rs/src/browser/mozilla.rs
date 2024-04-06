@@ -1,13 +1,13 @@
 use crate::common::{date, enums::*, sqlite, utils};
-use anyhow::bail;
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, bail, Result};
 use ini::Ini;
 use log::warn;
 use lz4_flex::block::decompress_size_prepended;
 use serde_json::Value;
-use std::fs;
-use std::path::Path;
-use std::path::PathBuf;
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
     let connection = sqlite::connect(db_path.clone())?;

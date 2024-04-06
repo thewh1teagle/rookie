@@ -3,10 +3,10 @@ pub mod common;
 pub mod config;
 
 use anyhow::{bail, Result};
-use browser::chromium::chromium_based;
-use browser::mozilla::firefox_based;
-use common::enums::Cookie;
-use common::paths;
+use browser::{chromium::chromium_based, mozilla::firefox_based};
+use common::{enums::Cookie, paths};
+#[cfg(target_os = "windows")]
+use std::path::PathBuf;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "windows")] {
@@ -321,8 +321,8 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
         }
 
         else if #[cfg(target_os = "linux")] {
-            browser_types.push(chrome)
-            browser_types.push(cachy)
+            browser_types.push(chrome);
+            browser_types.push(cachy);
         }
 
         else if #[cfg(target_os = "macos")] {
@@ -356,10 +356,11 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 /// let key_path = "C:\\Users\\User\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Local State";
 /// let cookies = rookie::any_browser(cookies_path, None, Some(key_path)).unwrap();
 /// ```
+#[allow(unused_variables)]
 pub fn any_browser(
     cookies_path: &str,
     domains: Option<Vec<&str>>,
-    _key_path: Option<&str>,
+    key_path: Option<&str>,
 ) -> Result<Vec<Cookie>> {
     // chromium based
     cfg_if::cfg_if! {

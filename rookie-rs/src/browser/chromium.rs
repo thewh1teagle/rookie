@@ -1,4 +1,6 @@
 use crate::common::{date, enums::*, sqlite};
+#[cfg(not(target_os = "linux"))]
+use anyhow::Context;
 use anyhow::{bail, Result};
 use log::{info, warn};
 use std::path::PathBuf;
@@ -67,8 +69,8 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
             keys.push(key);
         }
         else if #[cfg(target_os = "macos")] {
-            let key_service = config.osx_key_service.ok_or(anyhow!("missing osx_key_service"))?;
-            let key_user = config.osx_key_user.ok_or(anyhow!("missing osx_key_user"))?;
+            let key_service = config.osx_key_service.context("missing osx_key_service")?;
+            let key_user = config.osx_key_user.context("missing osx_key_user")?;
             let password = secrets::get_osx_keychain_password(key_service, key_user).unwrap_or("peanuts".to_string());
 
             // keychain key
@@ -110,9 +112,8 @@ fn decrypt_encrypted_value(
         let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
         let plaintext = cipher
             .decrypt(nonce, ciphertext.as_ref())
-            .or(Err(anyhow!("Can't decrypt using key")))?;
-        let plaintext =
-            String::from_utf8(plaintext).or(Err(anyhow!("Can't decode encrypted value")))?;
+            .context("Can't decrypt using key")?;
+        let plaintext = String::from_utf8(plaintext).context("Can't decode encrypted value")?;
         return Ok(plaintext);
     }
     bail!("decrypt_encrypted_value failed")
@@ -174,7 +175,7 @@ fn query_cookies(
 ) -> Result<Vec<Cookie>> {
     cfg_if::cfg_if! {
         if #[cfg(target_os = "windows")] {
-            let db_path_str = db_path.to_str().ok_or(anyhow!("Can't convert db path to str"))?;
+            let db_path_str = db_path.to_str().context("Can't convert db path to str")?;
             warn!("Unlocking Chrome database... This may take a while (sometimes up to a minute)");
             unsafe {winapi::release_file_lock(db_path_str);}
         }
@@ -242,17 +243,15 @@ pub fn chromium_based(
     // Use DPAPI
     let content = std::fs::read_to_string(&key)?;
     let key_dict: serde_json::Value =
-        serde_json::from_str(content.as_str()).or(Err(anyhow!("Can't read json file")))?;
+        serde_json::from_str(content.as_str()).context("Can't read json file")?;
 
-    let os_crypt = key_dict
-        .get("os_crypt")
-        .ok_or(anyhow!("Can't get os crypt"))?;
+    let os_crypt = key_dict.get("os_crypt").context("Can't get os crypt")?;
 
     let key64 = os_crypt
         .get("encrypted_key")
-        .ok_or(anyhow!("Can't get encrypted_key"))?
+        .context("Can't get encrypted_key")?
         .as_str()
-        .ok_or(anyhow!("Can't convert encrypted_key to str"))?;
+        .context("Can't convert encrypted_key to str")?;
 
     let keys = get_keys(key64)?;
     query_cookies(keys, db_path, domains)

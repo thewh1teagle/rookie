@@ -1,7 +1,6 @@
 use regex::Regex;
 use reqwest::blocking::Client;
-use rookie::common::enums::CookieToString;
-use rookie::firefox;
+use rookie::{common::enums::CookieToString, firefox};
 
 fn extract_username(html: &str) -> &str {
     let re = Regex::new(r#"dashboard\/ajax_context_list\?current_context=(.+)""#).unwrap();

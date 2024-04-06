@@ -16,11 +16,7 @@ cfg_if::cfg_if! {
     }
     else if #[cfg(target_os = "macos")] {
         use browser::safari::safari_based;
-        use common::secrets;
     }
-    // else if #[cfg(target_os = "linux")] {
-    //     use common::secrets; // Unused
-    // }
 }
 
 /// Returns cookies from Firefox

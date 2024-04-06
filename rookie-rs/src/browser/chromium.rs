@@ -112,6 +112,7 @@ fn decrypt_encrypted_value(
         let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
         let plaintext = cipher
             .decrypt(nonce, ciphertext.as_ref())
+            .map_err(anyhow::Error::msg)
             .context("Can't decrypt using key")?;
         let plaintext = String::from_utf8(plaintext).context("Can't decode encrypted value")?;
         return Ok(plaintext);

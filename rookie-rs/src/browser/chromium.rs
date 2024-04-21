@@ -1,7 +1,9 @@
 use crate::common::{date, enums::*, sqlite};
-use eyre::ContextCompat;
 use eyre::{bail, Result};
 use std::path::PathBuf;
+
+#[cfg(not(target_os = "linux"))]
+use eyre::ContextCompat;
 
 #[cfg(target_os = "macos")]
 use crate::macos::secrets;

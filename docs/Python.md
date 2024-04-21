@@ -20,12 +20,12 @@ Logging level can be controlled by using the `logging` module
 ```python
 import logging
 logging.basicConfig()
-logging.getLogger('rookie').setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.DEBUG)
 ```
 
 To fully disable `rookiepy` logging you can set the level to `CRITICAL`
 
 ```python
 import logging
-logging.getLogger('rookie').setLevel(logging.CRITICAL)
+logging.getLogger().setLevel(logging.CRITICAL)
 ```

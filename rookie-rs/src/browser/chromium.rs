@@ -1,17 +1,17 @@
-use crate::common::{date, enums::*, sqlite};
-use eyre::{bail, ContextCompat, Result};
-use log::{info, warn};
+use crate::common::{ date, enums::*, sqlite };
+use eyre::{ bail, ContextCompat, Result };
+use log::{ info, warn };
 use std::path::PathBuf;
+use cfg_if::cfg_if;
 
-cfg_if::cfg_if! {
+cfg_if! {
     if #[cfg(target_os = "windows")] {
-        use aes_gcm::{Aes256Gcm, Key,aead::{Aead, KeyInit, generic_array::GenericArray}};
+        use aes_gcm::{ Aes256Gcm, Key, aead::{ Aead, KeyInit, generic_array::GenericArray } };
         use serde_json;
-        use base64::{Engine as _, engine::general_purpose};
+        use base64::{ Engine as _, engine::general_purpose };
         use crate::winapi;
         use eyre::Context;
-    }
-    else if #[cfg(unix)] {
+    } else if #[cfg(unix)] {
         use crate::common::secrets;
     }
 }
@@ -53,7 +53,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
 
     let mut keys: Vec<Vec<u8>> = vec![];
 
-    cfg_if::cfg_if! {
+    cfg_if! {
         if #[cfg(target_os = "linux")] {
             if let Ok(passwords) = secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {
                 for password in passwords {
@@ -66,24 +66,25 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
             keys.push(key);
             let key = create_pbkdf2_key("", salt, iterations);
             keys.push(key);
-        }
-        else if #[cfg(target_os = "macos")] {
+        } else if #[cfg(target_os = "macos")] {
             let key_service = config.osx_key_service.context("missing osx_key_service")?;
             let key_user = config.osx_key_user.context("missing osx_key_user")?;
-            let password = secrets::get_osx_keychain_password(key_service, key_user).unwrap_or("peanuts".to_string());
+            let password = secrets
+                ::get_osx_keychain_password(key_service, key_user)
+                .unwrap_or("peanuts".to_string());
 
-            // keychain key
             let key = create_pbkdf2_key(password.as_str(), salt, iterations);
             keys.push(key);
 
-            // default keys
             let key = create_pbkdf2_key("peanuts", salt, iterations);
             keys.push(key);
             let key = create_pbkdf2_key("", salt, iterations);
             keys.push(key);
-
-
         }
+
+        // keychain key
+
+        // default keys
     }
     Ok(keys)
 }
@@ -92,7 +93,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
 fn decrypt_encrypted_value(
     value: String,
     encrypted_value: &[u8],
-    keys: Vec<Vec<u8>>,
+    keys: Vec<Vec<u8>>
 ) -> Result<String> {
     // gcm
 
@@ -124,7 +125,7 @@ fn decrypt_encrypted_value(
 fn decrypt_encrypted_value(
     value: String,
     encrypted_value: &[u8],
-    keys: Vec<Vec<u8>>,
+    keys: Vec<Vec<u8>>
 ) -> Result<String> {
     // cbc
     if !value.is_empty() {
@@ -138,7 +139,7 @@ fn decrypt_encrypted_value(
     if !(key_type == b"v11" || key_type == b"v10") {
         return Ok(value);
     }
-    use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, KeyIvInit};
+    use aes::cipher::{ block_padding::Pkcs7, BlockDecryptMut, KeyIvInit };
 
     type Aes128CbcDec = cbc::Decryptor<aes::Aes128>;
 
@@ -172,22 +173,22 @@ fn decrypt_encrypted_value(
 fn query_cookies(
     keys: Vec<Vec<u8>>,
     db_path: PathBuf,
-    domains: Option<Vec<&str>>,
+    domains: Option<Vec<&str>>
 ) -> Result<Vec<Cookie>> {
-    cfg_if::cfg_if! {
+    cfg_if! {
         if #[cfg(target_os = "windows")] {
             let db_path_str = db_path.to_str().context("Can't convert db path to str")?;
             warn!("Unlocking Chrome database... This may take a while (sometimes up to a minute)");
-            unsafe {winapi::release_file_lock(db_path_str);}
+            unsafe {
+                winapi::release_file_lock(db_path_str);
+            }
         }
     }
 
-    info!(
-        "Creating SQLite connection to {}",
-        db_path.to_str().unwrap_or("")
-    );
+    info!("Creating SQLite connection to {}", db_path.to_str().unwrap_or(""));
     let connection = sqlite::connect(db_path)?;
-    let mut query = "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
+    let mut query =
+        "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
 
     if let Some(domains) = domains {
         let domain_queries: Vec<String> = domains
@@ -242,12 +243,13 @@ fn query_cookies(
 pub fn chromium_based(
     key: PathBuf,
     db_path: PathBuf,
-    domains: Option<Vec<&str>>,
+    domains: Option<Vec<&str>>
 ) -> Result<Vec<Cookie>> {
     // Use DPAPI
     let content = std::fs::read_to_string(&key)?;
-    let key_dict: serde_json::Value =
-        serde_json::from_str(content.as_str()).context("Can't read json file")?;
+    let key_dict: serde_json::Value = serde_json
+        ::from_str(content.as_str())
+        .context("Can't read json file")?;
 
     let os_crypt = key_dict.get("os_crypt").context("Can't get os crypt")?;
 
@@ -265,7 +267,7 @@ pub fn chromium_based(
 pub fn chromium_based(
     config: &BrowserConfig,
     db_path: PathBuf,
-    domains: Option<Vec<&str>>,
+    domains: Option<Vec<&str>>
 ) -> Result<Vec<Cookie>> {
     // Simple AES
     let keys = get_keys(config)?;

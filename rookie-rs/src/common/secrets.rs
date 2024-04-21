@@ -1,7 +1,8 @@
 #[cfg(unix)]
-use eyre::{anyhow, bail, Result};
+use eyre::{ anyhow, bail, Result };
+use cfg_if::cfg_if;
 
-cfg_if::cfg_if! {
+cfg_if! {
     if #[cfg(target_os = "linux")] {
         use crate::common::utils;
         use crate::config;

@@ -9,10 +9,10 @@ on:
   push:
     branches:
       - main
-      - master
-    tags:
-      - '*'
   pull_request:
+    paths:
+      - '.github/workflows/test-rust.yml'
+      - 'rookie-rs/**'
   workflow_dispatch:
 
 permissions:

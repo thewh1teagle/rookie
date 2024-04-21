@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/workflows/lint-cli.yml'
       - 'rookie-rs/src/**'
+  workflow_dispatch:
 
 env:
   RUST_BACKTRACE: 1

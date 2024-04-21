@@ -53,39 +53,40 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
 
   let mut keys: Vec<Vec<u8>> = vec![];
 
-  cfg_if! {
-      if #[cfg(target_os = "linux")] {
-          if let Ok(passwords) = secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {
-              for password in passwords {
-                  let key = create_pbkdf2_key(password.as_str(), salt, iterations);
-                  keys.push(key);
-              }
-          }
-          // default keys
-          let key = create_pbkdf2_key("peanuts", salt, iterations);
-          keys.push(key);
-          let key = create_pbkdf2_key("", salt, iterations);
-          keys.push(key);
-      } else if #[cfg(target_os = "macos")] {
-          let key_service = config.osx_key_service.context("missing osx_key_service")?;
-          let key_user = config.osx_key_user.context("missing osx_key_user")?;
-          let password = secrets
-              ::get_osx_keychain_password(key_service, key_user)
-              .unwrap_or("peanuts".to_string());
-
-          let key = create_pbkdf2_key(password.as_str(), salt, iterations);
-          keys.push(key);
-
-          let key = create_pbkdf2_key("peanuts", salt, iterations);
-          keys.push(key);
-          let key = create_pbkdf2_key("", salt, iterations);
-          keys.push(key);
+  #[cfg(target_os = "linux")]
+  {
+    if let Ok(passwords) = secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {
+      for password in passwords {
+        let key = create_pbkdf2_key(password.as_str(), salt, iterations);
+        keys.push(key);
       }
-
-      // keychain key
-
-      // default keys
+    }
+    // default keys
+    let key = create_pbkdf2_key("peanuts", salt, iterations);
+    keys.push(key);
+    let key = create_pbkdf2_key("", salt, iterations);
+    keys.push(key);
   }
+  #[cfg(target_os = "macos")]
+  {
+    let key_service = config.osx_key_service.context("missing osx_key_service")?;
+    let key_user = config.osx_key_user.context("missing osx_key_user")?;
+    let password =
+      secrets::get_osx_keychain_password(key_service, key_user).unwrap_or("peanuts".to_string());
+
+    let key = create_pbkdf2_key(password.as_str(), salt, iterations);
+    keys.push(key);
+
+    let key = create_pbkdf2_key("peanuts", salt, iterations);
+    keys.push(key);
+    let key = create_pbkdf2_key("", salt, iterations);
+    keys.push(key);
+  }
+
+  // keychain key
+
+  // default keys
+
   Ok(keys)
 }
 
@@ -175,14 +176,13 @@ fn query_cookies(
   db_path: PathBuf,
   domains: Option<Vec<&str>>,
 ) -> Result<Vec<Cookie>> {
-  cfg_if! {
-      if #[cfg(target_os = "windows")] {
-          let db_path_str = db_path.to_str().context("Can't convert db path to str")?;
-          warn!("Unlocking Chrome database... This may take a while (sometimes up to a minute)");
-          unsafe {
-              winapi::release_file_lock(db_path_str);
-          }
-      }
+  #[cfg(target_os = "windows")]
+  {
+    let db_path_str = db_path.to_str().context("Can't convert db path to str")?;
+    warn!("Unlocking Chrome database... This may take a while (sometimes up to a minute)");
+    unsafe {
+      winapi::release_file_lock(db_path_str);
+    }
   }
 
   info!(

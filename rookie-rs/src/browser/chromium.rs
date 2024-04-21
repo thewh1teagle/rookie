@@ -1,5 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
-use eyre::{bail, Result, ContextCompat};
+use eyre::{bail, Result, ContextCompat, Context};
 use log::{info, warn};
 use std::path::PathBuf;
 
@@ -94,6 +94,7 @@ fn decrypt_encrypted_value(
     keys: Vec<Vec<u8>>,
 ) -> Result<String> {
     // gcm
+
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") {
         // unknown key_type or value isn't encrypted

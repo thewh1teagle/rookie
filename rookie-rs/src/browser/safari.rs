@@ -1,5 +1,5 @@
 use crate::common::{date, enums::*};
-use eyre::{anyhow, bail, Result};
+use eyre::{anyhow, bail, Context, Result};
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
 use std::{fs::File, io::Read, path::PathBuf, vec::Vec};
 
@@ -152,7 +152,7 @@ pub fn safari_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<
     // 4. get N cookies from each page, iterate
     // 5. parse each cookie
     // 6. add each cookie based on domain filter
-    let mut file = File::open(db_path)?;
+    let mut file = File::open(db_path.clone()).context(format!("failed to open {}", db_path.display()))?;
     let mut bs: Vec<u8> = Vec::new();
     file.read_to_end(&mut bs)?;
     let cookies = parse_content(&bs)?;

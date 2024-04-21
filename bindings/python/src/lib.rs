@@ -136,9 +136,11 @@ fn chromium_based(
     db_path: String,
     domains: Option<Vec<&str>>,
 ) -> PyResult<Vec<PyObject>> {
-    let cookies =
-        browser::chromium::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains)
-            ?;
+    let cookies = browser::chromium::chromium_based(
+        PathBuf::from(key_path),
+        PathBuf::from(db_path),
+        domains,
+    )?;
     let cookies = to_dict(py, cookies)?;
 
     Ok(cookies)
@@ -161,8 +163,7 @@ fn chromium_based(
         osx_key_service: None,
         osx_key_user: None,
     };
-    let cookies =
-        browser::chromium::chromium_based(&config, PathBuf::from(db_path), domains)?;
+    let cookies = browser::chromium::chromium_based(&config, PathBuf::from(db_path), domains)?;
     let cookies = to_dict(py, cookies)?;
 
     Ok(cookies)

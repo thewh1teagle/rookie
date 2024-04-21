@@ -31,7 +31,7 @@ jobs:
           components: rustfmt
 
       - name: Run cargo fmt
-        run: cargo fmt --manifest-path ./rookie-rs/Cargo.toml --all -- --check
+        run: cargo fmt --manifest-path Cargo.toml --all -- --check
 
   clippy:
     runs-on: ubuntu-latest
@@ -49,4 +49,4 @@ jobs:
           workspaces: rookie-rs
 
       - name: run Clippy
-        run: cargo clippy --manifest-path ./rookie-rs/Cargo.toml --all-targets --all-features -- -D warnings
+        run: cargo clippy --manifest-path Cargo.toml --all-targets --all-features -- -D warnings

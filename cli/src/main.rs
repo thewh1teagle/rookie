@@ -1,5 +1,5 @@
 use clap::Parser;
-use rookie::{any_browser, common::enums::Cookie, load};
+use rookie::{ any_browser, common::enums::Cookie, load };
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]

@@ -1,5 +1,5 @@
-use pyo3::{prelude::*, types::PyDict};
-use rookie::{browser, common::enums::Cookie};
+use pyo3::{ prelude::*, types::PyDict };
+use rookie::{ browser, common::enums::Cookie };
 use std::path::PathBuf;
 
 fn to_dict(py: Python, cookies: Vec<Cookie>) -> PyResult<Vec<PyObject>> {
@@ -134,12 +134,12 @@ fn chromium_based(
     py: Python,
     key_path: String,
     db_path: String,
-    domains: Option<Vec<&str>>,
+    domains: Option<Vec<&str>>
 ) -> PyResult<Vec<PyObject>> {
     let cookies = browser::chromium::chromium_based(
         PathBuf::from(key_path),
         PathBuf::from(db_path),
-        domains,
+        domains
     )?;
     let cookies = to_dict(py, cookies)?;
 
@@ -151,7 +151,7 @@ fn chromium_based(
 fn chromium_based(
     py: Python,
     db_path: String,
-    domains: Option<Vec<&str>>,
+    domains: Option<Vec<&str>>
 ) -> PyResult<Vec<PyObject>> {
     use rookie::common::enums::BrowserConfig;
 
@@ -173,7 +173,7 @@ fn chromium_based(
 fn firefox_based(
     py: Python,
     db_path: String,
-    domains: Option<Vec<&str>>,
+    domains: Option<Vec<&str>>
 ) -> PyResult<Vec<PyObject>> {
     let cookies = browser::mozilla::firefox_based(PathBuf::from(db_path), domains)?;
     let cookies = to_dict(py, cookies)?;
@@ -194,7 +194,7 @@ fn any_browser(
     py: Python,
     db_path: &str,
     domains: Option<Vec<&str>>,
-    key_path: Option<&str>,
+    key_path: Option<&str>
 ) -> PyResult<Vec<PyObject>> {
     let cookies = rookie::any_browser(db_path, domains, key_path)?;
     let cookies = to_dict(py, cookies)?;
@@ -224,8 +224,7 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
         if #[cfg(target_os = "windows")] {
             m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;
             m.add_function(wrap_pyfunction!(octo_browser, m)?)?;
-        }
-        else if #[cfg(target_os = "macos")] {
+        } else if #[cfg(target_os = "macos")] {
             m.add_function(wrap_pyfunction!(safari, m)?)?;
         }
     }

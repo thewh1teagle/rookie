@@ -98,11 +98,11 @@ pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf
 pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
   for path in browser_config.data_paths {
     // base paths
-    let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
+    let channels: &[&str] = browser_config.channels.unwrap_or(&[""]);
     for channel in channels {
       // channels
 
-      let path = path.replace("{channel}", &channel);
+      let path = path.replace("{channel}", channel);
       let path = expand_path(path.as_str())?;
       let glob_paths = expand_glob_paths(path)?;
       for path in glob_paths {
@@ -127,7 +127,7 @@ pub fn expand_path(path: &str) -> Result<PathBuf> {
   let mut expanded_path = path.to_owned();
 
   // Iterate over all matches of the regex pattern in the input path
-  for capture in re.captures_iter(&path) {
+  for capture in re.captures_iter(path) {
     // Get the matched placeholder (e.g., "APPDATA" from "%APPDATA%")
     let placeholder = &capture[1];
 

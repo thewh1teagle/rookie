@@ -1,2 +1,3 @@
-mod config;
-mod file_unlock;
+pub mod config;
+pub(crate) mod dpapi;
+pub(crate) mod file_unlock;

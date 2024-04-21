@@ -8,6 +8,7 @@ use std::{
   path::{Path, PathBuf},
 };
 
+/// Returns cookies from mozilla based browsers
 pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   let connection = sqlite::connect(db_path.clone())?;
   let mut query = "

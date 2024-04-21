@@ -1,39 +1,37 @@
-pub mod browser;
+// Public
+
+// Common
 pub mod common;
+pub use common::enums;
 
-use browser::{chromium::chromium_based, mozilla::firefox_based};
-use common::{enums::Cookie, paths};
-use eyre::{bail, Result};
-
-// MacOS
+// Browser
+#[cfg(target_os = "windows")]
+pub use browser::internet_explorer::internet_explorer_based;
 #[cfg(target_os = "macos")]
-pub mod macos;
+pub use browser::safari::safari_based;
+pub use browser::{chromium::chromium_based, mozilla::firefox_based};
 
-#[cfg(target_os = "macos")]
-use browser::safari::safari_based;
-
+// Config
+#[cfg(target_os = "linux")]
+pub use linux::config;
 #[cfg(target_os = "macos")]
 pub use macos::config;
-
-// Windows
-#[cfg(target_os = "windows")]
-pub mod windows;
-
-#[cfg(target_os = "windows")]
-pub use browser::internet_explorer;
-
-#[cfg(target_os = "windows")]
-use std::path::PathBuf;
-
 #[cfg(target_os = "windows")]
 pub use windows::config;
 
-// Linux
+// Private
+mod browser;
+use common::paths;
+use enums::Cookie;
+use eyre::{bail, Result};
 #[cfg(target_os = "linux")]
-pub mod linux;
-
-#[cfg(target_os = "linux")]
-pub use linux::config;
+mod linux;
+#[cfg(target_os = "windows")]
+use std::path::PathBuf;
+#[cfg(target_os = "windows")]
+mod windows;
+#[cfg(target_os = "macos")]
+use macos;
 
 /// Returns cookies from Firefox
 ///
@@ -103,7 +101,7 @@ pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   #[cfg(target_os = "windows")]
   {
     let (key, db_path) = paths::find_chrome_based_paths(&config::CHROME_CONFIG)?;
-    chromium_based(PathBuf::from(key), db_path, domains)
+    chromium_based(key, db_path, domains)
   }
   #[cfg(unix)]
   {
@@ -128,7 +126,7 @@ pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   #[cfg(target_os = "windows")]
   {
     let (key, db_path) = paths::find_chrome_based_paths(&config::CHROMIUM_CONFIG)?;
-    chromium_based(PathBuf::from(key), db_path, domains)
+    chromium_based(key, db_path, domains)
   }
   #[cfg(unix)]
   {
@@ -153,7 +151,7 @@ pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   #[cfg(target_os = "windows")]
   {
     let (key, db_path) = paths::find_chrome_based_paths(&config::BRAVE_CONFIG)?;
-    chromium_based(PathBuf::from(key), db_path, domains)
+    chromium_based(key, db_path, domains)
   }
   #[cfg(unix)]
   {
@@ -178,7 +176,7 @@ pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   #[cfg(target_os = "windows")]
   {
     let (key, db_path) = paths::find_chrome_based_paths(&config::EDGE_CONFIG)?;
-    chromium_based(PathBuf::from(key), db_path, domains)
+    chromium_based(key, db_path, domains)
   }
   #[cfg(unix)]
   {
@@ -203,7 +201,7 @@ pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   #[cfg(target_os = "windows")]
   {
     let (key, db_path) = paths::find_chrome_based_paths(&config::VIVALDI_CONFIG)?;
-    chromium_based(PathBuf::from(key), db_path, domains)
+    chromium_based(key, db_path, domains)
   }
   #[cfg(unix)]
   {
@@ -228,7 +226,7 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   #[cfg(target_os = "windows")]
   {
     let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_CONFIG)?;
-    chromium_based(PathBuf::from(key), db_path, domains)
+    chromium_based(key, db_path, domains)
   }
   #[cfg(unix)]
   {
@@ -253,7 +251,7 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   #[cfg(target_os = "windows")]
   {
     let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
-    chromium_based(PathBuf::from(key), db_path, domains)
+    chromium_based(key, db_path, domains)
   }
   #[cfg(unix)]
   {
@@ -277,7 +275,7 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
 #[cfg(target_os = "windows")]
 pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
   let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
-  chromium_based(PathBuf::from(key), db_path, domains)
+  chromium_based(key, db_path, domains)
 }
 
 /// Returns cookies from Safari (macOS only)

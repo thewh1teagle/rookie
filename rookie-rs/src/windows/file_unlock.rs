@@ -1,12 +1,7 @@
-use std::{ffi::c_void, ptr};
-
-use eyre::{anyhow, bail, Result};
 use windows::{
   core::{HSTRING, PCWSTR, PWSTR},
   Win32::{
-    Foundation,
     Foundation::{ERROR_MORE_DATA, ERROR_SUCCESS, WIN32_ERROR},
-    Security::Cryptography,
     System::RestartManager::{
       RmEndSession, RmForceShutdown, RmGetList, RmRegisterResources, RmShutdown, RmStartSession,
       CCH_RM_SESSION_KEY, RM_PROCESS_INFO,
@@ -56,5 +51,5 @@ pub unsafe fn release_file_lock(file_path: &str) -> bool {
     RmEndSession(session);
     return false;
   }
-  return false;
+  false
 }

@@ -30,7 +30,7 @@ pub fn safari_timestamp(timestamp: u64) -> Option<u64> {
 }
 #[cfg(target_os = "windows")]
 pub fn internet_explorer_timestamp(timestamp: u64) -> Option<u64> {
-  if timestamp <= 0 {
+  if timestamp == 0 {
     return None;
   }
   let mut timestamp = timestamp - 116_444_736_000_000_000;

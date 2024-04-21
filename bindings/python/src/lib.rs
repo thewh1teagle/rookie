@@ -1,5 +1,5 @@
 use pyo3::{prelude::*, types::PyDict};
-use rookie::common::enums::Cookie;
+use rookie::enums::Cookie;
 mod browsers;
 use browsers::*;
 

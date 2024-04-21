@@ -14,9 +14,6 @@ keywords = ["windows", "cookies", "rust", "web"]
 name = "rookie"
 path = "src/lib.rs"
 
-[[bin]]
-name = "main"
-path = "bin/main.rs"
 
 [dependencies]
 aes = "0.8"

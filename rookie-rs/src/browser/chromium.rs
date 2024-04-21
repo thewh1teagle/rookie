@@ -76,9 +76,8 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
   // AES CBC key
 
   let salt = b"saltysalt";
-  let iterations: u32;
 
-  iterations = 1;
+  let iterations = 1;
 
   let mut keys: Vec<Vec<u8>> = vec![];
   if let Ok(passwords) = crate::linux::secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {

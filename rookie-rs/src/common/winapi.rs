@@ -1,6 +1,6 @@
 use std::{ffi::c_void, ptr};
 
-use anyhow::{anyhow, bail, Result};
+use eyre::{anyhow, bail, Result};
 use windows::{
     core::{HSTRING, PCWSTR, PWSTR},
     Win32::{

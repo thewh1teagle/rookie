@@ -1,5 +1,5 @@
 use crate::{browser::mozilla::get_default_profile, common::enums::BrowserConfig};
-use anyhow::{anyhow, bail, Result};
+use eyre::{anyhow, bail, Result};
 use log::debug;
 use std::{env, path::PathBuf};
 

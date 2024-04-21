@@ -1,7 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
-#[cfg(not(target_os = "linux"))]
-use anyhow::Context;
-use anyhow::{bail, Result};
+use eyre::{bail, Result};
 use log::{info, warn};
 use std::path::PathBuf;
 
@@ -39,6 +37,8 @@ fn create_pbkdf2_key(password: &str, salt: &[u8; 9], iterations: u32) -> Vec<u8>
 #[cfg(unix)]
 fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
     // AES CBC key
+
+    use eyre::ContextCompat;
 
     let salt = b"saltysalt";
     let iterations: u32;
@@ -112,7 +112,7 @@ fn decrypt_encrypted_value(
         let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
         let plaintext = cipher
             .decrypt(nonce, ciphertext.as_ref())
-            .map_err(anyhow::Error::msg)
+            .map_err(eyre::Error::msg)
             .context("Can't decrypt using key")?;
         let plaintext = String::from_utf8(plaintext).context("Can't decode encrypted value")?;
         return Ok(plaintext);

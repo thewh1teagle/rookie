@@ -2,7 +2,7 @@ use crate::{
     common::{date, enums::Cookie},
     winapi,
 };
-use anyhow::Result;
+use eyre::Result;
 use libesedb::EseDb;
 use std::path::PathBuf;
 

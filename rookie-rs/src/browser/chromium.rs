@@ -230,6 +230,7 @@ fn unlock_file(mut path: PathBuf) -> Result<PathBuf> {
   Ok(path)
 }
 
+#[allow(unused_mut)]
 fn query_cookies(
   keys: Vec<Vec<u8>>,
   mut db_path: PathBuf,

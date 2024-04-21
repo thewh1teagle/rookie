@@ -1,6 +1,6 @@
-#[cfg(unix)]
-use eyre::{ anyhow, bail, Result };
 use cfg_if::cfg_if;
+#[cfg(unix)]
+use eyre::{anyhow, bail, Result};
 
 cfg_if! {
     if #[cfg(target_os = "linux")] {

@@ -19,6 +19,7 @@ Logging level can be controlled by using the `logging` module
 
 ```python
 import logging
+logging.basicConfig()
 logging.getLogger('rookie').setLevel(logging.DEBUG)
 ```
 

@@ -30,7 +30,7 @@ jobs:
           components: rustfmt
 
       - name: Run cargo fmt
-        run: cargo fmt --manifest-path ./tooling/cli/Cargo.toml --all -- --check
+        run: cargo fmt --manifest-path ./rookie-rs/Cargo.toml --all -- --check
 
   clippy:
     runs-on: ubuntu-latest

@@ -1,5 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
-use eyre::{bail, Result};
+use eyre::{bail, Result, ContextCompat};
 use log::{info, warn};
 use std::path::PathBuf;
 
@@ -9,6 +9,7 @@ cfg_if::cfg_if! {
         use serde_json;
         use base64::{Engine as _, engine::general_purpose};
         use crate::winapi;
+        use eyre::Context;
     }
     else if #[cfg(unix)] {
         use crate::common::secrets;
@@ -37,8 +38,6 @@ fn create_pbkdf2_key(password: &str, salt: &[u8; 9], iterations: u32) -> Vec<u8>
 #[cfg(unix)]
 fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
     // AES CBC key
-
-    use eyre::ContextCompat;
 
     let salt = b"saltysalt";
     let iterations: u32;
@@ -96,6 +95,7 @@ fn decrypt_encrypted_value(
     keys: Vec<Vec<u8>>,
 ) -> Result<String> {
     // gcm
+
     let key_type = &encrypted_value[..3];
     if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") {
         // unknown key_type or value isn't encrypted

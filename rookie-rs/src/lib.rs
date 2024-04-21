@@ -28,10 +28,10 @@ use eyre::{bail, Result};
 mod linux;
 #[cfg(target_os = "windows")]
 use std::path::PathBuf;
+#[cfg(target_os = "macos")]
+mod macos;
 #[cfg(target_os = "windows")]
 mod windows;
-#[cfg(target_os = "macos")]
-use macos;
 
 /// Returns cookies from Firefox
 ///

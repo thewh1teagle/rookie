@@ -98,9 +98,8 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
 #[cfg(target_os = "macos")]
 fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
   let salt = b"saltysalt";
-  let iterations: u32;
 
-  iterations = 1003;
+  let iterations = 1003;
 
   let mut keys: Vec<Vec<u8>> = vec![];
 

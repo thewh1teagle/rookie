@@ -6,9 +6,9 @@
 name: Test rookie-rs
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
   pull_request:
     paths:
       - '.github/workflows/test-rust.yml'

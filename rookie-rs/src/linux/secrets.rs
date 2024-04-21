@@ -1,10 +1,8 @@
-#[cfg(unix)]
 use eyre::{anyhow, bail, Result};
-
-use crate::common::utils;
-use crate::config;
 use std::{collections::HashMap, sync::Arc};
 use zbus::{blocking::Connection, zvariant::ObjectPath, zvariant::Value, Message};
+
+use super::APP_ID;
 
 /// Get password from either kdewallet or libsecret (ubuntu)
 pub fn get_passwords(os_crypt_name: &str) -> Result<Vec<String>> {
@@ -83,23 +81,15 @@ fn get_password_libsecret(schema: &str, crypt_name: &str) -> Result<String> {
 
 fn get_password_kdewallet(crypt_name: &str) -> Result<String> {
   let connection = Connection::session()?;
-  let folder = format!("{} Keys", utils::capitalize(crypt_name));
-  let key = format!("{} Safe Storage", utils::capitalize(crypt_name));
+  let folder = format!("{} Keys", capitalize(crypt_name));
+  let key = format!("{} Safe Storage", capitalize(crypt_name));
 
   let m = kwallet_call(&connection, "networkWallet", ())?;
   let network_wallet: String = m.body()?;
 
-  let m = kwallet_call(
-    &connection,
-    "open",
-    (network_wallet.clone(), 0_i64, config::APP_ID),
-  )?;
+  let m = kwallet_call(&connection, "open", (network_wallet.clone(), 0_i64, APP_ID))?;
   let handle: i32 = m.body()?;
-  let m = kwallet_call(
-    &connection,
-    "readPassword",
-    (handle, folder, key, config::APP_ID),
-  )?;
+  let m = kwallet_call(&connection, "readPassword", (handle, folder, key, APP_ID))?;
   let password: String = m.body()?;
   let m = kwallet_call(&connection, "close", (network_wallet, false))?;
   let close_ok: i32 = m.body()?;

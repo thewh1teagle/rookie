@@ -1,6 +1,6 @@
 use crate::common::{date, enums::*, sqlite};
 use cfg_if::cfg_if;
-use eyre::{bail, ContextCompat, Result};
+use eyre::{bail, Result};
 use std::path::PathBuf;
 
 #[cfg(target_os = "macos")]
@@ -81,7 +81,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
   iterations = 1;
 
   let mut keys: Vec<Vec<u8>> = vec![];
-  if let Ok(passwords) = secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {
+  if let Ok(passwords) = crate::linux::secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {
     for password in passwords {
       let key = create_pbkdf2_key(password.as_str(), salt, iterations);
       keys.push(key);

@@ -1,5 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
-use eyre::{bail, Result, ContextCompat};
+use eyre::{bail, ContextCompat, Result};
 use log::{info, warn};
 use std::path::PathBuf;
 

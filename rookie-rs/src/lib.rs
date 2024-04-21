@@ -2,9 +2,9 @@ pub mod browser;
 pub mod common;
 pub mod config;
 
-use eyre::{bail, Result};
 use browser::{chromium::chromium_based, mozilla::firefox_based};
 use common::{enums::Cookie, paths};
+use eyre::{bail, Result};
 #[cfg(target_os = "windows")]
 use std::path::PathBuf;
 

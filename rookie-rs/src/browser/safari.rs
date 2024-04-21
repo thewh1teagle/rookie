@@ -1,6 +1,6 @@
 use crate::common::{date, enums::*};
-use eyre::{anyhow, bail, Context, Result};
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
+use eyre::{anyhow, bail, Context, Result};
 use std::{fs::File, io::Read, path::PathBuf, vec::Vec};
 
 fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
@@ -21,7 +21,7 @@ fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
         let parsed_slice = u32_value.and_then(|len| slice(bs, off, len as usize));
 
         // Parse the sliced data into a Cookie struct using LittleEndian encoding
-        let cookie = parsed_slice.and_then(|u| parse_cookie::<LittleEndian>(u))?;
+        let cookie = parsed_slice.and_then(parse_cookie::<LittleEndian>)?;
         cookies.push(cookie);
 
         // Return the parsed Cookie struct, or propagate an error if any step fails
@@ -37,24 +37,24 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> Result<Cookie> {
     if bs.len() < 0x30 {
         bail!("cookie data underflow");
     }
-    let flags = T::read_u32(&bs[0x08..0x0C]);
+    let flags = T::read_u32(&bs[0x08..0x0c]);
 
     let url_off = T::read_u32(&bs[0x10..0x14]) as usize;
     let name_off = T::read_u32(&bs[0x14..0x18]) as usize;
-    let path_off = T::read_u32(&bs[0x18..0x1C]) as usize;
-    let value_off = T::read_u32(&bs[0x1C..0x20]) as usize;
+    let path_off = T::read_u32(&bs[0x18..0x1c]) as usize;
+    let value_off = T::read_u32(&bs[0x1c..0x20]) as usize;
 
     // i/OS/X to Unix timestamp +(1 Jan 2001 epoch seconds).
     let expires = T::read_u64(&bs[0x28..0x30]);
     let expires = date::safari_timestamp(expires);
 
-    let url = slice_to(bs, url_off, name_off).and_then(&c_str)?;
-    let name = slice_to(bs, name_off, path_off).and_then(&c_str)?;
-    let path = slice_to(bs, path_off, value_off).and_then(&c_str)?;
-    let value = slice_to(bs, value_off, bs.len()).and_then(&c_str)?;
+    let url = slice_to(bs, url_off, name_off).and_then(c_str)?;
+    let name = slice_to(bs, name_off, path_off).and_then(c_str)?;
+    let path = slice_to(bs, path_off, value_off).and_then(c_str)?;
+    let value = slice_to(bs, value_off, bs.len()).and_then(c_str)?;
 
-    let is_secure = flags & 0x01 == 0x01;
-    let is_http_only = flags & 0x04 == 0x04;
+    let is_secure = (flags & 0x01) == 0x01;
+    let is_http_only = (flags & 0x04) == 0x04;
 
     let cookie = Cookie {
         expires,
@@ -71,7 +71,7 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> Result<Cookie> {
 
 pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
     // Magic bytes: "COOK" = 0x636F6F6B
-    if slice(bs, 0, 4)? != [0x63, 0x6F, 0x6F, 0x6B] {
+    if slice(bs, 0, 4)? != [0x63, 0x6f, 0x6f, 0x6b] {
         bail!("not a cookie file");
     }
 
@@ -115,7 +115,7 @@ fn parse_table<T: ByteOrder>(bs: &[u8], count: usize) -> Result<Vec<usize>> {
     if end > bs.len() {
         bail!("table data underflow");
     }
-    let data = (&bs[..end])
+    let data = bs[..end]
         .chunks(4)
         .map(|u| T::read_u32(u) as usize)
         .collect();
@@ -152,7 +152,8 @@ pub fn safari_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<
     // 4. get N cookies from each page, iterate
     // 5. parse each cookie
     // 6. add each cookie based on domain filter
-    let mut file = File::open(db_path.clone()).context(format!("failed to open {}", db_path.display()))?;
+    let mut file =
+        File::open(db_path.clone()).context(format!("failed to open {}", db_path.display()))?;
     let mut bs: Vec<u8> = Vec::new();
     file.read_to_end(&mut bs)?;
     let cookies = parse_content(&bs)?;

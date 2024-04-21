@@ -116,10 +116,10 @@ pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBu
 pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
     for path in browser_config.data_paths {
         // base paths
-        let channels: &[&str] = &browser_config.channels.as_deref().unwrap_or(&[""]);
+        let channels: &[&str] = browser_config.channels.unwrap_or(&[""]);
         for channel in channels {
             // channels
-            let path = path.replace("{channel}", &channel);
+            let path = path.replace("{channel}", channel);
             let safari_path = expand_path(path.as_str())?;
             let glob_paths = expand_glob_paths(safari_path)?;
             for path in glob_paths {

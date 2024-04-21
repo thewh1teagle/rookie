@@ -24,7 +24,7 @@ aes-gcm = "0.10"
 byteorder = "1"
 cbc = "0.1"
 cfg-if = "1"
-eyre = "0.6.12"
+eyre = { version = "0.6.12", features = ["pyo3"] }
 glob = "0.3"
 log = "0.4"
 lz4_flex = "0.11"

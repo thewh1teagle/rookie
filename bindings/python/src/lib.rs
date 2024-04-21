@@ -1,206 +1,7 @@
 use pyo3::{ prelude::*, types::PyDict };
-use rookie::{ browser, common::enums::Cookie };
-use std::path::PathBuf;
-
-fn to_dict(py: Python, cookies: Vec<Cookie>) -> PyResult<Vec<PyObject>> {
-    let mut cookie_objects: Vec<PyObject> = vec![];
-    for cookie in cookies {
-        let dict = PyDict::new(py);
-        dict.set_item("domain", cookie.domain)?;
-        dict.set_item("path", cookie.path)?;
-        dict.set_item("secure", cookie.secure)?;
-        dict.set_item("http_only", cookie.http_only)?;
-        dict.set_item("same_site", cookie.same_site)?;
-        dict.set_item("expires", cookie.expires)?;
-        dict.set_item("name", cookie.name)?;
-        dict.set_item("value", cookie.value)?;
-
-        // Add fields to cookie_dict using set_item
-        // cookie_dict.set_item(py, "field_name", field_value);
-        // Repeat for each field in the Cookie struct
-        // Finally, return the cookie_dict as a PyObject
-        cookie_objects.push(dict.to_object(py));
-    }
-    Ok(cookie_objects)
-}
-
-#[pyfunction]
-fn firefox(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::firefox(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn librewolf(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::librewolf(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn chrome(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::chrome(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn brave(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::brave(domains)?;
-
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn edge(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::edge(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn opera(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::opera(domains)?;
-
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn opera_gx(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::opera_gx(domains)?;
-
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-#[cfg(target_os = "windows")]
-fn octo_browser(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::octo_browser(domains)?;
-
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn chromium(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::chromium(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn vivaldi(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::vivaldi(domains)?;
-
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-#[cfg(target_os = "windows")]
-fn internet_explorer(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::internet_explorer(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-#[cfg(target_os = "macos")]
-fn safari(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::safari(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-#[cfg(target_os = "windows")]
-fn chromium_based(
-    py: Python,
-    key_path: String,
-    db_path: String,
-    domains: Option<Vec<&str>>
-) -> PyResult<Vec<PyObject>> {
-    let cookies = browser::chromium::chromium_based(
-        PathBuf::from(key_path),
-        PathBuf::from(db_path),
-        domains
-    )?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-#[cfg(unix)]
-fn chromium_based(
-    py: Python,
-    db_path: String,
-    domains: Option<Vec<&str>>
-) -> PyResult<Vec<PyObject>> {
-    use rookie::common::enums::BrowserConfig;
-
-    let db_path = db_path.as_str();
-    let config = BrowserConfig {
-        channels: None,
-        data_paths: &[db_path],
-        os_crypt_name: Some("chrome"),
-        osx_key_service: None,
-        osx_key_user: None,
-    };
-    let cookies = browser::chromium::chromium_based(&config, PathBuf::from(db_path), domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn firefox_based(
-    py: Python,
-    db_path: String,
-    domains: Option<Vec<&str>>
-) -> PyResult<Vec<PyObject>> {
-    let cookies = browser::mozilla::firefox_based(PathBuf::from(db_path), domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn load(py: Python, domains: Option<Vec<&str>>) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::load(domains)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
-
-#[pyfunction]
-fn any_browser(
-    py: Python,
-    db_path: &str,
-    domains: Option<Vec<&str>>,
-    key_path: Option<&str>
-) -> PyResult<Vec<PyObject>> {
-    let cookies = rookie::any_browser(db_path, domains, key_path)?;
-    let cookies = to_dict(py, cookies)?;
-
-    Ok(cookies)
-}
+use rookie::common::enums::Cookie;
+mod browsers;
+use browsers::*;
 
 #[pymodule]
 fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
@@ -220,13 +21,33 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(load, m)?)?;
     m.add_function(wrap_pyfunction!(any_browser, m)?)?;
 
-    cfg_if::cfg_if! {
-        if #[cfg(target_os = "windows")] {
-            m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;
-            m.add_function(wrap_pyfunction!(octo_browser, m)?)?;
-        } else if #[cfg(target_os = "macos")] {
-            m.add_function(wrap_pyfunction!(safari, m)?)?;
-        }
+    #[cfg(target_os = "windows")]
+    {
+        m.add_function(wrap_pyfunction!(internet_explorer, m)?)?;
+        m.add_function(wrap_pyfunction!(octo_browser, m)?)?;
     }
+    #[cfg(target_os = "macos")]
+    {
+        m.add_function(wrap_pyfunction!(safari, m)?)?;
+    }
+
     Ok(())
+}
+
+fn to_dict(py: Python, cookies: Vec<Cookie>) -> PyResult<Vec<PyObject>> {
+    let mut cookie_objects: Vec<PyObject> = vec![];
+    for cookie in cookies {
+        let dict = PyDict::new(py);
+        dict.set_item("domain", cookie.domain)?;
+        dict.set_item("path", cookie.path)?;
+        dict.set_item("secure", cookie.secure)?;
+        dict.set_item("http_only", cookie.http_only)?;
+        dict.set_item("same_site", cookie.same_site)?;
+        dict.set_item("expires", cookie.expires)?;
+        dict.set_item("name", cookie.name)?;
+        dict.set_item("value", cookie.value)?;
+
+        cookie_objects.push(dict.to_object(py));
+    }
+    Ok(cookie_objects)
 }

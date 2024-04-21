@@ -43,7 +43,7 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
       }
     }
   }
-  Err(anyhow!("can't find any cookies file"))
+  Err(anyhow!("can't find cookies file"))
 }
 
 pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
@@ -69,7 +69,7 @@ pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBu
     }
   }
 
-  bail!("Can't find any Brave cookies file")
+  bail!("Can't find cookies file")
 }
 
 #[cfg(target_os = "macos")]
@@ -91,7 +91,7 @@ pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf
       }
     }
   }
-  bail!("Can't find any Brave cookies file")
+  bail!("Can't find cookies file")
 }
 
 #[cfg(target_os = "windows")]
@@ -115,7 +115,7 @@ pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
     }
   }
 
-  bail!("Can't find any IE cookies file")
+  bail!("Can't find cookies file")
 }
 #[cfg(target_os = "windows")]
 pub fn expand_path(path: &str) -> Result<PathBuf> {

@@ -1,9 +1,9 @@
-use crate::{
-  common::{date, enums::*, sqlite},
-  windows,
-};
+use crate::common::{date, enums::*, sqlite};
 use eyre::{bail, Result};
 use std::path::PathBuf;
+
+#[cfg(target_os = "windows")]
+use crate::windows;
 
 #[cfg(not(target_os = "linux"))]
 use eyre::ContextCompat;

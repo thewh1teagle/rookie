@@ -3,7 +3,7 @@
 #
 #    maturin generate-ci github
 #
-name: TEST
+name: Test rookie-rs
 
 on:
   push:

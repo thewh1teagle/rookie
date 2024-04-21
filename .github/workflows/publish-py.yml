@@ -3,11 +3,12 @@
 #
 #    maturin generate-ci github
 #
-name: PY_RELEASE
+name: Publish pypi
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "*"
   workflow_dispatch:
 
 permissions:

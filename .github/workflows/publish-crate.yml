@@ -1,8 +1,9 @@
-name: CRATE
+name: Publish Crate
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "*"
   workflow_dispatch:
 
 permissions:

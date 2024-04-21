@@ -1,4 +1,4 @@
-name: lint cli
+name: Lint rookie-rs
 
 on:
   push:

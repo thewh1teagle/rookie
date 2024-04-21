@@ -1,5 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
-use eyre::{bail, Result, ContextCompat, Context};
+use eyre::{bail, Result, ContextCompat};
 use log::{info, warn};
 use std::path::PathBuf;
 
@@ -9,6 +9,7 @@ cfg_if::cfg_if! {
         use serde_json;
         use base64::{Engine as _, engine::general_purpose};
         use crate::winapi;
+        use eyre::Context;
     }
     else if #[cfg(unix)] {
         use crate::common::secrets;

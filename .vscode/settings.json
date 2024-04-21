@@ -1,4 +1,4 @@
 {
-    // "rust-analyzer.cargo.target": "x86_64-pc-windows-msvc",
-    // "rust-analyzer.checkOnSave.target": "x86_64-pc-windows-msvc"
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
 }

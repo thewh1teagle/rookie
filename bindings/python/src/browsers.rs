@@ -1,6 +1,5 @@
 use crate::to_dict;
 use pyo3::prelude::*;
-use rookie::browser;
 use std::path::PathBuf;
 
 /// Any browser
@@ -102,7 +101,7 @@ pub fn firefox_based(
   db_path: String,
   domains: Option<Vec<&str>>,
 ) -> PyResult<Vec<PyObject>> {
-  let cookies = browser::mozilla::firefox_based(PathBuf::from(db_path), domains)?;
+  let cookies = rookie::firefox_based(PathBuf::from(db_path), domains)?;
   let cookies = to_dict(py, cookies)?;
 
   Ok(cookies)
@@ -144,8 +143,7 @@ pub fn chromium_based(
   db_path: String,
   domains: Option<Vec<&str>>,
 ) -> PyResult<Vec<PyObject>> {
-  let cookies =
-    browser::chromium::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains)?;
+  let cookies = rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains)?;
   let cookies = to_dict(py, cookies)?;
 
   Ok(cookies)
@@ -181,7 +179,7 @@ pub fn chromium_based(
     osx_key_service: None,
     osx_key_user: None,
   };
-  let cookies = browser::chromium::chromium_based(&config, PathBuf::from(db_path), domains)?;
+  let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains)?;
   let cookies = to_dict(py, cookies)?;
 
   Ok(cookies)

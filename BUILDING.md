@@ -1,5 +1,11 @@
 # Build rookie
 
+## Linux setup
+
+```console
+sudo apt-get install -y python3-dev
+```
+
 ## rookie-rs
 
 ```console

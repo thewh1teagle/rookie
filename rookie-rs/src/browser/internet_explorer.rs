@@ -1,18 +1,16 @@
-use crate::{
-  common::{date, enums::Cookie},
-  winapi,
-};
+use crate::common::{date, enums::Cookie};
 use eyre::Result;
 use libesedb::EseDb;
 use std::path::PathBuf;
 
+/// Returns cookies from IE based browsers
 pub fn internet_explorer_based(
   db_path: PathBuf,
   domains: Option<Vec<&str>>,
 ) -> Result<Vec<Cookie>> {
   unsafe {
     if let Some(path) = db_path.to_str() {
-      winapi::release_file_lock(path);
+      crate::windows::dpapi::release_file_lock(path);
     }
   }
   let db = EseDb::open(db_path)?;

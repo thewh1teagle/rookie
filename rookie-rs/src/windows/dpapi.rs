@@ -20,7 +20,7 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
   // https://docs.rs/winapi/latest/winapi/um/dpapi/index.html
   // https://docs.rs/winapi/latest/winapi/um/winbase/fn.LocalFree.html
 
-  let mut data_in = Cryptography::CRYPT_INTEGER_BLOB {
+  let data_in = Cryptography::CRYPT_INTEGER_BLOB {
     cbData: keydpapi.len() as u32,
     pbData: keydpapi.as_mut_ptr(),
   };
@@ -31,7 +31,7 @@ pub fn decrypt(keydpapi: &mut [u8]) -> Result<Vec<u8>> {
 
   unsafe {
     let _ = match Cryptography::CryptUnprotectData(
-      &mut data_in,
+      &data_in,
       Some(ptr::null_mut()),
       Some(ptr::null_mut()),
       Some(ptr::null_mut()),
@@ -101,5 +101,5 @@ pub unsafe fn release_file_lock(file_path: &str) -> bool {
     RmEndSession(session);
     return false;
   }
-  return false;
+  false
 }

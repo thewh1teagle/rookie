@@ -1,8 +1,8 @@
-pub mod chromium;
-pub mod mozilla;
+pub(crate) mod chromium;
+pub(crate) mod mozilla;
 
 #[cfg(target_os = "windows")]
-pub mod internet_explorer;
+pub(crate) mod internet_explorer;
 
 #[cfg(target_os = "macos")]
-pub mod safari;
+pub(crate) mod safari;

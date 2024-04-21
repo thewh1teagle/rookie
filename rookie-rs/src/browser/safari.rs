@@ -3,6 +3,39 @@ use byteorder::{BigEndian, ByteOrder, LittleEndian};
 use eyre::{anyhow, bail, Context, Result};
 use std::{fs::File, io::Read, path::PathBuf, vec::Vec};
 
+/// 1. open cookies file
+/// 2. parse headers
+/// 3. parse pages (total from headers)
+/// 4. get N cookies from each page, iterate
+/// 5. parse each cookie
+/// 6. add each cookie based on domain filter
+pub fn safari_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
+  let mut file =
+    File::open(db_path.clone()).context(format!("failed to open {}", db_path.display()))?;
+  let mut bs: Vec<u8> = Vec::new();
+  file.read_to_end(&mut bs)?;
+  let cookies = parse_content(&bs)?;
+
+  // Filter cookies by domain if domains are specified
+  if let Some(domain_filters) = domains {
+    let filtered_cookies: Vec<Cookie> = cookies
+      .into_iter()
+      .filter(|cookie| {
+        // Check if the cookie's domain matches any of the specified domains
+        domain_filters.iter().any(|&domain| {
+          // Implement your domain matching logic here
+          // For example, you can use the `.ends_with` method to check if the cookie's domain ends with the specified domain.
+          cookie.domain.ends_with(domain)
+        })
+      })
+      .collect();
+
+    Ok(filtered_cookies)
+  } else {
+    Ok(cookies)
+  }
+}
+
 fn parse_page(bs: &[u8]) -> Result<Vec<Cookie>> {
   if slice(bs, 0, 4)? != [0x00, 0x00, 0x01, 0x00] {
     bail!("bad page header");
@@ -69,7 +102,7 @@ fn parse_cookie<T: ByteOrder>(bs: &[u8]) -> Result<Cookie> {
   Ok(cookie)
 }
 
-pub fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
+fn parse_content(bs: &[u8]) -> Result<Vec<Cookie>> {
   // Magic bytes: "COOK" = 0x636F6F6B
   if slice(bs, 0, 4)? != [0x63, 0x6f, 0x6f, 0x6b] {
     bail!("not a cookie file");
@@ -143,37 +176,4 @@ fn c_str(bs: &[u8]) -> Result<String> {
     .and_then(|elements| {
       String::from_utf8(elements.to_vec()).map_err(|err| anyhow!(err.to_string()))
     })
-}
-
-pub fn safari_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
-  // 1. open cookies file
-  // 2. parse headers
-  // 3. parse pages (total from headers)
-  // 4. get N cookies from each page, iterate
-  // 5. parse each cookie
-  // 6. add each cookie based on domain filter
-  let mut file =
-    File::open(db_path.clone()).context(format!("failed to open {}", db_path.display()))?;
-  let mut bs: Vec<u8> = Vec::new();
-  file.read_to_end(&mut bs)?;
-  let cookies = parse_content(&bs)?;
-
-  // Filter cookies by domain if domains are specified
-  if let Some(domain_filters) = domains {
-    let filtered_cookies: Vec<Cookie> = cookies
-      .into_iter()
-      .filter(|cookie| {
-        // Check if the cookie's domain matches any of the specified domains
-        domain_filters.iter().any(|&domain| {
-          // Implement your domain matching logic here
-          // For example, you can use the `.ends_with` method to check if the cookie's domain ends with the specified domain.
-          cookie.domain.ends_with(domain)
-        })
-      })
-      .collect();
-
-    Ok(filtered_cookies)
-  } else {
-    Ok(cookies)
-  }
 }

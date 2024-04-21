@@ -1,22 +1,39 @@
 pub mod browser;
 pub mod common;
-pub mod config;
 
 use browser::{chromium::chromium_based, mozilla::firefox_based};
 use common::{enums::Cookie, paths};
 use eyre::{bail, Result};
 
+// MacOS
+#[cfg(target_os = "macos")]
+pub mod macos;
+
 #[cfg(target_os = "macos")]
 use browser::safari::safari_based;
 
+#[cfg(target_os = "macos")]
+pub use macos::config;
+
+// Windows
 #[cfg(target_os = "windows")]
-use browser::internet_explorer;
+pub mod windows;
+
 #[cfg(target_os = "windows")]
-use common::winapi;
-#[cfg(target_os = "windows")]
-pub use internet_explorer::internet_explorer_based;
+pub use browser::internet_explorer;
+
 #[cfg(target_os = "windows")]
 use std::path::PathBuf;
+
+#[cfg(target_os = "windows")]
+pub use windows::config;
+
+// Linux
+#[cfg(target_os = "linux")]
+pub mod linux;
+
+#[cfg(target_os = "linux")]
+pub use linux::config;
 
 /// Returns cookies from Firefox
 ///

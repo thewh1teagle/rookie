@@ -1,7 +1,6 @@
 use crate::common::{date, enums::*, sqlite, utils};
 use eyre::{anyhow, bail, Result};
 use ini::Ini;
-use log::warn;
 use lz4_flex::block::decompress_size_prepended;
 use serde_json::Value;
 use std::{
@@ -38,7 +37,7 @@ pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec
     let host: Result<String, _> = row.get(0);
     if host.is_err() {
       // ignore null rows
-      warn!("host is NULL in row");
+      log::warn!("host is NULL in row");
       continue;
     }
     let host = host?;

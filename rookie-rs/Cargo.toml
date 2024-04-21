@@ -46,6 +46,9 @@ sha1 = "0.10"
 [target.'cfg(windows)'.dependencies]
 base64 = "0.22"
 libesedb = "0.2"
+rawcopy-rs-next = "0.1.3"
+privilege = "0.3.0"
+rand = "0.8.5"
 windows = { version = "0.51", features = [
     "Win32_Security_Cryptography",
     "Win32_Foundation",

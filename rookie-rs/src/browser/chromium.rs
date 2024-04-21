@@ -1,4 +1,7 @@
-use crate::common::{date, enums::*, sqlite};
+use crate::{
+  common::{date, enums::*, sqlite},
+  windows,
+};
 use eyre::{bail, Result};
 use std::path::PathBuf;
 
@@ -25,8 +28,6 @@ pub fn chromium_based(
   db_path: PathBuf,
   domains: Option<Vec<&str>>,
 ) -> Result<Vec<Cookie>> {
-  // Use DPAPI
-
   let content = std::fs::read_to_string(key)?;
   let key_dict: serde_json::Value =
     serde_json::from_str(content.as_str()).context("Can't read json file")?;
@@ -202,18 +203,42 @@ fn decrypt_encrypted_value(
   bail!("decrypt_encrypted_value failed")
 }
 
-fn query_cookies(
-  keys: Vec<Vec<u8>>,
-  db_path: PathBuf,
-  domains: Option<Vec<&str>>,
-) -> Result<Vec<Cookie>> {
-  #[cfg(target_os = "windows")]
-  {
-    let db_path_str = db_path.to_str().context("Can't convert db path to str")?;
+#[cfg(target_os = "windows")]
+fn unlock_file(mut path: PathBuf) -> Result<PathBuf> {
+  let mut shadow_copy_success = false;
+  // Shadow copy cookies file so we can read session cookies
+  // Admin rights required
+  if privilege::user::privileged() {
+    log::debug!("Admin rights detected");
+    if let Ok(temp_dir) = windows::shadow_copy::temp_folder(".tmp", "", 10) {
+      let result = windows::shadow_copy::shadow_copy(path.clone(), temp_dir.clone().to_path_buf());
+      log::debug!("shadow copy result: {:?}", result);
+      if result.is_ok() {
+        shadow_copy_success = true;
+        path = temp_dir.join(path.file_name().unwrap());
+      }
+    }
+  }
+
+  // Elegantly restart the process which lock the cookies file (And unlock it) using restart manager API
+  if !shadow_copy_success {
     log::warn!("Unlocking Chrome database... This may take a while (sometimes up to a minute)");
     unsafe {
-      crate::windows::file_unlock::release_file_lock(db_path_str);
+      crate::windows::file_unlock::release_file_lock(path.to_str().unwrap());
     }
+  }
+  Ok(path)
+}
+
+fn query_cookies(
+  keys: Vec<Vec<u8>>,
+  mut db_path: PathBuf,
+  domains: Option<Vec<&str>>,
+) -> Result<Vec<Cookie>> {
+  // In windows unlock file locking
+  #[cfg(target_os = "windows")]
+  {
+    db_path = unlock_file(db_path)?;
   }
 
   log::info!(

@@ -1,22 +1,23 @@
 use crate::common::{date, enums::*, sqlite};
-use cfg_if::cfg_if;
 use eyre::{bail, Result};
 use std::path::PathBuf;
 
 #[cfg(target_os = "macos")]
 use crate::macos::secrets;
 
-cfg_if! {
-    if #[cfg(target_os = "windows")] {
-        use aes_gcm::{ Aes256Gcm, Key, aead::{ Aead, KeyInit, generic_array::GenericArray } };
-        use serde_json;
-        use base64::{ Engine as _, engine::general_purpose };
-        use crate::winapi;
-        use eyre::Context;
-    } else if #[cfg(unix)] {
-
-    }
-}
+#[cfg(target_os = "windows")]
+use crate::winapi;
+#[cfg(target_os = "windows")]
+use aes_gcm::{
+  aead::{generic_array::GenericArray, Aead, KeyInit},
+  Aes256Gcm, Key,
+};
+#[cfg(target_os = "windows")]
+use base64::{engine::general_purpose, Engine as _};
+#[cfg(target_os = "windows")]
+use eyre::Context;
+#[cfg(target_os = "windows")]
+use serde_json;
 
 #[cfg(target_os = "windows")]
 pub fn chromium_based(

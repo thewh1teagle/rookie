@@ -51,6 +51,7 @@ for cookie in cookies:
 
 - Fast, written in `Rust`
 - Bypass `Chrome` restriction like file locking
+- Read session cookies from `Chrome` based browsers! (`Windows`)
 - Wide platforms and browsers support
 
 ## CLI 💻

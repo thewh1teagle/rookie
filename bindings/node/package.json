@@ -33,9 +33,9 @@
   },
   "packageManager": "yarn@4.2.1",
   "optionalDependencies": {
-    "@thewh1teagle/rookie-darwin-arm64": "0.5.1",
-    "@thewh1teagle/rookie-darwin-x64": "0.5.1",
-    "@thewh1teagle/rookie-linux-x64-gnu": "0.5.1",
-    "@thewh1teagle/rookie-win32-x64-msvc": "0.5.1"
+    "@thewh1teagle/rookie-darwin-arm64": "0.0.0",
+    "@thewh1teagle/rookie-darwin-x64": "0.0.0",
+    "@thewh1teagle/rookie-linux-x64-gnu": "0.0.0",
+    "@thewh1teagle/rookie-win32-x64-msvc": "0.0.0"
   }
 }

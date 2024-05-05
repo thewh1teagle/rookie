@@ -6,6 +6,9 @@ env:
 permissions:
   contents: write
   id-token: write
+defaults:
+  run:
+    working-directory: ./bindings/node
 on:
   push:
     branches:

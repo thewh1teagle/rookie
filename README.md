@@ -16,8 +16,9 @@ cargo add rookie
 
 ## Bindings 📚
 
-There's Python bindings to `rookie`
+There's  `Python` and `JavaScript` bindings for rookie!
 
+## Python
 ```shell
 pip install rookiepy
 ```
@@ -29,6 +30,20 @@ import rookiepy
 cookies = rookiepy.firefox(["google.com"])
 for cookie in cookies:
     print(cookie['domain'], cookie['value'])
+```
+
+## JavaScript
+
+```console
+npm install @thewh1teagle/rookie
+```
+
+```js
+import { brave } from '@thewh1teagle/rookie'
+const cookies = brave()
+for (const cookie of cookies) {
+  console.log(cookie);
+}
 ```
 
 ## Examples 📋

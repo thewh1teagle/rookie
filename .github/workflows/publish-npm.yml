@@ -19,6 +19,12 @@ on:
       - .editorconfig
       - docs/**
   pull_request: null
+  workflow_dispatch: null
+
+defaults:
+ run:
+  working-directory: ./bindings/node
+
 jobs:
   build:
     strategy:

@@ -197,6 +197,4 @@ Cargo.lock
 *.node
 
 bun.lockb
-index.js
-index.d.ts
 npm/

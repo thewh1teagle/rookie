@@ -2,6 +2,7 @@
 
 [![PyPi Downloads][PyPi-downloads]][PyPi-url]
 [![PyPi Version][PyPi-version]][PyPi-url]
+[![NPM Version][NPM-version]][NPM-url]
 [![Crates][Crates-badge]][Crates-url]
 [![License][License-shield]][License-url]
 
@@ -104,10 +105,12 @@ look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/s
 ## Credits 🙌
 [github.com/borisbabic/browser_cookie3](https://github.com/borisbabic/browser_cookie3)
 
-[PyPi-downloads]: https://img.shields.io/pypi/dm/rookiepy
-[PyPi-version]: https://img.shields.io/pypi/v/rookiepy?color=00aa00
+[PyPi-downloads]: https://img.shields.io/pypi/dm/rookiepy?logo=python
+[PyPi-version]: https://img.shields.io/pypi/v/rookiepy?color=00aa00&logo=python
 [PyPi-url]: https://pypi.org/project/rookiepy/
-[Crates-badge]: https://img.shields.io/crates/v/rookie
+[NPM-version]: https://img.shields.io/npm/v/%40thewh1teagle%2Frookie?logo=npm&color=0076CE
+[NPM-url]: [https://npm.com](https://www.npmjs.com/package/@thewh1teagle/rookie)
+[Crates-badge]: https://img.shields.io/crates/v/rookie?logo=rust
 [Crates-url]: https://crates.io/crates/rookie/
-[License-shield]: https://img.shields.io/github/license/thewh1teagle/rookie?color=00aaaa
+[License-shield]: https://img.shields.io/github/license/thewh1teagle/rookie?color=00aaaa&logo=license
 [License-url]: https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/MIT-LICENSE.txt

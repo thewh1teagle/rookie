@@ -12,7 +12,7 @@ Load cookies from any browser on any platform
 
 - Available for `Rust`, `Python`, and `JavaScript`
 - Ensures type safety (e.g., `TypeScript`, `Python` with type hints)
-- Fast, written in `Rust`
+- Super Fast, Built with `Rust`
 - Bypass `Chrome` restriction like file locking
 - Read session cookies from `Chrome` based browsers! (requires admin rights on `Windows`)
 - Wide browsers support
@@ -100,18 +100,18 @@ See [cli](https://github.com/thewh1teagle/rookie/tree/main/cli) folder
 
 So far the following platforms are supported:
 
-- **Chrome:** `Linux`, `macOS`, `Windows`
-- **Firefox:** `Linux`, `macOS`, `Windows`
-- **LibreWolf:** `Linux`, `macOS`, `Windows`
+- **Brave:** `Linux`, `macOS`, `Windows`
 - **Cachy:** `Linux`
+- **Chrome:** `Linux`, `macOS`, `Windows`
+- **Chromium:** `Linux`, `macOS`, `Windows`
+- **Edge:** `Linux`, `macOS`, `Windows`
+- **Firefox:** `Linux`, `macOS`, `Windows`
+- **Internet Explorer:** `Windows`
+- **LibreWolf:** `Linux`, `macOS`, `Windows`
 - **Opera:** `Linux`, `macOS`, `Windows`
 - **Opera GX:** `macOS`, `Windows`
-- **Edge:** `Linux`, `macOS`, `Windows`
-- **Internet Explorer:** `Windows`
-- **Chromium:** `Linux`, `macOS`, `Windows`
-- **Brave:** `Linux`, `macOS`, `Windows`
-- **Vivaldi:** `Linux`, `macOS`, `Windows`
 - **Safari:** `macOS`
+- **Vivaldi:** `Linux`, `macOS`, `Windows`
 
 You are welcome to contribute support for other browsers, or other platforms.
 
@@ -119,24 +119,24 @@ You are welcome to contribute support for other browsers, or other platforms.
 
 If you have a browser with which the library isn't working with, it may not have been added to the list of supported browsers configs. You can create a pull request (PR) or an issue with the path to the cookies file on your computer, and I will add it.
 
-look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/config.rs) to see what configurations is needed.
+look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/windows/config.rs) to see what configurations is needed.
 
 ## Testing Dates (DD/MM/YY) 📅
 
 | Browser   |  Linux   |  macOS   | Windows  |
 | :-------- | :------: | :------: | :------: |
-| Chrome    | 01/10/23 | 25/11/23 | 16/03/24 |
-| Firefox   | 01/10/23 | 25/11/23 | 16/03/24 |
-| LibreWolf | 01/10/23 | 25/11/23 | 01/10/23 |
+| Brave     | 01/10/23 | 25/11/23 | 01/10/23 |
 | Cachy     | 04/06/24 |   N/A    |   N/A    |
+| Chromium  | 01/10/23 | 25/11/23 | 01/10/23 |
+| Chrome    | 01/10/23 | 25/11/23 | 16/03/24 |
+| Edge      | 01/10/23 |    -     | 01/10/23 |
+| Firefox   | 01/10/23 | 25/11/23 | 16/03/24 |
+| IE        |   N/A    |   N/A    | 01/10/23 |
+| LibreWolf | 01/10/23 | 25/11/23 | 01/10/23 |
 | Opera     | 01/10/23 |    -     | 01/10/23 |
 | Opera GX  |   N/A    |    -     | 01/10/23 |
-| Edge      | 01/10/23 |    -     | 01/10/23 |
-| IE        |   N/A    |   N/A    | 01/10/23 |
-| Chromium  | 01/10/23 | 25/11/23 | 01/10/23 |
-| Brave     | 01/10/23 | 25/11/23 | 01/10/23 |
-| Vivaldi   | 01/10/23 | 25/11/23 | 01/10/23 |
 | Safari    |   N/A    | 02/10/23 |   N/A    |
+| Vivaldi   | 01/10/23 | 25/11/23 | 01/10/23 |
 
 ## Credits 🙌
 

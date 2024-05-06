@@ -77,7 +77,7 @@ for (const cookie of cookies) {
 
 `JavaScript`
 
-- [docs/JavaScript.md][docs/JavaScript.md]
+- [docs/JavaScript.md](docs/JavaScript.md)
 
 `Rust`
 

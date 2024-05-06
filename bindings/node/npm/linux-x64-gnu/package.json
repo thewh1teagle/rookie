@@ -1,5 +1,5 @@
 {
-  "name": "@thewh1teagle/rookie-linux-x64-gnu",
+  "name": "@rookie-rs/api-linux-x64-gnu",
   "version": "0.5.1",
   "os": [
     "linux"
@@ -11,10 +11,12 @@
   "files": [
     "rookie.linux-x64-gnu.node"
   ],
+  "description": "Load cookies from any browser on any platform",
   "license": "MIT",
   "engines": {
     "node": ">= 10"
   },
+  "repository": "https://github.com/thewh1teagle/rookie",
   "libc": [
     "glibc"
   ]

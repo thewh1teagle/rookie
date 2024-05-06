@@ -1,5 +1,5 @@
 {
-  "name": "@thewh1teagle/rookie-win32-x64-msvc",
+  "name": "@rookie-rs/api-win32-x64-msvc",
   "version": "0.5.1",
   "os": [
     "win32"
@@ -11,8 +11,10 @@
   "files": [
     "rookie.win32-x64-msvc.node"
   ],
+  "description": "Load cookies from any browser on any platform",
   "license": "MIT",
   "engines": {
     "node": ">= 10"
-  }
+  },
+  "repository": "https://github.com/thewh1teagle/rookie"
 }

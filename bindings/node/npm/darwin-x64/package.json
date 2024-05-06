@@ -1,5 +1,5 @@
 {
-  "name": "@thewh1teagle/rookie-darwin-x64",
+  "name": "@rookie-rs/api-darwin-x64",
   "version": "0.5.1",
   "os": [
     "darwin"
@@ -11,8 +11,10 @@
   "files": [
     "rookie.darwin-x64.node"
   ],
+  "description": "Load cookies from any browser on any platform",
   "license": "MIT",
   "engines": {
     "node": ">= 10"
-  }
+  },
+  "repository": "https://github.com/thewh1teagle/rookie"
 }

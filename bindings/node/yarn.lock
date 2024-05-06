@@ -70,6 +70,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rookie-rs/api@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@rookie-rs/api@workspace:."
+  dependencies:
+    "@napi-rs/cli": "npm:^2.18.2"
+    "@thewh1teagle/rookie-darwin-arm64": "npm:0.0.0"
+    "@thewh1teagle/rookie-darwin-x64": "npm:0.0.0"
+    "@thewh1teagle/rookie-linux-x64-gnu": "npm:0.0.0"
+    "@thewh1teagle/rookie-win32-x64-msvc": "npm:0.0.0"
+    ava: "npm:^6.0.1"
+  dependenciesMeta:
+    "@thewh1teagle/rookie-darwin-arm64":
+      optional: true
+    "@thewh1teagle/rookie-darwin-x64":
+      optional: true
+    "@thewh1teagle/rookie-linux-x64-gnu":
+      optional: true
+    "@thewh1teagle/rookie-win32-x64-msvc":
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@sindresorhus/merge-streams@npm:^2.1.0":
   version: 2.3.0
   resolution: "@sindresorhus/merge-streams@npm:2.3.0"
@@ -104,28 +126,6 @@ __metadata:
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
-
-"@thewh1teagle/rookie@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@thewh1teagle/rookie@workspace:."
-  dependencies:
-    "@napi-rs/cli": "npm:^2.18.2"
-    "@thewh1teagle/rookie-darwin-arm64": "npm:0.0.0"
-    "@thewh1teagle/rookie-darwin-x64": "npm:0.0.0"
-    "@thewh1teagle/rookie-linux-x64-gnu": "npm:0.0.0"
-    "@thewh1teagle/rookie-win32-x64-msvc": "npm:0.0.0"
-    ava: "npm:^6.0.1"
-  dependenciesMeta:
-    "@thewh1teagle/rookie-darwin-arm64":
-      optional: true
-    "@thewh1teagle/rookie-darwin-x64":
-      optional: true
-    "@thewh1teagle/rookie-linux-x64-gnu":
-      optional: true
-    "@thewh1teagle/rookie-win32-x64-msvc":
-      optional: true
-  languageName: unknown
-  linkType: soft
 
 "@vercel/nft@npm:^0.26.2":
   version: 0.26.4

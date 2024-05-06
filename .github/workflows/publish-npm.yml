@@ -52,7 +52,7 @@ jobs:
         with:
           node-version: 20
           cache: yarn
-          cache-dependency-path: "./bindings/node"
+          cache-dependency-path: ./bindings/node
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         if: ${{ !matrix.settings.docker }}
@@ -90,7 +90,7 @@ jobs:
           node-version: 20
           cache: yarn
           architecture: x86
-          cache-dependency-path: "./bindings/node"
+          cache-dependency-path: ./bindings/node
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
@@ -131,7 +131,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-          cache-dependency-path: "./bindings/node"
+          cache-dependency-path: ./bindings/node
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
@@ -162,10 +162,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-          cache-dependency-path: "./bindings/node"
+          cache-dependency-path: ./bindings/node
         env:
           DISABLE_V8_COMPILE_CACHE: 1
-
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
@@ -191,10 +190,8 @@ jobs:
         with:
           node-version: 20
           cache: yarn
-          cache-dependency-path: "./bindings/node"
+          cache-dependency-path: ./bindings/node
         env:
-          # Disable V8 compile cache to hard crashes in Node.js. This can likely be removed once upgraded to the next LTS version (version 22).
-          # See: https://github.com/nodejs/node/issues/51555
           DISABLE_V8_COMPILE_CACHE: 1
       - name: Install dependencies
         run: yarn install

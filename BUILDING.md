@@ -1,5 +1,9 @@
 # Build rookie
 
+## Prerequisites
+
+[Rust](https://www.rust-lang.org/tools/install)
+
 ## Linux setup
 
 ```console
@@ -14,6 +18,14 @@ cd rookie-rs
 cargo build
 ```
 
+## cli
+
+````console
+git clone https://github.com/thewh1teagle/rookie
+cd cli
+cargo build --release
+```
+
 ## Python Bindings
 
 Using [maturin](https://pyo3.rs/v0.21.2/#usage)
@@ -26,4 +38,4 @@ source venv/bin/activate
 # Install dependencies + build + install
 # May take sometime on first use
 pip3 install .
-```
+````

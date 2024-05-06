@@ -37,7 +37,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.android-arm64.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-android-arm64')
+            nativeBinding = require('@rookie-rs/api-android-arm64')
           }
         } catch (e) {
           loadError = e
@@ -49,7 +49,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.android-arm-eabi.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-android-arm-eabi')
+            nativeBinding = require('@rookie-rs/api-android-arm-eabi')
           }
         } catch (e) {
           loadError = e
@@ -69,7 +69,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.win32-x64-msvc.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-win32-x64-msvc')
+            nativeBinding = require('@rookie-rs/api-win32-x64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -83,7 +83,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.win32-ia32-msvc.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-win32-ia32-msvc')
+            nativeBinding = require('@rookie-rs/api-win32-ia32-msvc')
           }
         } catch (e) {
           loadError = e
@@ -97,7 +97,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.win32-arm64-msvc.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-win32-arm64-msvc')
+            nativeBinding = require('@rookie-rs/api-win32-arm64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -113,7 +113,7 @@ switch (platform) {
       if (localFileExisted) {
         nativeBinding = require('./rookie.darwin-universal.node')
       } else {
-        nativeBinding = require('@thewh1teagle/rookie-darwin-universal')
+        nativeBinding = require('@rookie-rs/api-darwin-universal')
       }
       break
     } catch {}
@@ -124,7 +124,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.darwin-x64.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-darwin-x64')
+            nativeBinding = require('@rookie-rs/api-darwin-x64')
           }
         } catch (e) {
           loadError = e
@@ -138,7 +138,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.darwin-arm64.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-darwin-arm64')
+            nativeBinding = require('@rookie-rs/api-darwin-arm64')
           }
         } catch (e) {
           loadError = e
@@ -157,7 +157,7 @@ switch (platform) {
       if (localFileExisted) {
         nativeBinding = require('./rookie.freebsd-x64.node')
       } else {
-        nativeBinding = require('@thewh1teagle/rookie-freebsd-x64')
+        nativeBinding = require('@rookie-rs/api-freebsd-x64')
       }
     } catch (e) {
       loadError = e
@@ -174,7 +174,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-x64-musl.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-x64-musl')
+              nativeBinding = require('@rookie-rs/api-linux-x64-musl')
             }
           } catch (e) {
             loadError = e
@@ -187,7 +187,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-x64-gnu.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-x64-gnu')
+              nativeBinding = require('@rookie-rs/api-linux-x64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -203,7 +203,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-arm64-musl.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-arm64-musl')
+              nativeBinding = require('@rookie-rs/api-linux-arm64-musl')
             }
           } catch (e) {
             loadError = e
@@ -216,7 +216,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-arm64-gnu.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-arm64-gnu')
+              nativeBinding = require('@rookie-rs/api-linux-arm64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -232,7 +232,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-arm-musleabihf.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-arm-musleabihf')
+              nativeBinding = require('@rookie-rs/api-linux-arm-musleabihf')
             }
           } catch (e) {
             loadError = e
@@ -245,7 +245,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-arm-gnueabihf.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-arm-gnueabihf')
+              nativeBinding = require('@rookie-rs/api-linux-arm-gnueabihf')
             }
           } catch (e) {
             loadError = e
@@ -261,7 +261,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-riscv64-musl.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-riscv64-musl')
+              nativeBinding = require('@rookie-rs/api-linux-riscv64-musl')
             }
           } catch (e) {
             loadError = e
@@ -274,7 +274,7 @@ switch (platform) {
             if (localFileExisted) {
               nativeBinding = require('./rookie.linux-riscv64-gnu.node')
             } else {
-              nativeBinding = require('@thewh1teagle/rookie-linux-riscv64-gnu')
+              nativeBinding = require('@rookie-rs/api-linux-riscv64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -289,7 +289,7 @@ switch (platform) {
           if (localFileExisted) {
             nativeBinding = require('./rookie.linux-s390x-gnu.node')
           } else {
-            nativeBinding = require('@thewh1teagle/rookie-linux-s390x-gnu')
+            nativeBinding = require('@rookie-rs/api-linux-s390x-gnu')
           }
         } catch (e) {
           loadError = e

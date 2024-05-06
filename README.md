@@ -65,7 +65,7 @@ for (const cookie of cookies) {
 
 `Python` [examples/python](examples/python)
 
-`JavaScript` [examples/javascript](examples/python)
+`JavaScript` [examples/javascript](examples/javascript)
 
 `Rust` [examples/rust](examples/rust)
 

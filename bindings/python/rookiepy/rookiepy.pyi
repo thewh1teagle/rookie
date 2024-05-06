@@ -3,6 +3,15 @@ from sys import platform
 
 CookieList = List[Dict[str, Any]]
 
+def version() -> str:
+    """
+    Get rookie version
+
+    :return: rookie version
+    """
+    ...
+
+
 def firefox(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Firefox

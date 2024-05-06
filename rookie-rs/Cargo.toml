@@ -16,6 +16,7 @@ path = "src/lib.rs"
 
 
 [dependencies]
+indoc = "2.0.5"
 aes = "0.8"
 aes-gcm = "0.10"
 byteorder = "1"

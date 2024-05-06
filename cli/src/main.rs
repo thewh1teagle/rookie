@@ -1,10 +1,10 @@
 use clap::Parser;
 use rookie::{any_browser, common::enums::Cookie};
 mod browsers_map;
-mod format;
 use browsers_map::BROWSERS_MAP;
 mod args;
 use args::Args;
+use rookie::common::format;
 
 fn print_cookies(args: Args, cookies: Vec<Cookie>) {
   match args.format.as_str() {
@@ -36,6 +36,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
   if args.version {
     print_version();
   }
+  #[allow(unused_assignments)]
   let mut cookies = vec![];
   let args_c = args.clone();
   if args.load {

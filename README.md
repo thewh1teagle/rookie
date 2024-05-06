@@ -8,14 +8,25 @@
 
 Load cookies from any browser on any platform
 
-## Install ⚙️
+## Features 🚀
+
+- Available for `Rust`, `Python`, and `JavaScript`
+- Ensures type safety (e.g., `TypeScript`, `Python` with type hints)
+- Fast, written in `Rust`
+- Bypass `Chrome` restriction like file locking
+- Read session cookies from `Chrome` based browsers! (requires admin rights on `Windows`)
+- Wide browsers support
+- Cross-platform support for `Windows`, `Linux`, and `macOS`
+
+## Usage ⚙️
+
+## Rust
 
 ```shell
 cargo add rookie
 ```
 
-## Usage
-
+Create `main.rs` with the following
 ```rust
 use rookie::brave;
 
@@ -28,17 +39,13 @@ fn main() {
 }
 ```
 
-## Bindings 📚
-
-There's `Python` and `JavaScript` bindings for rookie!
-
 ## Python
 
 ```shell
 pip install rookiepy
 ```
 
-And the usage it similar to original
+And the usage it similar to Rust
 
 ```python
 import rookiepy
@@ -63,13 +70,18 @@ for (const cookie of cookies) {
 
 ## Examples 📋
 
+`Rust` [examples/rust](examples/rust)
+
 `Python` [examples/python](examples/python)
 
 `JavaScript` [examples/javascript](examples/javascript)
 
-`Rust` [examples/rust](examples/rust)
-
 ## Docs 📘
+
+`Rust`
+
+- [docs/Rust.md](docs/Rust.md)
+- [docs.rs/rookie](https://docs.rs/rookie)
 
 `Python`
 
@@ -78,21 +90,6 @@ for (const cookie of cookies) {
 `JavaScript`
 
 - [docs/JavaScript.md](docs/JavaScript.md)
-
-`Rust`
-
-- [docs/Rust.md](docs/Rust.md)
-- [docs.rs/rookie](https://docs.rs/rookie)
-
-## Features 🚀
-
-- Fast, written in `Rust`
-- Bypass `Chrome` restriction like file locking
-- Read session cookies from `Chrome` based browsers! (`Windows`)
-- Wide browsers support
-- Cross-platform support for `Windows`, `Linux`, and `macOS`
-- Available for `Rust`, `Python`, and `JavaScript`
-- Ensures type safety (e.g., `TypeScript`, `Python` with type hints)
 
 ## CLI 💻
 

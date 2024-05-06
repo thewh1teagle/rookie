@@ -9,7 +9,7 @@ use std::{
 };
 
 /// Returns cookies from mozilla based browsers
-pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
+pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   let connection = sqlite::connect(db_path.clone())?;
   let mut query = "
         SELECT host, path, isSecure, expiry, name, value, isHttpOnly, sameSite from moz_cookies 
@@ -78,7 +78,7 @@ pub fn firefox_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec
 }
 
 pub fn get_session_cookies(
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
   cookies_dir: PathBuf,
 ) -> Result<Vec<Cookie>> {
   let mut cookies: Vec<Cookie> = vec![];
@@ -116,7 +116,7 @@ pub fn get_session_cookies(
 }
 
 pub fn get_session_cookies_lz4(
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
   cookies_dir: PathBuf,
 ) -> Result<Vec<Cookie>> {
   let mut cookies: Vec<Cookie> = vec![];

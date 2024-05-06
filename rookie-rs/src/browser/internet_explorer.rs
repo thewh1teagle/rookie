@@ -6,7 +6,7 @@ use std::path::PathBuf;
 /// Returns cookies from IE based browsers
 pub fn internet_explorer_based(
   db_path: PathBuf,
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
 ) -> Result<Vec<Cookie>> {
   unsafe {
     if let Some(path) = db_path.to_str() {

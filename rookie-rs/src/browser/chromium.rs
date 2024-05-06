@@ -26,7 +26,7 @@ use eyre::Context;
 pub fn chromium_based(
   key: PathBuf,
   db_path: PathBuf,
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
 ) -> Result<Vec<Cookie>> {
   let content = std::fs::read_to_string(key)?;
   let key_dict: serde_json::Value =
@@ -49,7 +49,7 @@ pub fn chromium_based(
 pub fn chromium_based(
   config: &BrowserConfig,
   db_path: PathBuf,
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
 ) -> Result<Vec<Cookie>> {
   // Simple AES
   let keys = get_keys(config)?;
@@ -234,7 +234,7 @@ fn unlock_file(mut path: PathBuf) -> Result<PathBuf> {
 fn query_cookies(
   keys: Vec<Vec<u8>>,
   mut db_path: PathBuf,
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
 ) -> Result<Vec<Cookie>> {
   // In windows unlock file locking
   #[cfg(target_os = "windows")]

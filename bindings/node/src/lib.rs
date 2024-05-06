@@ -38,7 +38,7 @@ fn cookies_to_js(cookies: Vec<Cookie>) -> Result<Vec<CookieObject>> {
 #[napi]
 pub fn any_browser(
   db_path: String,
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
   key_path: Option<&str>,
 ) -> Result<Vec<CookieObject>> {
   let cookies = rookie::any_browser(&db_path, domains, key_path)
@@ -49,28 +49,28 @@ pub fn any_browser(
 /// Common browsers
 
 #[napi]
-pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn firefox(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::firefox(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
-pub fn librewolf(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn librewolf(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::librewolf(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
-pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn chrome(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::chrome(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
-pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn brave(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::brave(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
@@ -78,14 +78,14 @@ pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 }
 
 #[napi]
-pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn edge(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::edge(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
-pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn opera(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::opera(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
@@ -93,7 +93,7 @@ pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 }
 
 #[napi]
-pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn opera_gx(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::opera_gx(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
@@ -101,14 +101,14 @@ pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 }
 
 #[napi]
-pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn chromium(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::chromium(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
-pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn vivaldi(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::vivaldi(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
@@ -116,14 +116,14 @@ pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 }
 
 #[napi]
-pub fn firefox_based(db_path: String, domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn firefox_based(db_path: String, domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies = rookie::firefox_based(PathBuf::from(db_path), domains)
     .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
-pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn load(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::load(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
@@ -133,7 +133,7 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 
 #[napi]
 #[cfg(target_os = "windows")]
-pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn octo_browser(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies = rookie::octo_browser(domains)
     .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
@@ -142,7 +142,7 @@ pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 
 #[napi]
 #[cfg(target_os = "windows")]
-pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn internet_explorer(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies = rookie::internet_explorer(domains)
     .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
@@ -152,7 +152,7 @@ pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>
 pub fn chromium_based(
   key_path: String,
   db_path: String,
-  domains: Option<Vec<&str>>,
+  domains: Option<Vec<String>>,
 ) -> Result<Vec<CookieObject>> {
   let cookies = rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains)
     .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
@@ -163,7 +163,7 @@ pub fn chromium_based(
 
 #[napi]
 #[cfg(target_os = "macos")]
-pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn safari(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::safari(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
@@ -173,7 +173,7 @@ pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 
 #[napi]
 #[cfg(unix)]
-pub fn chromium_based(db_path: String, domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
+pub fn chromium_based(db_path: String, domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   use rookie::common::enums::BrowserConfig;
 
   let db_path = db_path.as_str();

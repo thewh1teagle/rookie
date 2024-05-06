@@ -1,37 +1,55 @@
 use clap::Parser;
-use rookie::{any_browser, common::enums::Cookie, load};
+use rookie::{any_browser, common::enums::Cookie};
+mod browsers_map;
+mod format;
+use browsers_map::BROWSERS_MAP;
+mod args;
+use args::Args;
 
-#[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-struct Args {
-  /// Number of times to greet
-  #[arg(short, long)]
-  path: Option<String>,
-
-  #[arg(short, long)]
-  key_path: Option<String>,
-
-  #[arg(short, long)]
-  domains: Vec<String>,
+fn print_cookies(args: Args, cookies: Vec<Cookie>) {
+  match args.format.as_str() {
+    "json" => {
+      let str = format::json(cookies);
+      println!("{str}");
+    }
+    "netscape" => {
+      let data = format::netscape(cookies);
+      println!("{}", data);
+    }
+    _ => {}
+  }
 }
 
-fn print_cookies(cookies: Vec<Cookie>) {
-  if let Ok(str) = serde_json::to_string_pretty(&cookies) {
-    println!("{str}");
-  }
+fn print_version() {
+  println!(
+    "CLI: {}\nRookie: {}",
+    env!("CARGO_PKG_VERSION"),
+    rookie::version()
+  );
+  std::process::exit(0);
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
   let args = Args::parse();
   pretty_env_logger::init();
-  let domains = args.domains.iter().map(String::as_str).collect();
-  if let Some(path) = args.path {
-    let cookies = any_browser(path.as_str(), Some(domains), args.key_path.as_deref())?;
-    print_cookies(cookies);
-    return Ok(());
+
+  if args.version {
+    print_version();
   }
-  // without key and path
-  let cookies = load(Some(domains))?;
-  print_cookies(cookies);
+  let mut cookies = vec![];
+  let args_c = args.clone();
+  if args.load {
+    cookies = rookie::load(args.domains)?;
+  } else if let Some(browser) = args.browser {
+    let browser_fn = BROWSERS_MAP.get(&browser).unwrap();
+    cookies = browser_fn(args.domains)?;
+  } else if let Some(path) = args.path {
+    cookies = any_browser(path.as_str(), args.domains, args.key_path.as_deref())?;
+  } else {
+    // Default load from all
+    cookies = rookie::load(args.domains)?;
+  }
+  print_cookies(args_c, cookies);
+
   Ok(())
 }

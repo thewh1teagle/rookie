@@ -9,7 +9,7 @@ use std::{fs::File, io::Read, path::PathBuf, vec::Vec};
 /// 4. get N cookies from each page, iterate
 /// 5. parse each cookie
 /// 6. add each cookie based on domain filter
-pub fn safari_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<Cookie>> {
+pub fn safari_based(db_path: PathBuf, domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   let mut file =
     File::open(db_path.clone()).context(format!("failed to open {}", db_path.display()))?;
   let mut bs: Vec<u8> = Vec::new();
@@ -22,7 +22,7 @@ pub fn safari_based(db_path: PathBuf, domains: Option<Vec<&str>>) -> Result<Vec<
       .into_iter()
       .filter(|cookie| {
         // Check if the cookie's domain matches any of the specified domains
-        domain_filters.iter().any(|&domain| {
+        domain_filters.iter().any(|domain| {
           // Implement your domain matching logic here
           // For example, you can use the `.ends_with` method to check if the cookie's domain ends with the specified domain.
           cookie.domain.ends_with(domain)

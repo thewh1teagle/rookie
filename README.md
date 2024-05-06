@@ -14,6 +14,20 @@ Load cookies from any browser on any platform
 cargo add rookie
 ```
 
+## Usage
+
+```rust
+use rookie::brave;
+
+fn main() {
+    let domains = vec!["google.com"];
+    let cookies = brave(Some(domains)).unwrap();
+    for cookie in cookies {
+        println!("{:?}", cookie);
+    }
+}
+```
+
 ## Bindings 📚
 
 There's  `Python` and `JavaScript` bindings for rookie!
@@ -68,7 +82,10 @@ for (const cookie of cookies) {
 - Fast, written in `Rust`
 - Bypass `Chrome` restriction like file locking
 - Read session cookies from `Chrome` based browsers! (`Windows`)
-- Wide platforms and browsers support
+- Wide browsers support
+- Cross-platform support for `Windows`, `Linux`, and `macOS`
+- Available for `Rust`, `Python`, and `JavaScript`
+- Ensures type safety (e.g., `TypeScript`, `Python` with type hints)
 
 ## CLI 💻
 

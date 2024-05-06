@@ -43,7 +43,8 @@ pub fn internet_explorer_based(
         let expires = date::internet_explorer_timestamp(expires);
         let http_only = false;
 
-        let should_append = domains.is_none() || domains.iter().any(|d| d.contains(&host));
+        let should_append =
+          domains.is_none() || domains.iter().any(|d| d.contains(&host.to_string()));
         if should_append {
           cookies.push(Cookie {
             domain: host.to_string(),

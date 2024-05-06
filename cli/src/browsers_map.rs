@@ -19,7 +19,7 @@ lazy_static! {
     map.insert("firefox".into(), rookie::firefox);
 
     #[cfg(target_os = "windows")]
-    map.insert("ie".into(), rookie::ie);
+    map.insert("internet_explorer".into(), rookie::internet_explorer);
     map.insert("librewolf".into(), rookie::librewolf);
     map.insert("opera".into(), rookie::opera);
     map.insert("opera gx".into(), rookie::opera_gx);

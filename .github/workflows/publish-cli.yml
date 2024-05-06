@@ -18,8 +18,6 @@ jobs:
             archive: tar.gz tar.xz tar.zst
           - target: universal-apple-darwin
             archive: zip
-          - target: universal-apple-darwin
-            archive: zip
     steps:
       - uses: actions/checkout@master
       - name: Compile and release

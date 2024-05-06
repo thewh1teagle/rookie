@@ -30,9 +30,10 @@ fn main() {
 
 ## Bindings 📚
 
-There's  `Python` and `JavaScript` bindings for rookie!
+There's `Python` and `JavaScript` bindings for rookie!
 
 ## Python
+
 ```shell
 pip install rookiepy
 ```
@@ -49,12 +50,12 @@ for cookie in cookies:
 ## JavaScript
 
 ```console
-npm install @thewh1teagle/rookie
+npm install @rookie-rs/api
 ```
 
 ```js
-import { brave } from '@thewh1teagle/rookie'
-const cookies = brave()
+import { brave } from "@rookie-rs/api";
+const cookies = brave();
 for (const cookie of cookies) {
   console.log(cookie);
 }
@@ -75,7 +76,7 @@ for (const cookie of cookies) {
 `Rust`
 
 - [docs/Rust.md](docs/Rust.md)
-- [docs.rs/rookie](https://docs.rs/rookie)  
+- [docs.rs/rookie](https://docs.rs/rookie)
 
 ## Features 🚀
 
@@ -117,10 +118,10 @@ If you have a browser with which the library isn't working with, it may not have
 
 look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/config.rs) to see what configurations is needed.
 
-## Testing Dates  (DD/MM/YY) 📅
+## Testing Dates (DD/MM/YY) 📅
 
 | Browser   |  Linux   |  macOS   | Windows  |
-|:----------|:--------:|:--------:|:--------:|
+| :-------- | :------: | :------: | :------: |
 | Chrome    | 01/10/23 | 25/11/23 | 16/03/24 |
 | Firefox   | 01/10/23 | 25/11/23 | 16/03/24 |
 | LibreWolf | 01/10/23 | 25/11/23 | 01/10/23 |
@@ -135,12 +136,14 @@ look at [config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/s
 | Safari    |   N/A    | 02/10/23 |   N/A    |
 
 ## Credits 🙌
+
 [github.com/borisbabic/browser_cookie3](https://github.com/borisbabic/browser_cookie3)
 
 [PyPi-downloads]: https://img.shields.io/pypi/dm/rookiepy?logo=python
 [PyPi-version]: https://img.shields.io/pypi/v/rookiepy?color=00aa00&logo=python
 [PyPi-url]: https://pypi.org/project/rookiepy/
-[NPM-version]: https://img.shields.io/npm/v/%40thewh1teagle%2Frookie?logo=npm&color=0076CE
+[NPM-version]: https://img.shields.io/npm/v/@rookie-rs/api?logo=npm&color=0076CE
+
 [NPM-url]: [https://npm.com](https://www.npmjs.com/package/@thewh1teagle/rookie)
 [Crates-badge]: https://img.shields.io/crates/v/rookie?logo=rust
 [Crates-url]: https://crates.io/crates/rookie/

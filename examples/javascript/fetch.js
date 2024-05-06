@@ -1,8 +1,8 @@
 import rookie from "@rookie-rs/api";
 
 function createHeaders() {
-  // Get all Github cookies from Brave browser
-  const cookies = rookie.brave(["github.com"]);
+  // Get all Github cookies from all browsers
+  const cookies = rookie.load(["github.com"]);
   // Create cookie header
   const cookie = cookies
     .map((c) => decodeURIComponent(`${c.name}=${c.value}`))

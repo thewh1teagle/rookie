@@ -15,12 +15,9 @@ on:
       - main
     tags-ignore:
       - '**'
-    paths-ignore:
-      - '**/*.md'
-      - LICENSE
-      - '**/*.gitignore'
-      - .editorconfig
-      - docs/**
+    paths:
+      - "bindings/node/**"
+      
   pull_request: null
   workflow_dispatch: null
 jobs:

@@ -224,7 +224,7 @@ fn unlock_file(mut path: PathBuf) -> Result<PathBuf> {
   if !shadow_copy_success {
     log::warn!("Unlocking Chrome database... This may take a while (sometimes up to a minute)");
     unsafe {
-      crate::windows::file_unlock::release_file_lock(path.to_str().unwrap());
+      crate::windows::restart_manager::release_file_lock(path.to_str().unwrap());
     }
   }
   Ok(path)

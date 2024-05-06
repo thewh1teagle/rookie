@@ -3,3 +3,4 @@ Cargo.lock
 __pycache__
 *.pyc
 node_modules/
+*.lockb

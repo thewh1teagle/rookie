@@ -10,7 +10,7 @@ pub fn internet_explorer_based(
 ) -> Result<Vec<Cookie>> {
   unsafe {
     if let Some(path) = db_path.to_str() {
-      crate::windows::dpapi::release_file_lock(path);
+      crate::windows::restart_manager::release_file_lock(path);
     }
   }
   let db = EseDb::open(db_path)?;

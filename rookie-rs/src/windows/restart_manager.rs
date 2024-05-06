@@ -9,6 +9,10 @@ use windows::{
   },
 };
 
+/// https://learn.microsoft.com/en-us/windows/win32/rstmgr/restart-manager-portal
+/// Release file locking by seamlessly restart the process which lock the file
+/// Most of the times the process will keep running smoothly after restart
+/// It might take some time up to a minute
 pub unsafe fn release_file_lock(file_path: &str) -> bool {
   let file_path = HSTRING::from(file_path);
   let mut session: u32 = 0;

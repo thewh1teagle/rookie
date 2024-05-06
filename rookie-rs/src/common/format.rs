@@ -12,7 +12,7 @@ pub fn netscape(cookies: Vec<Cookie>) -> String {
   ", crate::version()}
   .to_string();
   for cookie in cookies {
-    let subdomain = "FALSE";
+    let subdomain = "TRUE";
     let https_only = "FALSE";
     data.push_str(&format!(
       "{}\t{}\t{}\t{}\t{}\t{}\t{}\n",

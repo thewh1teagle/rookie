@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate napi_derive;
 
-use napi::Result;
+use napi::{Result, Status};
 use rookie::enums::Cookie;
 use std::path::PathBuf;
 
@@ -41,7 +41,8 @@ pub fn any_browser(
   domains: Option<Vec<&str>>,
   key_path: Option<&str>,
 ) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::any_browser(&db_path, domains, key_path).unwrap();
+  let cookies = rookie::any_browser(&db_path, domains, key_path)
+    .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
@@ -49,71 +50,82 @@ pub fn any_browser(
 
 #[napi]
 pub fn firefox(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::firefox(domains).unwrap();
+  let cookies =
+    rookie::firefox(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn librewolf(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::librewolf(domains).unwrap();
+  let cookies =
+    rookie::librewolf(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn chrome(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::chrome(domains).unwrap();
+  let cookies =
+    rookie::chrome(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn brave(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::brave(domains).unwrap();
+  let cookies =
+    rookie::brave(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn edge(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::edge(domains).unwrap();
+  let cookies =
+    rookie::edge(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn opera(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::opera(domains).unwrap();
+  let cookies =
+    rookie::opera(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn opera_gx(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::opera_gx(domains).unwrap();
+  let cookies =
+    rookie::opera_gx(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn chromium(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::chromium(domains).unwrap();
+  let cookies =
+    rookie::chromium(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn vivaldi(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::vivaldi(domains).unwrap();
+  let cookies =
+    rookie::vivaldi(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn firefox_based(db_path: String, domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::firefox_based(PathBuf::from(db_path), domains).unwrap();
+  let cookies = rookie::firefox_based(PathBuf::from(db_path), domains)
+    .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
 #[napi]
 pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::load(domains).unwrap();
+  let cookies =
+    rookie::load(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
@@ -122,7 +134,8 @@ pub fn load(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 #[napi]
 #[cfg(target_os = "windows")]
 pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::octo_browser(domains).unwrap();
+  let cookies = rookie::octo_browser(domains)
+    .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
 
   cookies_to_js(cookies)
 }
@@ -130,7 +143,8 @@ pub fn octo_browser(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
 #[napi]
 #[cfg(target_os = "windows")]
 pub fn internet_explorer(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::internet_explorer(domains).unwrap();
+  let cookies = rookie::internet_explorer(domains)
+    .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 #[napi]
@@ -140,8 +154,8 @@ pub fn chromium_based(
   db_path: String,
   domains: Option<Vec<&str>>,
 ) -> Result<Vec<CookieObject>> {
-  let cookies =
-    rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains).unwrap();
+  let cookies = rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains)
+    .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
@@ -150,7 +164,8 @@ pub fn chromium_based(
 #[napi]
 #[cfg(target_os = "macos")]
 pub fn safari(domains: Option<Vec<&str>>) -> Result<Vec<CookieObject>> {
-  let cookies = rookie::safari(domains).unwrap();
+  let cookies =
+    rookie::safari(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
 
@@ -169,6 +184,7 @@ pub fn chromium_based(db_path: String, domains: Option<Vec<&str>>) -> Result<Vec
     osx_key_service: None,
     osx_key_user: None,
   };
-  let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains).unwrap();
+  let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains)
+    .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }

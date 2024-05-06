@@ -163,6 +163,9 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: yarn
           cache-dependency-path: "./bindings/node"
+        env:
+          DISABLE_V8_COMPILE_CACHE: 1
+
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts

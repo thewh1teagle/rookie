@@ -11,4 +11,4 @@ crate-type = ["cdylib"]
 [dependencies]
 pyo3 = "0.20.3"
 pyo3-log = "0.9.0"
-rookie = { path = "../../rookie-rs" }
+rookie = { path = "../../rookie-rs", features = ["pyo3"] }

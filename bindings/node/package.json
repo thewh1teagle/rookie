@@ -33,10 +33,10 @@
   },
   "packageManager": "yarn@4.2.1",
   "optionalDependencies": {
-    "@rookie-rs/rookie-darwin-arm64": "0.0.0",
-    "@rookie-rs/rookie-darwin-x64": "0.0.0",
-    "@rookie-rs/rookie-linux-x64-gnu": "0.0.0",
-    "@rookie-rs/rookie-win32-x64-msvc": "0.0.0"
+    "@rookie-rs/api-darwin-arm64": "0.0.0",
+    "@rookie-rs/api-darwin-x64": "0.0.0",
+    "@rookie-rs/api-linux-x64-gnu": "0.0.0",
+    "@rookie-rs/api-win32-x64-msvc": "0.0.0"
   },
   "repository": "https://github.com/thewh1teagle/rookie",
   "description": "Load cookies from any browser on any platform"

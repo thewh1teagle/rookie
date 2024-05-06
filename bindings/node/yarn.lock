@@ -70,24 +70,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rookie-rs/api-darwin-arm64@npm:0.0.0":
+  version: 0.0.0
+  resolution: "@rookie-rs/api-darwin-arm64@npm:0.0.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rookie-rs/api-darwin-x64@npm:0.0.0":
+  version: 0.0.0
+  resolution: "@rookie-rs/api-darwin-x64@npm:0.0.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rookie-rs/api-linux-x64-gnu@npm:0.0.0":
+  version: 0.0.0
+  resolution: "@rookie-rs/api-linux-x64-gnu@npm:0.0.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@rookie-rs/api-win32-x64-msvc@npm:0.0.0":
+  version: 0.0.0
+  resolution: "@rookie-rs/api-win32-x64-msvc@npm:0.0.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@rookie-rs/api@workspace:.":
   version: 0.0.0-use.local
   resolution: "@rookie-rs/api@workspace:."
   dependencies:
     "@napi-rs/cli": "npm:^2.18.2"
-    "@thewh1teagle/rookie-darwin-arm64": "npm:0.0.0"
-    "@thewh1teagle/rookie-darwin-x64": "npm:0.0.0"
-    "@thewh1teagle/rookie-linux-x64-gnu": "npm:0.0.0"
-    "@thewh1teagle/rookie-win32-x64-msvc": "npm:0.0.0"
+    "@rookie-rs/api-darwin-arm64": "npm:0.0.0"
+    "@rookie-rs/api-darwin-x64": "npm:0.0.0"
+    "@rookie-rs/api-linux-x64-gnu": "npm:0.0.0"
+    "@rookie-rs/api-win32-x64-msvc": "npm:0.0.0"
     ava: "npm:^6.0.1"
   dependenciesMeta:
-    "@thewh1teagle/rookie-darwin-arm64":
+    "@rookie-rs/api-darwin-arm64":
       optional: true
-    "@thewh1teagle/rookie-darwin-x64":
+    "@rookie-rs/api-darwin-x64":
       optional: true
-    "@thewh1teagle/rookie-linux-x64-gnu":
+    "@rookie-rs/api-linux-x64-gnu":
       optional: true
-    "@thewh1teagle/rookie-win32-x64-msvc":
+    "@rookie-rs/api-win32-x64-msvc":
       optional: true
   languageName: unknown
   linkType: soft
@@ -96,34 +124,6 @@ __metadata:
   version: 2.3.0
   resolution: "@sindresorhus/merge-streams@npm:2.3.0"
   checksum: 10c0/69ee906f3125fb2c6bb6ec5cdd84e8827d93b49b3892bce8b62267116cc7e197b5cccf20c160a1d32c26014ecd14470a72a5e3ee37a58f1d6dadc0db1ccf3894
-  languageName: node
-  linkType: hard
-
-"@thewh1teagle/rookie-darwin-arm64@npm:0.0.0":
-  version: 0.0.0
-  resolution: "@thewh1teagle/rookie-darwin-arm64@npm:0.0.0"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@thewh1teagle/rookie-darwin-x64@npm:0.0.0":
-  version: 0.0.0
-  resolution: "@thewh1teagle/rookie-darwin-x64@npm:0.0.0"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@thewh1teagle/rookie-linux-x64-gnu@npm:0.0.0":
-  version: 0.0.0
-  resolution: "@thewh1teagle/rookie-linux-x64-gnu@npm:0.0.0"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@thewh1teagle/rookie-win32-x64-msvc@npm:0.0.0":
-  version: 0.0.0
-  resolution: "@thewh1teagle/rookie-win32-x64-msvc@npm:0.0.0"
-  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 

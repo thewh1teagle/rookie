@@ -17,6 +17,11 @@ pub struct CookieObject {
   pub same_site: i64,
 }
 
+#[napi]
+pub fn version() -> Result<String> {
+  Ok(rookie::version())
+}
+
 fn cookies_to_js(cookies: Vec<Cookie>) -> Result<Vec<CookieObject>> {
   let mut js_cookies: Vec<CookieObject> = vec![];
   for cookie in cookies {

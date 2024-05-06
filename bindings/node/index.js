@@ -310,8 +310,9 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { anyBrowser, firefox, librewolf, chrome, brave, edge, opera, operaGx, chromium, vivaldi, firefoxBased, load, safari, chromiumBased } = nativeBinding
+const { version, anyBrowser, firefox, librewolf, chrome, brave, edge, opera, operaGx, chromium, vivaldi, firefoxBased, load, safari, chromiumBased } = nativeBinding
 
+module.exports.version = version
 module.exports.anyBrowser = anyBrowser
 module.exports.firefox = firefox
 module.exports.librewolf = librewolf

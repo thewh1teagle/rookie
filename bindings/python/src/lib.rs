@@ -3,6 +3,11 @@ use rookie::enums::Cookie;
 mod browsers;
 use browsers::*;
 
+#[pyfunction]
+fn version() -> PyResult<String> {
+  Ok(rookie::version())
+}
+
 #[pymodule]
 fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
   pyo3_log::init();
@@ -31,6 +36,7 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(safari, m)?)?;
   }
 
+  m.add_function(wrap_pyfunction!(version, m)?)?;
   Ok(())
 }
 

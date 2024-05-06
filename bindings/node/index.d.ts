@@ -13,6 +13,7 @@ export interface CookieObject {
   httpOnly: boolean
   sameSite: number
 }
+export function version(): string
 export function anyBrowser(dbPath: string, domains?: Array<string> | undefined | null, keyPath?: string | undefined | null): Array<CookieObject>
 /** Common browsers */
 export function firefox(domains?: Array<string> | undefined | null): Array<CookieObject>

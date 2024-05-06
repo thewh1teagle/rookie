@@ -25,5 +25,5 @@ python3 -m venv venv
 source venv/bin/activate
 # Install dependencies + build + install
 # May take sometime on first use
-pip3 install . 
+pip3 install .
 ```

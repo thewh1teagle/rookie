@@ -63,15 +63,21 @@ for (const cookie of cookies) {
 
 ## Examples 📋
 
-`Python` [examples](https://github.com/thewh1teagle/rookie/tree/main/examples)
+`Python` [examples/python](examples/python)
 
-`Rust` [rookie-rs/examples](https://github.com/thewh1teagle/rookie/tree/main/rookie-rs/examples)
+`JavaScript` [examples/javascript](examples/python)
+
+`Rust` [examples/rust](examples/rust)
 
 ## Docs 📘
 
 `Python`
 
 - [docs/Python.md](docs/Python.md)
+
+`JavaScript`
+
+- [docs/JavaScript.md][docs/JavaScript.md]
 
 `Rust`
 

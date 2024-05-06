@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@rookie-rs/api": "^0.0.1-beta.4"
+  }
+}

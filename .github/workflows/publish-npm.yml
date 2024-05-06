@@ -189,6 +189,10 @@ jobs:
           node-version: 20
           cache: yarn
           cache-dependency-path: "./bindings/node"
+        env:
+          # Disable V8 compile cache to hard crashes in Node.js. This can likely be removed once upgraded to the next LTS version (version 22).
+          # See: https://github.com/nodejs/node/issues/51555
+          DISABLE_V8_COMPILE_CACHE: 1
       - name: Install dependencies
         run: yarn install
       - name: Download all artifacts

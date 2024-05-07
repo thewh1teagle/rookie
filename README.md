@@ -147,7 +147,7 @@ look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main
 [PyPi-url]: https://pypi.org/project/rookiepy/
 [NPM-version]: https://img.shields.io/npm/v/@rookie-rs/api?logo=npm&color=0076CE
 
-[NPM-url]: [https://npm.com](https://www.npmjs.com/package/@thewh1teagle/rookie)
+[NPM-url]: https://www.npmjs.com/package/@rookie-rs/api
 [Crates-badge]: https://img.shields.io/crates/v/rookie?logo=rust
 [Crates-url]: https://crates.io/crates/rookie/
 [License-shield]: https://img.shields.io/github/license/thewh1teagle/rookie?color=00aaaa&logo=license

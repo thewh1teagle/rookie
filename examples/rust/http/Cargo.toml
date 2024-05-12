@@ -9,5 +9,4 @@ edition = "2021"
 [dependencies]
 regex = "1.9.5"
 reqwest = { version = "0.11.20", features = ["blocking"] }
-rookie = { path = "../../", version = "*" }
-
+rookie = { path = "../../../rookie-rs" }

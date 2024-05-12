@@ -1,5 +1,5 @@
-from rookiepy import chrome, to_cookiejar
+from rookiepy import brave, to_cookiejar
 
-cookies = chrome()
+cookies = brave()
 cj = to_cookiejar(cookies)
 print(cj)

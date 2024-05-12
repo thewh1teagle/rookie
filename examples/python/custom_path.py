@@ -1,7 +1,6 @@
 import rookiepy
 from pathlib import Path
 
-
 # Using pathlib and cross platform paths is always recommended!
 db_path = Path("C:/Users/User/AppData/Local/BraveSoftware/Brave-Browser/User Data/default/network/Cookies").resolve().absolute()
 key_path = Path("C:/Users/User/AppData/Local/BraveSoftware/Brave-Browser/User Data/Local State").resolve().absolute() # optional

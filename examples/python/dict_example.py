@@ -1,5 +1,5 @@
 
-from rookiepy import edge, to_dict
+from rookiepy import edge
 
 cookies = edge()
 print(cookies)

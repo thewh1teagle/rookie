@@ -1,10 +1,10 @@
 # rookie
 
-[![PyPi Downloads][PyPi-downloads]][PyPi-url]
-[![PyPi Version][PyPi-version]][PyPi-url]
-[![NPM Version][NPM-version]][NPM-url]
-[![Crates][Crates-badge]][Crates-url]
-[![License][License-shield]][License-url]
+[![PyPi Downloads](https://img.shields.io/pypi/dm/rookiepy?logo=python)](https://pypi.org/project/rookiepy/)
+[![PyPi Version](https://img.shields.io/pypi/v/rookiepy?color=00aa00&logo=python)](https://pypi.org/project/rookiepy/)
+[![NPM Version](https://img.shields.io/npm/v/@rookie-rs/api?logo=npm&color=0076CE)](https://www.npmjs.com/package/@rookie-rs/api)
+[![Crates](https://img.shields.io/crates/v/rookie?logo=rust)](https://crates.io/crates/rookie/)
+[![License](https://img.shields.io/github/license/thewh1teagle/rookie?color=00aaaa&logo=license)](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/MIT-LICENSE.txt)
 
 Load cookies from any browser on any platform
 
@@ -142,13 +142,3 @@ look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main
 
 [github.com/borisbabic/browser_cookie3](https://github.com/borisbabic/browser_cookie3)
 
-[PyPi-downloads]: https://img.shields.io/pypi/dm/rookiepy?logo=python
-[PyPi-version]: https://img.shields.io/pypi/v/rookiepy?color=00aa00&logo=python
-[PyPi-url]: https://pypi.org/project/rookiepy/
-[NPM-version]: https://img.shields.io/npm/v/@rookie-rs/api?logo=npm&color=0076CE
-
-[NPM-url]: https://www.npmjs.com/package/@rookie-rs/api
-[Crates-badge]: https://img.shields.io/crates/v/rookie?logo=rust
-[Crates-url]: https://crates.io/crates/rookie/
-[License-shield]: https://img.shields.io/github/license/thewh1teagle/rookie?color=00aaaa&logo=license
-[License-url]: https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/MIT-LICENSE.txt

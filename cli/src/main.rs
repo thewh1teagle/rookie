@@ -31,7 +31,7 @@ fn print_version() {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
   let args = Args::parse();
-  pretty_env_logger::init();
+  env_logger::init();
 
   if args.version {
     print_version();

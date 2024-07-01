@@ -13,21 +13,22 @@ export interface CookieObject {
   httpOnly: boolean
   sameSite: number
 }
-export function version(): string
-export function anyBrowser(dbPath: string, domains?: Array<string> | undefined | null, keyPath?: string | undefined | null): Array<CookieObject>
+export declare function version(): string
+export declare function anyBrowser(dbPath: string, domains?: Array<string> | undefined | null, keyPath?: string | undefined | null): Array<CookieObject>
 /** Common browsers */
-export function firefox(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function librewolf(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function chrome(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function brave(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function edge(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function opera(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function operaGx(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function chromium(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function vivaldi(domains?: Array<string> | undefined | null): Array<CookieObject>
-export function firefoxBased(dbPath: string, domains?: Array<string> | undefined | null): Array<CookieObject>
-export function load(domains?: Array<string> | undefined | null): Array<CookieObject>
-/** MacOS browsers */
-export function safari(domains?: Array<string> | undefined | null): Array<CookieObject>
-/** Unix browsers */
-export function chromiumBased(dbPath: string, domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function firefox(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function librewolf(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function chrome(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function brave(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function arc(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function edge(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function opera(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function operaGx(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function chromium(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function vivaldi(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function firefoxBased(dbPath: string, domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function load(domains?: Array<string> | undefined | null): Array<CookieObject>
+/** Windows only browsers */
+export declare function octoBrowser(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function internetExplorer(domains?: Array<string> | undefined | null): Array<CookieObject>
+export declare function chromiumBased(keyPath: string, dbPath: string, domains?: Array<string> | undefined | null): Array<CookieObject>

@@ -39,3 +39,11 @@ source venv/bin/activate
 # May take sometime on first use
 pip3 install .
 ````
+
+## Node Bindings
+
+```console
+bun install -g @napi-rs/cli
+cd bindings/python
+napi build
+```

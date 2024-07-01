@@ -85,6 +85,20 @@ pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
   osx_key_user: None,
 };
 
+pub static ARC_CONFIG: BrowserConfig<'static> = BrowserConfig {
+  data_paths: &[
+    "~/snap/arc/common/arc/Default/Cookies",
+    "~/.config/arc/Default/Cookies",
+    "~/.config/arc/Profile */Cookies",
+    "~/.var/app/org.arc.Arc/config/arc/Default/Cookies",
+    "~/.var/app/org.arc.Arc/config/arc/Profile */Cookies",
+  ],
+  channels: None,
+  os_crypt_name: Some("arc"),
+  osx_key_service: None,
+  osx_key_user: None,
+};
+
 pub static FIREFOX_CONFIG: BrowserConfig<'static> = BrowserConfig {
   data_paths: &[
     "~/snap/firefox/common/.mozilla/firefox",

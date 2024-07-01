@@ -21,6 +21,7 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
 
   m.add_function(wrap_pyfunction!(chromium, m)?)?;
   m.add_function(wrap_pyfunction!(vivaldi, m)?)?;
+  m.add_function(wrap_pyfunction!(arc, m)?)?;
   m.add_function(wrap_pyfunction!(chromium_based, m)?)?;
   m.add_function(wrap_pyfunction!(firefox_based, m)?)?;
   m.add_function(wrap_pyfunction!(load, m)?)?;

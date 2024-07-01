@@ -83,6 +83,17 @@ pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
   osx_key_user: Some("Chromium"),
 };
 
+pub static ARC_CONFIG: BrowserConfig<'static> = BrowserConfig {
+  data_paths: &[
+    "~/Library/Application Support/Arc/User Data/Default/Cookies",
+    "~/Library/Application Support/Arc/User Data/Profile */Cookies",
+  ],
+  channels: Some(&["", "-beta", "-dev", "-nightly"]),
+  os_crypt_name: Some("arc"),
+  osx_key_service: Some("Arc Safe Storage"),
+  osx_key_user: Some("Arc"),
+};
+
 pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
   data_paths: &["~/Library/Application Support/com.operasoftware.OperaGX/Cookies"],
   channels: Some(&["Stable", ""]),

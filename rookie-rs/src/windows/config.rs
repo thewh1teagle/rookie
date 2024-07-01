@@ -110,6 +110,17 @@ pub static CHROMIUM_CONFIG: BrowserConfig<'static> = BrowserConfig {
   osx_key_user: None,
 };
 
+pub static ARC_CONFIG: BrowserConfig<'static> = BrowserConfig {
+  data_paths: &[
+    "%LOCALAPPDATA%/Packages/TheBrowserCompany.Arc*/LocalCache/Local/Arc/User Data/Default/Network/Cookies",
+    "%LOCALAPPDATA%/Packages/TheBrowserCompany.Arc*/LocalCache/Local/Arc/User Data/Profile */Network/Cookies",
+  ],
+  channels: None,
+  os_crypt_name: None,
+  osx_key_service: None,
+  osx_key_user: None,
+};
+
 pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
   data_paths: &[
     "%LOCALAPPDATA%/Opera Software/Opera GX {channel}/Cookies",

@@ -84,6 +84,14 @@ def chromium(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
+def arc(domains: Optional[List[str]] = None) -> CookieList:
+    """
+    Extract Cookies from Arc browser
+
+    :param domains: Optional list of domains to extract only from them
+    :return: A list of dictionaries of cookies
+    """
+    ...
 
 def opera(domains: Optional[List[str]] = None) -> CookieList:
     """

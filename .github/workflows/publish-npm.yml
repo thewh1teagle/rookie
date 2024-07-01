@@ -11,12 +11,9 @@ defaults:
     working-directory: ./bindings/node
 on:
   push:
-    branches:
-      - main
-    tags-ignore:
-      - '**'
-    paths:
-      - "bindings/node/**"
+    tags:
+      - "*"
+  workflow_dispatch:
       
   pull_request: null
   workflow_dispatch: null

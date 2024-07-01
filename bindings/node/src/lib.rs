@@ -83,6 +83,14 @@ pub fn brave(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
 }
 
 #[napi]
+pub fn arc(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
+  let cookies =
+    rookie::arc(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
+
+  cookies_to_js(cookies)
+}
+
+#[napi]
 pub fn edge(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::edge(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;

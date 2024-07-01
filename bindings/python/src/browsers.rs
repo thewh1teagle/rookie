@@ -44,6 +44,14 @@ pub fn chrome(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject
 }
 
 #[pyfunction]
+pub fn arc(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+  let cookies = rookie::arc(domains)?;
+  let cookies = to_dict(py, cookies)?;
+
+  Ok(cookies)
+}
+
+#[pyfunction]
 pub fn brave(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::brave(domains)?;
 

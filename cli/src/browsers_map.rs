@@ -29,6 +29,8 @@ lazy_static! {
 
     map.insert("vivaldi".into(), rookie::vivaldi);
 
+    map.insert("arc".into(), rookie::arc);
+
     map
   };
 }

@@ -174,6 +174,31 @@ pub fn brave(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   }
 }
 
+/// Returns cookies from Arc
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::brave(Some(domains));
+/// ```
+pub fn arc(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
+  #[cfg(target_os = "windows")]
+  {
+    let (key, db_path) = paths::find_chrome_based_paths(&config::ARC_CONFIG)?;
+    chromium_based(key, db_path, domains)
+  }
+  #[cfg(unix)]
+  {
+    let (_, db_path) = paths::find_chrome_based_paths(&config::ARC_CONFIG)?;
+    chromium_based(&config::ARC_CONFIG, db_path, domains)
+  }
+}
+
 /// Returns cookies from Edge
 ///
 /// # Arguments

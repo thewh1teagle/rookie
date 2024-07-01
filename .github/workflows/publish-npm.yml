@@ -1,22 +1,22 @@
 name: Publish to npm
+
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch: null
+
 env:
   DEBUG: napi:*
   APP_NAME: rookie
-  MACOSX_DEPLOYMENT_TARGET: '10.13'
+  MACOSX_DEPLOYMENT_TARGET: "10.13"
 permissions:
   contents: write
   id-token: write
 defaults:
   run:
     working-directory: ./bindings/node
-on:
-  push:
-    tags:
-      - "*"
-  workflow_dispatch:
-      
-  pull_request: null
-  workflow_dispatch: null
+
 jobs:
   build:
     strategy:
@@ -90,7 +90,7 @@ jobs:
         if: ${{ matrix.settings.docker }}
         with:
           image: ${{ matrix.settings.docker }}
-          options: '--user 0:0 -v ${{ github.workspace }}/rookie-rs:/rookie-rs -v ${{ github.workspace }}/bindings/node/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/bindings/node/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/bindings/node/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}/bindings/node:/build -w /build'
+          options: "--user 0:0 -v ${{ github.workspace }}/rookie-rs:/rookie-rs -v ${{ github.workspace }}/bindings/node/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/bindings/node/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/bindings/node/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}/bindings/node:/build -w /build"
           run: ${{ matrix.settings.build }}
       - name: Build
         run: ${{ matrix.settings.build }}
@@ -115,8 +115,8 @@ jobs:
           - host: windows-latest
             target: x86_64-pc-windows-msvc
         node:
-          - '18'
-          - '20'
+          - "18"
+          - "20"
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
@@ -146,8 +146,8 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '18'
-          - '20'
+          - "18"
+          - "20"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

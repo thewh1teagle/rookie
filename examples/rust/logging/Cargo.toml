@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 env_logger = { version = "0.11.3", features = ["color"] }
-rookie = { path = "../../../rookie-rs", version = "0.5.2-beta.0" }
+rookie = { path = "../../../rookie-rs", version = "0.5.2-beta.4" }

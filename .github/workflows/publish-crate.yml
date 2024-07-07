@@ -13,12 +13,11 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v3
-        - uses: actions-rs/toolchain@v1
-          with:
-              toolchain: stable
-              override: true
-        - uses: katyo/publish-crates@v2
-          with:
-              args: -p rookie
-              registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - run: cargo publish -p rookie
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}

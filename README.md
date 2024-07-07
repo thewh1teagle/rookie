@@ -27,6 +27,7 @@ cargo add rookie
 ```
 
 Create `main.rs` with the following
+
 ```rust
 use rookie::brave;
 
@@ -100,6 +101,7 @@ See [cli](https://github.com/thewh1teagle/rookie/tree/main/cli) folder
 
 So far the following platforms are supported:
 
+- **Arc:** `Linux`, `macOS`, `Windows`
 - **Brave:** `Linux`, `macOS`, `Windows`
 - **Cachy:** `Linux`
 - **Chrome:** `Linux`, `macOS`, `Windows`
@@ -125,6 +127,7 @@ look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main
 
 | Browser   |  Linux   |  macOS   | Windows  |
 | :-------- | :------: | :------: | :------: |
+| Arc       | 07/08/24 | 07/08/24 | 07/08/24 |
 | Brave     | 01/10/23 | 25/11/23 | 01/10/23 |
 | Cachy     | 04/06/24 |   N/A    |   N/A    |
 | Chromium  | 01/10/23 | 25/11/23 | 01/10/23 |
@@ -141,4 +144,3 @@ look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main
 ## Credits 🙌
 
 [github.com/borisbabic/browser_cookie3](https://github.com/borisbabic/browser_cookie3)
-

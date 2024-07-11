@@ -139,8 +139,11 @@ def to_netscape(cookies: CookieList) -> str:
 # Edit at your own risk.\n"""
 
     for cookie in cookies:
-        subdomain = "TRUE"
-        https_only = str.upper(repr(cookie['secure']))
-        data += f"{cookie['domain']}\t{subdomain}\t{cookie['path']}\t{https_only}\t{cookie['expires'] if cookie['expires'] else 0}\t{cookie['name']}\t{cookie['value']}\n"
+        domain = cookie['domain']
+        if cookie['http_only']:
+            domain = f'#HttpOnly_{domain}'
+        subdomain = repr(cookie['domain'].startswith('.')).upper()
+        https_only = repr(cookie['secure']).upper()
+        data += f"{domain}\t{subdomain}\t{cookie['path']}\t{https_only}\t{cookie['expires'] if cookie['expires'] else 0}\t{cookie['name']}\t{cookie['value']}\n"
 
     return data

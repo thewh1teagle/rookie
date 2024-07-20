@@ -12,11 +12,16 @@ pub fn netscape(cookies: Vec<Cookie>) -> String {
   ", crate::version()}
   .to_string();
   for cookie in cookies {
-    let subdomain = "TRUE";
-    let https_only = "FALSE";
+    let domain = if cookie.http_only {
+      format!("#HttpOnly_{}", cookie.domain)
+    } else {
+      cookie.domain
+    };
+    let subdomain = domain.starts_with(".").to_string().to_uppercase();
+    let https_only = cookie.secure.to_string().to_uppercase();
     data.push_str(&format!(
       "{}\t{}\t{}\t{}\t{}\t{}\t{}\n",
-      cookie.domain,
+      domain,
       subdomain,
       cookie.path,
       https_only,

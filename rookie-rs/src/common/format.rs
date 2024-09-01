@@ -17,7 +17,7 @@ pub fn netscape(cookies: Vec<Cookie>) -> String {
     } else {
       cookie.domain
     };
-    let subdomain = domain.starts_with(".").to_string().to_uppercase();
+    let subdomain = domain.starts_with('.').to_string().to_uppercase();
     let https_only = cookie.secure.to_string().to_uppercase();
     data.push_str(&format!(
       "{}\t{}\t{}\t{}\t{}\t{}\t{}\n",

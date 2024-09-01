@@ -368,7 +368,9 @@ pub fn internet_explorer(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
 pub fn load(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   let mut cookies = Vec::new();
 
-  let mut browser_types = vec![firefox, librewolf, opera, edge, chromium, brave, vivaldi];
+  let mut browser_types = vec![
+    firefox, librewolf, opera, edge, chromium, brave, vivaldi, arc,
+  ];
 
   #[cfg(target_os = "windows")]
   {

@@ -142,12 +142,13 @@ def load(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
-
-def any_browser(domains: Optional[List[str]] = None) -> CookieList:
+def any_browser(db_path: str, domains: Optional[List[str]] = None, key_path: Optional[str] = None) -> CookieList:
     """
     Extract Cookies from any browser
 
+    :param db_path: path to browser database file
     :param domains: Optional list of domains to extract only from them
+    :param key_path: Optional path to key file used to decrypt db_path
     :return: A list of dictionaries of cookies
     """
     ...

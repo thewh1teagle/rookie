@@ -44,7 +44,7 @@ mod windows;
 /// println!("{}", version);
 /// ```
 pub fn version() -> String {
-  format!("{}({})", env!("CARGO_PKG_VERSION"), env!("COMMIT_HASH"))
+  format!("{} ({})", env!("CARGO_PKG_VERSION"), env!("COMMIT_HASH"))
 }
 
 /// Returns cookies from Firefox

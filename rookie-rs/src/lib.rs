@@ -313,7 +313,7 @@ pub fn opera_gx(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
 /// ```
 #[cfg(target_os = "windows")]
 pub fn octo_browser(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
-  let (key, db_path) = paths::find_chrome_based_paths(&config::OPERA_GX_CONFIG)?;
+  let (key, db_path) = paths::find_chrome_based_paths(&config::OCTO_BROWSER_CONFIG)?;
   chromium_based(key, db_path, domains)
 }
 

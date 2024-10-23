@@ -1,5 +1,5 @@
 use crate::{browser::mozilla::get_default_profile, common::enums::BrowserConfig};
-use eyre::{anyhow, bail, Result};
+use eyre::{anyhow, bail, Context, Result};
 use std::{env, path::PathBuf};
 
 fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>> {
@@ -31,7 +31,9 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
               .iter()
               .map(|p| parent.join(p))
               .find(|p| p.exists())
-              .unwrap_or_else(|| parent.join("Local State"));
+              .unwrap_or_else(|| parent.join("Local State"))
+              .canonicalize()
+              .context("canonicalize")?;
             log::debug!(
               "Found chrome path {}, {}",
               db_path.display(),

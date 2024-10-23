@@ -130,8 +130,9 @@ fn decrypt_encrypted_value(
   keys: Vec<Vec<u8>>,
 ) -> Result<String> {
   let key_type = &encrypted_value[..3];
-  if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10") {
+  if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10" || key_type == b"v20") {
     // unknown key_type or value isn't encrypted
+    log::warn!("Unknown key type: {:?}", key_type);
     return Ok(value);
   }
   let encrypted_value = &encrypted_value[3..];
@@ -248,7 +249,7 @@ fn query_cookies(
   );
   let connection = sqlite::connect(db_path)?;
   let mut query =
-        "SELECT host_key, path, is_secure, expires_utc, name, value, encrypted_value, is_httponly, samesite FROM cookies ".to_string();
+        "SELECT host_key, path, is_secure, expires_utc, name, value, CAST(encrypted_value AS BLOB), is_httponly, samesite FROM cookies ".to_string();
 
   if let Some(domains) = domains {
     let domain_queries: Vec<String> = domains

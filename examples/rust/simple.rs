@@ -1,4 +1,7 @@
 fn main() {
-  let cookies = rookie::brave(None).unwrap();
-  println!("Found {} cookies!", cookies.len());
+  tracing_subscriber::fmt::init();
+  let cookies = rookie::chrome(None).unwrap();
+  for cookie in cookies {
+    println!("{:?}", cookie);
+  }
 }

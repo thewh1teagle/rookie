@@ -13,7 +13,7 @@ Load cookies from any browser on any platform
 - Available for `Rust`, `Python`, and `JavaScript`
 - Ensures type safety (e.g., `TypeScript`, `Python` with type hints)
 - Super Fast, Built with `Rust`
-- Bypass `Chrome` restriction like file locking
+- Bypass `Chrome` restriction of file locking and appbound encryption
 - Read session cookies from `Chrome` based browsers! (requires admin rights on `Windows`)
 - Wide browsers support
 - Cross-platform support for `Windows`, `Linux`, and `macOS`

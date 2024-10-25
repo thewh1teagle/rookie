@@ -5,5 +5,5 @@ __pycache__
 node_modules/
 *.lockb
 *.exe
-paexec
-unprotect
+paexec.exe.*
+unprotect.exe.*

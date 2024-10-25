@@ -1,6 +1,6 @@
 [package]
 name = "rookie"
-version = "0.5.3-beta.1"
+version = "0.5.3-beta.2"
 edition = "2021"
 description = "Load cookie from your web browsers"
 license-file = "../MIT-LICENSE.txt"
@@ -69,4 +69,10 @@ windows = { version = "0.51", features = [
 name = "simple"
 path = "../examples/rust/simple.rs"
 
-include = ["src/**/*", "Cargo.toml", "Cargo.lock"]
+include = [
+    "src/**/*",
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/paexec",
+    "src/unprotect",
+]

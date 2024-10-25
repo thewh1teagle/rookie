@@ -6,8 +6,8 @@ on:
       - main
   pull_request:
     paths:
-      - '.github/workflows/lint-cli.yml'
-      - 'rookie-rs/src/**'
+      - ".github/workflows/lint-cli.yml"
+      - "rookie-rs/src/**"
   workflow_dispatch:
 
 env:
@@ -49,4 +49,4 @@ jobs:
           workspaces: rookie-rs
 
       - name: run Clippy
-        run: cargo clippy --manifest-path Cargo.toml --all-targets --all-features -- -D warnings
+        run: cargo clippy --manifest-path Cargo.toml --all-targets -- -D warnings

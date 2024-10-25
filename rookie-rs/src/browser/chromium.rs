@@ -154,6 +154,8 @@ fn decrypt_encrypted_value(
     log::warn!("Unknown key type: {:?}", key_type);
     return Ok(value);
   }
+  log::debug!("key type: {:?}", key_type);
+
   let encrypted_value = &encrypted_value[3..];
   let nonce = &encrypted_value[..12]; // iv
   let ciphertext = &encrypted_value[12..];
@@ -194,9 +196,12 @@ fn decrypt_encrypted_value(
     return Ok("".into());
   }
   let key_type = &encrypted_value[..3];
-  if !(key_type == b"v11" || key_type == b"v10") {
+
+  if !(key_type == b"v11" || key_type == b"v10" || key_type == b"v20") {
     return Ok(value);
   }
+  log::debug!("key type: {:?}", key_type);
+
   use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, KeyIvInit};
 
   type Aes128CbcDec = cbc::Decryptor<aes::Aes128>;
@@ -219,8 +224,13 @@ fn decrypt_encrypted_value(
           return Ok(decoded);
         }
         Err(_) => {
-          log::warn!("Error in decode decrypt value with utf8");
-          return Ok("".into());
+          log::debug!("Error in decode decrypt value with utf8. trying from index 32");
+
+          let decoded = String::from_utf8(plaintext[32..].to_vec()).unwrap_or_else(|_| {
+            log::warn!("Error decoding from index 32 with UTF-8");
+            "".into()
+          });
+          return Ok(decoded);
         }
       }
     }

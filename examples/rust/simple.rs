@@ -1,4 +1,6 @@
 fn main() {
-  let cookies = rookie::brave(None).unwrap();
-  println!("Found {} cookies!", cookies.len());
+  let cookies = rookie::chrome(None).unwrap();
+  for cookie in cookies {
+    println!("{:?}", cookie);
+  }
 }

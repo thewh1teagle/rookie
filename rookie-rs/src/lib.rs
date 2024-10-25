@@ -2,6 +2,7 @@
 
 // Common
 pub mod common;
+mod utils;
 pub use common::enums;
 
 // Browser

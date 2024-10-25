@@ -6,6 +6,7 @@ use std::path::PathBuf;
 use crate::windows;
 
 #[cfg(not(target_os = "linux"))]
+#[allow(unused)]
 use eyre::ContextCompat;
 
 #[cfg(target_os = "macos")]
@@ -32,16 +33,34 @@ pub fn chromium_based(
   let key_dict: serde_json::Value =
     serde_json::from_str(content.as_str()).context("Can't read json file")?;
 
-  let os_crypt = key_dict.get("os_crypt").context("Can't get os crypt")?;
-
-  let key64 = os_crypt
-    .get("encrypted_key")
-    .context("Can't get encrypted_key")?
+  let legacy_key = key_dict["os_crypt"]["encrypted_key"]
     .as_str()
-    .context("Can't convert encrypted_key to str")?;
+    .unwrap_or_default();
 
-  let keys = get_keys(key64)?;
-  query_cookies(keys, db_path, domains)
+  #[allow(unused)]
+  let appbound_key = key_dict["os_crypt"]["app_bound_encrypted_key"]
+    .as_str()
+    .unwrap_or_default();
+
+  #[cfg(feature = "appbound")]
+  {
+    let keys = if !appbound_key.is_empty() {
+      if !privilege::user::privileged() {
+        bail!("Chrome cookies from version v130 can be decrypted only when running as admin due to appbound encryption!")
+      }
+      let key = crate::windows::appbound::get_keys(appbound_key)?;
+      vec![key]
+    } else {
+      get_keys(legacy_key)?
+    };
+    query_cookies(keys, db_path, domains)
+  }
+
+  #[cfg(not(feature = "appbound"))]
+  {
+    let keys = get_keys(legacy_key)?;
+    query_cookies(keys, db_path, domains)
+  }
 }
 
 /// Returns cookies from chromium based browser
@@ -123,7 +142,7 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
 }
 
 /// Decrypt cookie value using aes GCM
-#[cfg(target_os = "windows")]
+#[cfg(windows)]
 fn decrypt_encrypted_value(
   value: String,
   encrypted_value: &[u8],
@@ -136,7 +155,7 @@ fn decrypt_encrypted_value(
     return Ok(value);
   }
   let encrypted_value = &encrypted_value[3..];
-  let nonce = &encrypted_value[..12];
+  let nonce = &encrypted_value[..12]; // iv
   let ciphertext = &encrypted_value[12..];
 
   // Create a new AES block cipher.
@@ -148,7 +167,12 @@ fn decrypt_encrypted_value(
       .decrypt(nonce, ciphertext.as_ref())
       .map_err(eyre::Error::msg)
       .context("Can't decrypt using key")?;
-    let plaintext = String::from_utf8(plaintext).context("Can't decode encrypted value")?;
+
+    let plaintext = if key_type == b"v20" {
+      String::from_utf8(plaintext[32..].to_vec()).context("Can't decode encrypted value")
+    } else {
+      String::from_utf8(plaintext).context("Can't decode encrypted value")
+    }?;
     return Ok(plaintext);
   }
   bail!("decrypt_encrypted_value failed")

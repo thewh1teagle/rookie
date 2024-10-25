@@ -30,9 +30,8 @@ fn print_version() {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+  tracing_subscriber::fmt::init();
   let args = Args::parse();
-  env_logger::init();
-
   if args.version {
     print_version();
   }

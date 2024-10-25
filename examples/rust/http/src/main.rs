@@ -13,6 +13,7 @@ fn extract_username(html: &str) -> &str {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+  tracing_subscriber::fmt::init();
   // Create a custom cookie store
   let client = Client::new();
   let cookies = load(Some(vec!["github.com".into()]))?;

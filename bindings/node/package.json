@@ -1,6 +1,6 @@
 {
   "name": "@rookie-rs/api",
-  "version": "0.5.3-beta.0",
+  "version": "0.5.3-beta.1",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {

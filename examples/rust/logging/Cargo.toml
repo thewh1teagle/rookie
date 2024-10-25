@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 tracing-subscriber = "0.3.18"
-rookie = { path = "../../../rookie-rs", version = "0.5.3-beta.0" }
+rookie = { path = "../../../rookie-rs", version = "0.5.3-beta.1" }

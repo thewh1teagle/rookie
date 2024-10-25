@@ -27,7 +27,7 @@ jobs:
             target: x86_64-apple-darwin
             build: yarn build --target x86_64-apple-darwin
           - host: windows-latest
-            build: yarn build
+            build: yarn build --target x86_64-pc-windows-msvc
             target: x86_64-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -85,6 +85,13 @@ jobs:
           cache: yarn
           architecture: x86
           cache-dependency-path: ./bindings/node
+
+      - name: Prepare appbound binaries
+        run:
+          C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe
+          C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/unprotect.exe
+        if: contains(matrix.settings.target, 'windows')
+
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}

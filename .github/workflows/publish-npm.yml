@@ -87,7 +87,7 @@ jobs:
           cache-dependency-path: ./bindings/node
 
       - name: Prepare appbound binaries
-        run:
+        run: |
           C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe
           C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/unprotect.exe
         if: contains(matrix.settings.target, 'windows')

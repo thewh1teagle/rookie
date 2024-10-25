@@ -52,7 +52,7 @@ jobs:
           architecture: ${{ matrix.target }}
 
       - name: Prepare appbound binaries
-        run:
+        run: |
           C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe
           C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/unprotect.exe
 

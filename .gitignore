@@ -5,5 +5,5 @@ __pycache__
 node_modules/
 *.lockb
 *.exe
-paexec.exe.*
-unprotect.exe.*
+rookie-rs/src/paexec.rs
+rookie-rs/src/unprotect.rs

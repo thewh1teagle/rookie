@@ -7,11 +7,11 @@ pub use common::enums;
 
 #[cfg(feature = "appbound")]
 #[allow(unused)]
-static PAEXEC_BYTES: &[u8] = include_bytes!("paexec.exe.rs"); // wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\paexec.exe.rs
+static PAEXEC_BYTES: &[u8] = include_bytes!("paexec.rs"); // wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\paexec.rs
 
 #[cfg(feature = "appbound")]
 #[allow(unused)]
-static CRYPT_UNPROTECT_BYTES: &[u8] = include_bytes!("unprotect.exe.rs"); // cargo build --release -p cryptunprotect OR wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\unprotect.exe.rs
+static CRYPT_UNPROTECT_BYTES: &[u8] = include_bytes!("unprotect.rs"); // cargo build --release -p cryptunprotect OR wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\unprotect.rs
 
 // Browser
 #[cfg(target_os = "windows")]

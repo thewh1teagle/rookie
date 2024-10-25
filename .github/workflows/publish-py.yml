@@ -53,8 +53,8 @@ jobs:
 
       - name: Prepare appbound binaries
         run: |
-          C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\paexec.exe.rs
-          C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/unprotect.exe -O rookie-rs\src\unprotect.exe.rs
+          C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\paexec.rs
+          C:\msys64\usr\bin\wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/unprotect.exe -O rookie-rs\src\unprotect.rs
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1

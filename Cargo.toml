@@ -1,5 +1,5 @@
 [workspace]
-members = ["rookie-rs", "bindings/python", "bindings/node", "cli"]
+members = ["rookie-rs", "bindings/python", "bindings/node", "cli", "unprotect"]
 
 exclude = ["examples/*"]
 

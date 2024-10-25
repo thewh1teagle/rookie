@@ -68,3 +68,5 @@ windows = { version = "0.51", features = [
 [[example]]
 name = "simple"
 path = "../examples/rust/simple.rs"
+
+include = ["src/**/*", "Cargo.toml", "Cargo.lock"]

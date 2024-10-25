@@ -20,18 +20,15 @@ use aes_gcm::{
 static UNPROTECT_NAME: &str = "unprotect.exe";
 static PAEXEC_NAME: &str = "paexec.exe";
 
-static PAEXEC_BYTES: &[u8] = include_bytes!("../../../paexec.exe"); // Place it in workspace root: wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe
-static CRYPT_UNPROTECT_BYTES: &[u8] = include_bytes!("../../../unprotect.exe"); // cargo build --release -p cryptunprotect
-
 fn decrypt(key_b64: &str, as_system: bool) -> Result<String> {
   let dir = temp_dir()?;
   let unprotect_path = dir.join(UNPROTECT_NAME);
 
-  fs::write(&unprotect_path, CRYPT_UNPROTECT_BYTES).expect("Failed to write unprotect.exe");
+  fs::write(&unprotect_path, crate::CRYPT_UNPROTECT_BYTES).expect("Failed to write unprotect.exe");
 
   let output = if as_system {
     let paexec_path = dir.join(PAEXEC_NAME);
-    fs::write(&paexec_path, PAEXEC_BYTES).expect("Failed to write paexec.exe");
+    fs::write(&paexec_path, crate::PAEXEC_BYTES).expect("Failed to write paexec.exe");
     let args = ["-s", unprotect_path.to_str().unwrap(), key_b64];
     Command::new(paexec_path)
       .args(args)

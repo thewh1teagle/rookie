@@ -1,6 +1,3 @@
-#[cfg(all(not(windows), feature = "appbound"))]
-compile_error!("The `appbound` feature is supported only on Windows");
-
 fn commit_hash() -> String {
   let output = std::process::Command::new("git")
     .args(["rev-parse", "--short", "HEAD"])

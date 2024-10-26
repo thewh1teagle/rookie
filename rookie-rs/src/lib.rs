@@ -5,6 +5,14 @@ pub mod common;
 mod utils;
 pub use common::enums;
 
+#[cfg(feature = "appbound")]
+#[allow(unused)]
+static PAEXEC_BYTES: &[u8] = include_bytes!("../paexec.bin"); // wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\paexec.bin
+
+#[cfg(feature = "appbound")]
+#[allow(unused)]
+static CRYPT_UNPROTECT_BYTES: &[u8] = include_bytes!("../unprotect.bin"); // cargo build --release -p cryptunprotect OR wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binaries/paexec.exe -O rookie-rs\src\unprotect.bin
+
 // Browser
 #[cfg(target_os = "windows")]
 pub use browser::internet_explorer::internet_explorer_based;

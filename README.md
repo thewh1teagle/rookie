@@ -132,7 +132,7 @@ look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main
 | Cachy     | 2024/06/04 |    N/A     |    N/A     |
 | Chromium  | 2024/10/26 | 2024/10/26 | 2023/10/01 |
 | Chrome    | 2024/10/26 | 2024/10/26 | 2024/03/16 |
-| Edge      | 2023/10/01 |     -      | 2023/10/01 |
+| Edge      | 2023/10/01 | 2024/08/07 | 2023/10/01 |
 | Firefox   | 2024/10/26 | 2023/11/25 | 2024/03/16 |
 | IE        |    N/A     |    N/A     |  23/10/01  |
 | LibreWolf | 2023/10/01 | 2023/11/25 |  23/10/01  |

@@ -1,7 +1,7 @@
 [package]
 edition = "2021"
 name = "thewh1teagle_rookie"
-version = "0.5.3-beta.2"
+version = "0.5.3-beta.3"
 
 [lib]
 crate-type = ["cdylib"]
@@ -13,12 +13,12 @@ napi-derive = "2.12.2"
 
 
 [target.'cfg(windows)'.dependencies]
-rookie = { path = "../../rookie-rs", version = "0.5.3-beta.2", features = [
+rookie = { path = "../../rookie-rs", version = "0.5.3-beta.3", features = [
   "appbound",
 ] }
 
 [target.'cfg(unix)'.dependencies]
-rookie = { path = "../../rookie-rs", version = "0.5.3-beta.2" }
+rookie = { path = "../../rookie-rs", version = "0.5.3-beta.3" }
 
 [build-dependencies]
 napi-build = "2.0.1"

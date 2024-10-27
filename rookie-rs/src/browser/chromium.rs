@@ -180,7 +180,8 @@ fn decrypt_encrypted_value(
         }
       }
       Err(e) => {
-        log::warn!("Failed to decrypt with a key: {}", e);
+        // We'll get error anyway if decryption failed
+        log::debug!("Failed to decrypt with a key: {}", e);
         continue;
       }
     }

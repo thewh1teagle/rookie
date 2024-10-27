@@ -1,6 +1,6 @@
 [package]
 name = "rookiepy"
-version = "0.5.3"
+version = "0.5.4"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -13,10 +13,10 @@ pyo3 = "0.20.3"
 pyo3-log = "0.9.0"
 
 [target.'cfg(windows)'.dependencies]
-rookie = { path = "../../rookie-rs", version = "0.5.3", features = [
+rookie = { path = "../../rookie-rs", version = "0.5.4", features = [
   "appbound",
   "pyo3",
 ] }
 
 [target.'cfg(unix)'.dependencies]
-rookie = { path = "../../rookie-rs", version = "0.5.3", features = ["pyo3"] }
+rookie = { path = "../../rookie-rs", version = "0.5.4", features = ["pyo3"] }

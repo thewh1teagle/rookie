@@ -6,7 +6,7 @@ wget.exe https://github.com/thewh1teagle/rookie/releases/download/appbound-binar
 cargo build --release --features appbound
 */
 use base64::{prelude::BASE64_STANDARD, Engine};
-use eyre::{bail, Context, Result};
+use eyre::{bail, eyre, Context, Result};
 use std::fs;
 use std::process::{Command, Stdio};
 
@@ -50,7 +50,9 @@ fn decrypt(key_b64: &str, as_system: bool) -> Result<String> {
   Ok(result.trim().to_string())
 }
 
-pub fn get_keys(key64: &str) -> Result<Vec<u8>> {
+pub fn get_keys(key64: &str) -> Result<Vec<Vec<u8>>> {
+  let mut keys: Vec<Vec<u8>> = Vec::new();
+
   let key_u8 = BASE64_STANDARD.decode(key64)?;
   if !key_u8.starts_with(b"APPB") {
     bail!("key not starts with APPB")
@@ -60,20 +62,26 @@ pub fn get_keys(key64: &str) -> Result<Vec<u8>> {
   let system_decrypted = decrypt(&key64, true)?;
   let user_decrypted = decrypt(system_decrypted.trim(), false)?;
   let key = BASE64_STANDARD.decode(user_decrypted)?;
-  let decrypted_key = &key[key.len() - 61..];
-  if decrypted_key[0] != 1 {
-    bail!("key[0] != 1")
-  }
 
+  // Most chrome browsers can use the system->user decrypted key directly (last 32 bytes)
+  keys.push(key[key.len() - 32..].to_vec());
+
+  // Chrome also decrypt the decrypted key with hardcoded AES key from elevation_service.exe
+  let decrypted_key = &key[key.len() - 61..];
   let aes_key = BASE64_STANDARD.decode("sxxuJBrIRnKNqcH6xJNmUc/7lE0UOrgWJ2vMbaAoR4c=")?;
   let iv = &decrypted_key[1..1 + 12];
   let mut ciphertext = decrypted_key[1 + 12..1 + 12 + 32].to_vec();
   let tag = &decrypted_key[1 + 12 + 32..];
   ciphertext.extend(tag);
-
   let aes_key = Key::<Aes256Gcm>::from_slice(&aes_key);
   let cipher = Aes256Gcm::new(aes_key);
   let nonce = GenericArray::from_slice(iv); // 96-bits; unique per message
-  let plain = cipher.decrypt(nonce, ciphertext.as_slice()).unwrap();
-  Ok(plain)
+  if let Ok(plain) = cipher
+    .decrypt(nonce, ciphertext.as_slice())
+    .map_err(|e| eyre!("{:?}", e))
+  {
+    keys.push(plain)
+  }
+
+  Ok(keys)
 }

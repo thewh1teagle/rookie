@@ -48,8 +48,7 @@ pub fn chromium_based(
       if !privilege::user::privileged() {
         bail!("Chrome cookies from version v130 can be decrypted only when running as admin due to appbound encryption!")
       }
-      let key = crate::windows::appbound::get_keys(appbound_key)?;
-      vec![key]
+      crate::windows::appbound::get_keys(appbound_key)?
     } else {
       get_keys(legacy_key)?
     };
@@ -161,21 +160,30 @@ fn decrypt_encrypted_value(
   let ciphertext = &encrypted_value[12..];
 
   // Create a new AES block cipher.
-  if let Some(key) = keys.into_iter().next() {
+  for key in keys {
     let key = Key::<Aes256Gcm>::from_slice(key.as_slice());
     let cipher = Aes256Gcm::new(key);
     let nonce = GenericArray::from_slice(nonce); // 96-bits; unique per message
-    let plaintext = cipher
-      .decrypt(nonce, ciphertext.as_ref())
-      .map_err(eyre::Error::msg)
-      .context("Can't decrypt using key")?;
 
-    let plaintext = if key_type == b"v20" {
-      String::from_utf8(plaintext[32..].to_vec()).context("Can't decode encrypted value")
-    } else {
-      String::from_utf8(plaintext).context("Can't decode encrypted value")
-    }?;
-    return Ok(plaintext);
+    match cipher.decrypt(nonce, ciphertext.as_ref()) {
+      Ok(plaintext) => {
+        // Successfully decrypted, try to convert to string
+        let plaintext = if key_type == b"v20" {
+          String::from_utf8(plaintext[32..].to_vec()).context("Can't decode encrypted value")
+        } else {
+          String::from_utf8(plaintext).context("Can't decode encrypted value")
+        };
+
+        match plaintext {
+          Ok(text) => return Ok(text),
+          Err(e) => log::warn!("Failed to decode plaintext: {}", e),
+        }
+      }
+      Err(e) => {
+        log::warn!("Failed to decrypt with a key: {}", e);
+        continue;
+      }
+    }
   }
   bail!("decrypt_encrypted_value failed")
 }

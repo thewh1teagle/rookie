@@ -6,3 +6,5 @@ node_modules/
 *.lockb
 *.exe
 *.bin
+*.dll
+impersonate.h

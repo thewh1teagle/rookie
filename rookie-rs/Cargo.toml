@@ -59,14 +59,22 @@ libesedb = "0.2"
 rawcopy-rs-next = "0.1.3"
 privilege = "0.3.0"
 windows = { version = "0.51", features = [
+    "Wdk",
+    "Wdk_System",
+    "Wdk_System_SystemServices",
     "Win32_Security_Cryptography",
+    "Win32_Security",
+    "Win32",
     "Win32_Foundation",
     "Win32_System",
     "Win32_System_RestartManager",
+    "Win32_System_ProcessStatus",
+    "Win32_System_SystemServices",
+    "Win32_System_Threading",
 ] }
 
 [[example]]
 name = "simple"
 path = "../examples/rust/simple.rs"
 
-include = ["src/**/*", "Cargo.toml", "Cargo.lock", "*.bin"]
+include = ["src/**/*", "Cargo.toml", "Cargo.lock"]

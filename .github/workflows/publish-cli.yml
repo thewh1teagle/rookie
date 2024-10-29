@@ -38,7 +38,7 @@ jobs:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Build
-        run: cargo build --release ${{ matrix.args }}
+        run: cargo build --release ${{ matrix.args }} --package rookie-cli --bin rookie
 
       - name: Rename Unix
         run: mv target/release/rookie ${{ matrix.name }}

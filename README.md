@@ -138,7 +138,7 @@ look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main
 | LibreWolf | 2023/10/01 | 2023/11/25 | 2023/10/01 |
 | Opera     | 2023/10/01 |     -      | 2023/10/01 |
 | Opera GX  |    N/A     |     -      | 2023/10/01 |
-| Safari    |    N/A     | 2023/11/25 |    N/A     |
+| Safari    |    N/A     | 2024/10/26 |    N/A     |
 | Vivaldi   | 2023/10/01 | 2023/11/25 | 2023/10/01 |
 
 ## Credits 🙌

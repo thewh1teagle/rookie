@@ -2,6 +2,9 @@ name: Publish CLI
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        required: true
 
 jobs:
   publish-cli:
@@ -45,18 +48,14 @@ jobs:
         run: Move-Item target/${{ matrix.target }}/release/rookie.exe rookie-cli-${{ matrix.target }}.exe
         if: contains(matrix.platform, 'windows')
 
-      - name: "Get Latest Tag"
-        id: latest_tag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-
       - name: Upload Unix
-        run: gh release upload ${{ steps.latest_tag.outputs.tag }} rookie-cli-${{ matrix.target }} --clobber
+        run: gh release upload ${{ github.event.inputs.tag }} rookie-cli-${{ matrix.target }} --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: contains(matrix.platform, 'macos') || contains(matrix.platform, 'ubuntu')
 
       - name: Upload Windows
-        run: gh release upload ${{ steps.latest_tag.outputs.tag }} rookie-cli-${{ matrix.target }}.exe --clobber
+        run: gh release upload ${{ github.event.inputs.tag }} rookie-cli-${{ matrix.target }}.exe --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: contains(matrix.platform, 'windows')

@@ -145,3 +145,19 @@ pub static OPERA_GX_CONFIG: BrowserConfig<'static> = BrowserConfig {
   osx_key_service: None,
   osx_key_user: None,
 };
+
+pub static W3M_CONFIG: BrowserConfig<'static> = BrowserConfig {
+  data_paths: &["~/.w3m/cookie"], // see documentation in source code of w3m, file fm.h
+  channels: None,
+  os_crypt_name: None,
+  osx_key_service: None,
+  osx_key_user: None,
+};
+
+pub static LYNX_CONFIG: BrowserConfig<'static> = BrowserConfig {
+  data_paths: &["~/.lynx_cookies"], // See lynx man page. ~/cookies used on MSDOS
+  channels: Some(&["", ""]),
+  os_crypt_name: None,
+  osx_key_service: None,
+  osx_key_user: None,
+};

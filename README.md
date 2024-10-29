@@ -140,6 +140,8 @@ look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main
 | Opera GX  |    N/A     |     -      | 2023/10/01 |
 | Safari    |    N/A     | 2023/11/25 |    N/A     |
 | Vivaldi   | 2023/10/01 | 2023/11/25 | 2023/10/01 |
+| W3M       | 2024/10/26 |    N/A     |    N/A     |
+| Lynx      | 2024/10/26 |    N/A     |    N/A     |
 
 ## Credits 🙌
 

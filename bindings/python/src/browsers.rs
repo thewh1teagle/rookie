@@ -232,6 +232,32 @@ pub fn safari(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject
   Ok(cookies)
 }
 
+/// Extract Cookies from w3m browser
+///
+/// :param domains: Optional list of domains to extract only from them
+/// :return: A list of dictionaries of cookies
+#[pyfunction]
+#[cfg(target_os = "linux")]
+pub fn w3m(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+  let cookies = rookie::w3m(domains)?;
+  let cookies = to_dict(py, cookies)?;
+
+  Ok(cookies)
+}
+
+/// Extract Cookies from lynx browser
+///
+/// :param domains: Optional list of domains to extract only from them
+/// :return: A list of dictionaries of cookies
+#[pyfunction]
+#[cfg(any(windows, target_os = "linux"))]
+pub fn lynx(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+  let cookies = rookie::w3m(domains)?;
+  let cookies = to_dict(py, cookies)?;
+
+  Ok(cookies)
+}
+
 /// Extract Cookies from Chromium-based browsers
 ///
 /// :param db_path: Path to the database file

@@ -37,6 +37,16 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(safari, m)?)?;
   }
 
+  #[cfg(target_os = "linux")]
+  {
+    m.add_function(wrap_pyfunction!(w3m, m)?)?;
+  }
+
+  #[cfg(any(windows, target_os = "linux"))]
+  {
+    m.add_function(wrap_pyfunction!(lynx, m)?)?;
+  }
+
   m.add_function(wrap_pyfunction!(version, m)?)?;
   Ok(())
 }

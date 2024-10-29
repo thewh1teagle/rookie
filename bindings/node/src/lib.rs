@@ -201,3 +201,21 @@ pub fn chromium_based(db_path: String, domains: Option<Vec<String>>) -> Result<V
     .map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
   cookies_to_js(cookies)
 }
+
+/// Others
+
+#[napi]
+#[cfg(target_os = "linux")]
+pub fn w3m(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
+  let cookies =
+    rookie::w3m(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
+  cookies_to_js(cookies)
+}
+
+#[napi]
+#[cfg(any(windows, target_os = "linux"))]
+pub fn lynx(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
+  let cookies =
+    rookie::lynx(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
+  cookies_to_js(cookies)
+}

@@ -163,3 +163,11 @@ pub static IE_CONFIG: BrowserConfig<'static> = BrowserConfig {
   osx_key_service: None,
   osx_key_user: None,
 };
+
+pub static LYNX_CONFIG: BrowserConfig<'static> = BrowserConfig {
+  data_paths: &["~/cookies"], // See lynx man page. ~/cookies used on MSDOS
+  channels: Some(&["", ""]),
+  os_crypt_name: None,
+  osx_key_service: None,
+  osx_key_user: None,
+};

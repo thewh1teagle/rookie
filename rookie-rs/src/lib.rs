@@ -2,8 +2,12 @@
 
 // Common
 pub mod common;
-mod utils;
+
 pub use common::enums;
+
+use eyre::ContextCompat;
+mod utils;
+use std::path::PathBuf;
 
 // Browser
 #[cfg(target_os = "windows")]
@@ -397,6 +401,52 @@ pub fn load(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   }
 
   Ok(cookies)
+}
+
+/// Returns cookies from lynx (Linux/Windows only)
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::lynx(Some(domains));
+/// ```
+#[cfg(any(windows, target_os = "linux"))]
+pub fn lynx(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
+  let paths: Vec<PathBuf> = config::LYNX_CONFIG
+    .data_paths
+    .iter()
+    .map(|p| paths::expand_path(p).unwrap_or_default())
+    .collect();
+
+  crate::browser::lynx(paths.first().context("empty")?, domains)
+}
+
+/// Returns cookies from w3m (Linux only)
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::w3m(Some(domains));
+/// ```
+#[cfg(target_os = "linux")]
+pub fn w3m(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
+  let paths: Vec<PathBuf> = config::W3M_CONFIG
+    .data_paths
+    .iter()
+    .map(|p| paths::expand_path(p).unwrap_or_default())
+    .collect();
+
+  crate::browser::w3m(paths.first().context("empty")?, domains)
 }
 
 /// Returns cookies from specific browser

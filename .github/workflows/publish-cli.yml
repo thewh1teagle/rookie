@@ -1,0 +1,65 @@
+name: Publish CLI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish-cli:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: "macos-latest" # for Arm based macs (M1 and above).
+            args: "--target aarch64-apple-darwin"
+            name: rookie-cli-macos-aarch64
+          - platform: "macos-latest" # for Intel based macs.
+            args: "--target x86_64-apple-darwin"
+            name: rookie-cli-macos-x86_64
+          - platform: "ubuntu-22.04" # Ubuntu 22.04 x86_64 (Works on 24.04 as well)
+            args: ""
+            name: rookie-cli-linux-x86_64
+          - platform: "windows-latest" # Windows x86_64
+            args: "--target x86_64-pc-windows-msvc --features appbound"
+            name: rookie-cli-windows-x86_64.exe
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Build
+        run: cargo build --release ${{ matrix.args }}
+
+      - name: Rename Unix
+        run: mv target/release/rookie ${{ matrix.name }}
+        if: contains(matrix.platform, 'macos') || contains(matrix.platform, 'ubuntu')
+
+      - name: Rename Windows
+        run: Move-Item target/release/rookie.exe ${{ matrix.name }}
+        if: contains(matrix.platform, 'windows')
+
+      - name: Upload Unix
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          gh release upload $tag ${{ matrix.name }} --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: contains(matrix.platform, 'macos') || contains(matrix.platform, 'ubuntu')
+
+      - name: Upload Windows
+        run: |
+          $tag = git describe --tags --abbrev=0
+          gh release upload $tag ${{ matrix.name }} --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: contains(matrix.platform, 'windows')

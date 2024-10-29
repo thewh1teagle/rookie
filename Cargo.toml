@@ -1,7 +1,7 @@
 [workspace]
 members = ["rookie-rs", "bindings/python", "bindings/node", "cli"]
 
-exclude = ["examples/*"]
+exclude = ["examples/rust/http"]
 
 default-members = ["rookie-rs", "bindings/python"]
 resolver = "2"

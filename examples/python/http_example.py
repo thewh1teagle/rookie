@@ -3,7 +3,7 @@ import re
 from rookiepy import brave, to_cookiejar
 
 def extract_username(html):
-    re_pattern = r'dashboard/ajax_context_list\?current_context=(.+)'
+    re_pattern = r'<meta name="user-login" content="(.+)">'
     match = re.search(re_pattern, html)
     if match:
         return match.group(1)

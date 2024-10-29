@@ -36,7 +36,7 @@ rand = "0.8.5"
 tracing-subscriber = "0.3.18"
 
 [features]
-default = []
+default = ["appbound"]
 pyo3 = ["eyre/pyo3"]
 appbound = []
 

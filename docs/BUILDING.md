@@ -47,3 +47,9 @@ bun install -g @napi-rs/cli
 cd bindings/python
 napi build
 ```
+
+## Draft new release
+
+```console
+gh release create v<tag>
+```

@@ -16,7 +16,11 @@ pub fn safari_based(db_path: PathBuf, domains: Option<Vec<String>>) -> Result<Ve
       For example, in VSCode or Terminal:\n\
       1. Open Settings\n\
       2. Privacy & Security\n\
-      3. Full Disk Access",
+      3. Full Disk Access\n\
+      ---\n\
+      You can also open the disk access page with: \n\
+      open \"x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles\"\n\
+      ",
     db_path.display()
   ))?;
   let mut bs: Vec<u8> = Vec::new();

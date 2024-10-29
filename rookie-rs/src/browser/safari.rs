@@ -10,8 +10,19 @@ use std::{fs::File, io::Read, path::PathBuf, vec::Vec};
 /// 5. parse each cookie
 /// 6. add each cookie based on domain filter
 pub fn safari_based(db_path: PathBuf, domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
-  let mut file =
-    File::open(db_path.clone()).context(format!("failed to open {}", db_path.display()))?;
+  let mut file = File::open(&db_path).context(format!(
+    "Failed to open {}\n\
+      Make sure you have full disk access for the current process.\n\
+      For example, in VSCode or Terminal:\n\
+      1. Open Settings\n\
+      2. Privacy & Security\n\
+      3. Full Disk Access\n\
+      ---\n\
+      You can also open the disk access page with: \n\
+      open \"x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles\"\n\
+      ",
+    db_path.display()
+  ))?;
   let mut bs: Vec<u8> = Vec::new();
   file.read_to_end(&mut bs)?;
   let cookies = parse_content(&bs)?;

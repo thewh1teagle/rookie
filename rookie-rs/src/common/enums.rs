@@ -26,11 +26,11 @@ impl CookieToString for Vec<Cookie> {
   }
 }
 
-#[derive(Debug)]
-pub struct BrowserConfig<'a> {
-  pub data_paths: &'a [&'a str],
-  pub channels: Option<&'a [&'static str]>,
-  pub os_crypt_name: Option<&'static str>,
-  pub osx_key_service: Option<&'static str>,
-  pub osx_key_user: Option<&'static str>,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct BrowserConfig {
+  pub data_paths: Vec<String>,
+  pub channels: Option<Vec<String>>,
+  pub os_crypt_name: Option<String>,
+  pub osx_key_service: Option<String>,
+  pub osx_key_user: Option<String>,
 }

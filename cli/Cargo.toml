@@ -1,13 +1,13 @@
 [package]
 name = "rookie-cli"
-version = "0.5.5"
+version = "0.5.6-beta.0"
 edition = "2021"
 
 [dependencies]
 clap = { version = "4.4.6", features = ["derive"] }
 tracing-subscriber = "0.3.18"
 lazy_static = "1.4.0"
-rookie = { path = "../rookie-rs", version = "0.5.5" }
+rookie = { path = "../rookie-rs", version = "0.5.6-beta.0" }
 serde_json = "1.0.107"
 
 [features]

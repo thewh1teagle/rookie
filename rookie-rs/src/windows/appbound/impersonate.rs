@@ -82,13 +82,22 @@ fn get_process_name(pid: u32) -> Result<String> {
   }
 }
 
-fn get_lsass_pid() -> Result<u32> {
+fn get_system_process_pid() -> Result<u32> {
+  let mut fallback_pid = None;
+
   for pid in get_process_pids()? {
-    if get_process_name(pid).unwrap_or_default() == "lsass.exe" {
+    let process_name = get_process_name(pid).unwrap_or_default();
+
+    if process_name == "lsass.exe" {
       return Ok(pid);
+    } else if process_name == "winlogon.exe" {
+      fallback_pid = Some(pid);
     }
   }
-  bail!("lsass.exe not found!")
+  if let Some(pid) = fallback_pid {
+    return Ok(pid);
+  }
+  bail!("Neither lsass.exe nor winlogon.exe found!")
 }
 
 fn get_process_handle(pid: u32) -> Result<HANDLE> {
@@ -135,7 +144,7 @@ fn get_system_token(lsass_handle: HANDLE) -> Result<HANDLE> {
 
 pub fn start_impersonate() -> Result<HANDLE> {
   enable_privilege()?;
-  let pid = get_lsass_pid()?;
+  let pid = get_system_process_pid()?;
   let lsass_handle = get_process_handle(pid)?;
   let duplicated_token = get_system_token(lsass_handle)?;
   close_handle(lsass_handle)?;

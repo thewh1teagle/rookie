@@ -121,7 +121,7 @@ You are welcome to contribute support for other browsers, or other platforms.
 
 If you have a browser with which the library isn't working with, it may not have been added to the list of supported browsers configs. You can create a pull request (PR) or an issue with the path to the cookies file on your computer, and I will add it.
 
-look at [src/windows/config.rs](https://github.com/thewh1teagle/rookie/blob/main/rookie-rs/src/windows/config.rs) to see what configurations is needed.
+look at [src/config.json](rookie-rs/src/config.json) to see what configurations is needed.
 
 ## Testing Dates (DD/MM/YY) 📅
 

@@ -1,4 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
+use crate::config::Browser;
 use eyre::{bail, Result};
 use std::path::PathBuf;
 
@@ -10,7 +11,7 @@ use crate::windows;
 use eyre::ContextCompat;
 
 #[cfg(target_os = "macos")]
-use crate::macos::secrets;
+use crate::macos;
 
 #[cfg(target_os = "windows")]
 use aes_gcm::{
@@ -65,11 +66,12 @@ pub fn chromium_based(
 /// Returns cookies from chromium based browser
 #[cfg(unix)]
 pub fn chromium_based(
-  config: &BrowserConfig,
+  config: &Browser,
   db_path: PathBuf,
   domains: Option<Vec<String>>,
 ) -> Result<Vec<Cookie>> {
   // Simple AES
+
   let keys = get_keys(config)?;
   query_cookies(keys, db_path, domains)
 }
@@ -93,7 +95,7 @@ fn get_keys(key64: &str) -> Result<Vec<Vec<u8>>> {
 }
 
 #[cfg(target_os = "linux")]
-fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
+fn get_keys(config: &Browser) -> Result<Vec<Vec<u8>>> {
   // AES CBC key
 
   let salt = b"saltysalt";
@@ -101,7 +103,9 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
   let iterations = 1;
 
   let mut keys: Vec<Vec<u8>> = vec![];
-  if let Ok(passwords) = crate::linux::secrets::get_passwords(config.os_crypt_name.unwrap_or("")) {
+  if let Ok(passwords) =
+    crate::linux::get_passwords(&config.unix_crypt_name.clone().unwrap_or("".to_owned()))
+  {
     for password in passwords {
       let key = create_pbkdf2_key(password.as_str(), salt, iterations);
       keys.push(key);
@@ -117,17 +121,23 @@ fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
 }
 
 #[cfg(target_os = "macos")]
-fn get_keys(config: &BrowserConfig) -> Result<Vec<Vec<u8>>> {
+fn get_keys(config: &Browser) -> Result<Vec<Vec<u8>>> {
   let salt = b"saltysalt";
 
   let iterations = 1003;
 
   let mut keys: Vec<Vec<u8>> = vec![];
 
-  let key_service = config.osx_key_service.context("missing osx_key_service")?;
-  let key_user = config.osx_key_user.context("missing osx_key_user")?;
+  let key_service = config
+    .osx_key_service
+    .clone()
+    .context("missing osx_key_service")?;
+  let key_user = config
+    .osx_key_user
+    .clone()
+    .context("missing osx_key_user")?;
   let password =
-    secrets::get_osx_keychain_password(key_service, key_user).unwrap_or("peanuts".to_string());
+    macos::get_osx_keychain_password(&key_service, &key_user).unwrap_or("peanuts".to_string());
 
   let key = create_pbkdf2_key(password.as_str(), salt, iterations);
   keys.push(key);

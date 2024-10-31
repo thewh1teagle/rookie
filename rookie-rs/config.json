@@ -1,0 +1,405 @@
+{
+  "version": "0.5.5",
+  "platforms": {
+    "windows": {
+      "chrome": {
+        "paths": [
+          "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Default/Cookies",
+          "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Default/Network/Cookies",
+          "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Profile */Cookies",
+          "%LOCALAPPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookies",
+          "%APPDATA%/Google/Chrome{channel}/User Data/Default/Cookies",
+          "%APPDATA%/Google/Chrome{channel}/User Data/Default/Network/Cookies",
+          "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Cookies",
+          "%APPDATA%/Google/Chrome{channel}/User Data/Profile */Network/Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ]
+      },
+      "brave": {
+        "paths": [
+          "%LOCALAPPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Default/Cookies",
+          "%LOCALAPPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Default/Network/Cookies",
+          "%LOCALAPPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Profile */Cookies",
+          "%LOCALAPPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Profile */Network/Cookies",
+          "%APPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Default/Cookies",
+          "%APPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Default/Network/Cookies",
+          "%APPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Profile */Cookies",
+          "%APPDATA%/BraveSoftware/Brave-Browser{channel}/User Data/Profile */Network/Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ]
+      },
+      "edge": {
+        "paths": [
+          "%LOCALAPPDATA%/Microsoft/Edge{channel}/User Data/Default/Cookies",
+          "%LOCALAPPDATA%/Microsoft/Edge{channel}/User Data/Default/Network/Cookies",
+          "%LOCALAPPDATA%/Microsoft/Edge{channel}/User Data/Profile */Cookies",
+          "%LOCALAPPDATA%/Microsoft/Edge{channel}/User Data/Profile */Network/Cookies",
+          "%APPDATA%/Microsoft/Edge{channel}/User Data/Default/Cookies",
+          "%APPDATA%/Microsoft/Edge{channel}/User Data/Default/Network/Cookies",
+          "%APPDATA%/Microsoft/Edge{channel}/User Data/Profile */Cookies",
+          "%APPDATA%/Microsoft/Edge{channel}/User Data/Profile */Network/Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ]
+      },
+      "firefox": {
+        "paths": [
+          "%APPDATA%/Mozilla/Firefox",
+          "%LOCALAPPDATA%/Mozilla/Firefox"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ]
+      },
+      "vivaldi": {
+        "paths": [
+          "%LOCALAPPDATA%/Vivaldi/User Data/Default/Cookies",
+          "%LOCALAPPDATA%/Vivaldi/User Data/Default/Network/Cookies",
+          "%LOCALAPPDATA%/Vivaldi/User Data/Profile */Cookies",
+          "%LOCALAPPDATA%/Vivaldi/User Data/Profile */Network/Cookies",
+          "%APPDATA%/Vivaldi/User Data/Default/Cookies",
+          "%APPDATA%/Vivaldi/User Data/Default/Network/Cookies",
+          "%APPDATA%/Vivaldi/User Data/Profile */Cookies",
+          "%APPDATA%/Vivaldi/User Data/Profile */Network/Cookies"
+        ]
+      },
+      "opera": {
+        "paths": [
+          "%LOCALAPPDATA%/Opera Software/Opera {channel}/Cookies",
+          "%LOCALAPPDATA%/Opera Software/Opera {channel}/Network/Cookies",
+          "%APPDATA%/Opera Software/Opera {channel}/Cookies",
+          "%APPDATA%/Opera Software/Opera {channel}/Network/Cookies"
+        ],
+        "channels": [
+          "Stable",
+          "Next",
+          "Developer"
+        ]
+      },
+      "chromium": {
+        "paths": [
+          "%LOCALAPPDATA%/Chromium/User Data/Default/Cookies",
+          "%LOCALAPPDATA%/Chromium/User Data/Default/Network/Cookies",
+          "%LOCALAPPDATA%/Chromium/User Data/Profile */Cookies",
+          "%LOCALAPPDATA%/Chromium/User Data/Profile */Network/Cookies",
+          "%APPDATA%/Chromium/User Data/Default/Cookies",
+          "%APPDATA%/Chromium/User Data/Default/Network/Cookies",
+          "%APPDATA%/Chromium/User Data/Profile */Cookies",
+          "%APPDATA%/Chromium/User Data/Profile */Network/Cookies"
+        ]
+      },
+      "arc": {
+        "paths": [
+          "%LOCALAPPDATA%/Packages/TheBrowserCompany.Arc*/LocalCache/Local/Arc/User Data/Default/Network/Cookies",
+          "%LOCALAPPDATA%/Packages/TheBrowserCompany.Arc*/LocalCache/Local/Arc/User Data/Profile */Network/Cookies"
+        ]
+      },
+      "opera_gx": {
+        "paths": [
+          "%LOCALAPPDATA%/Opera Software/Opera GX {channel}/Cookies",
+          "%LOCALAPPDATA%/Opera Software/Opera GX {channel}/Network/Cookies",
+          "%APPDATA%/Opera Software/Opera GX {channel}/Cookies",
+          "%APPDATA%/Opera Software/Opera GX {channel}/Network/Cookies"
+        ],
+        "channels": [
+          "Stable",
+          ""
+        ]
+      },
+      "octo_browser": {
+        "paths": [
+          "%LOCALAPPDATA%/Octo Browser/tmp/*/Default/Network/Cookies",
+          "%APPDATA%/Octo Browser/tmp/*/Default/Network/Cookies"
+        ],
+        "channels": [
+          "Stable",
+          ""
+        ]
+      },
+      "librewolf": {
+        "paths": [
+          "%LOCALAPPDATA%/librewolf",
+          "%APPDATA%/librewolf"
+        ]
+      },
+      "ie": {
+        "paths": [
+          "%APPDATA%/Microsoft/Windows/WebCache/WebCacheV01.dat",
+          "%LOCALAPPDATA%/Microsoft/Windows/WebCache/WebCacheV01.dat"
+        ]
+      }
+    },
+    "macos": {
+      "chrome": {
+        "paths": [
+          "~/Library/Application Support/Google/Chrome{channel}/Default/Cookies",
+          "~/Library/Application Support/Google/Chrome{channel}/Profile */Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ],
+        "unix_crypt_name": "chrome",
+        "osx_key_service": "Chrome Safe Storage",
+        "osx_key_user": "Chrome"
+      },
+      "brave": {
+        "paths": [
+          "~/Library/Application Support/BraveSoftware/Brave-Browser{channel}/Default/Cookies",
+          "~/Library/Application Support/BraveSoftware/Brave-Browser{channel}/Profile */Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ],
+        "unix_crypt_name": "brave",
+        "osx_key_service": "Brave Safe Storage",
+        "osx_key_user": "Brave"
+      },
+      "edge": {
+        "paths": [
+          "~/Library/Application Support/Microsoft Edge{channel}/Default/Cookies",
+          "~/Library/Application Support/Microsoft Edge{channel}/Profile */Cookies"
+        ],
+        "channels": [
+          "",
+          " Beta",
+          " Dev",
+          " Canary"
+        ],
+        "unix_crypt_name": "chromium",
+        "osx_key_service": "Microsoft Edge Safe Storage",
+        "osx_key_user": "Microsoft Edge"
+      },
+      "firefox": {
+        "paths": [
+          "~/Library/Application Support/Firefox"
+        ]
+      },
+      "librewolf": {
+        "paths": [
+          "~/Library/Application Support/librewolf"
+        ]
+      },
+      "vivaldi": {
+        "paths": [
+          "~/Library/Application Support/Vivaldi/Default/Cookies",
+          "~/Library/Application Support/Vivaldi/Profile */Cookies"
+        ],
+        "unix_crypt_name": "chrome",
+        "osx_key_service": "Vivaldi Safe Storage",
+        "osx_key_user": "Vivaldi"
+      },
+      "opera": {
+        "paths": [
+          "~/Library/Application Support/com.operasoftware.Opera/Cookies",
+          "~/Library/Application Support/com.operasoftware.OperaNext/Cookies",
+          "~/Library/Application Support/com.operasoftware.OperaDeveloper/Cookies"
+        ],
+        "channels": [
+          "Stable",
+          "Next",
+          "Developer"
+        ],
+        "unix_crypt_name": "chromium",
+        "osx_key_service": "Opera Safe Storage",
+        "osx_key_user": "Opera"
+      },
+      "chromium": {
+        "paths": [
+          "~/Library/Application Support/Chromium/Default/Cookies",
+          "~/Library/Application Support/Chromium/Profile */Cookies"
+        ],
+        "unix_crypt_name": "chromium",
+        "osx_key_service": "Chrome Safe Storage",
+        "osx_key_user": "Chromium"
+      },
+      "arc": {
+        "paths": [
+          "~/Library/Application Support/Arc/User Data/Default/Cookies",
+          "~/Library/Application Support/Arc/User Data/Profile */Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ],
+        "unix_crypt_name": "arc",
+        "osx_key_service": "Arc Safe Storage",
+        "osx_key_user": "Arc"
+      },
+      "opera_gx": {
+        "paths": [
+          "~/Library/Application Support/com.operasoftware.OperaGX/Cookies"
+        ],
+        "channels": [
+          "Stable",
+          ""
+        ],
+        "unix_crypt_name": "chromium",
+        "osx_key_service": "Opera Safe Storage",
+        "osx_key_user": "Opera"
+      },
+      "safari": {
+        "paths": [
+          "~/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies",
+          "~/Library/Cookies/Cookies.binarycookies"
+        ]
+      }
+    },
+    "linux": {
+      "chrome": {
+        "paths": [
+          "~/.config/google-chrome{channel}/Default/Cookies",
+          "~/.config/google-chrome{channel}/Profile */Cookies",
+          "~/.var/app/com.google.Chrome/config/google-chrome{channel}/Default/Cookies",
+          "~/.var/app/com.google.Chrome/config/google-chrome{channel}/Profile */Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ],
+        "unix_crypt_name": "chrome"
+      },
+      "brave": {
+        "paths": [
+          "~/snap/brave/*/.config/BraveSoftware/Brave-Browser/Default/Cookies",
+          "~/.config/BraveSoftware/Brave-Browser{channel}/Default/Cookies",
+          "~/.config/BraveSoftware/Brave-Browser{channel}/Profile */Cookies",
+          "~/.var/app/com.brave.Browser/config/BraveSoftware/Brave-Browser{channel}/Default/Cookies",
+          "~/.var/app/com.brave.Browser/config/BraveSoftware/Brave-Browser{channel}/Profile */Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ],
+        "unix_crypt_name": "brave"
+      },
+      "edge": {
+        "paths": [
+          "~/.config/microsoft-edge{channel}/Default/Cookies",
+          "~/.config/microsoft-edge{channel}/Profile */Cookies",
+          "~/.var/app/com.microsoft.Edge/config/microsoft-edge{channel}/Default/Cookies",
+          "~/.var/app/com.microsoft.Edge/config/microsoft-edge{channel}/Profile */Cookies"
+        ],
+        "channels": [
+          "",
+          "-beta",
+          "-dev",
+          "-nightly"
+        ],
+        "unix_crypt_name": "chromium"
+      },
+      "vivaldi": {
+        "paths": [
+          "~/.config/vivaldi/Default/Cookies",
+          "~/.config/vivaldi/Profile */Cookies",
+          "~/.config/vivaldi-snapshot/Default/Cookies",
+          "~/.config/vivaldi-snapshot/Profile */Cookies",
+          "~/.var/app/com.vivaldi.Vivaldi/config/vivaldi/Default/Cookies",
+          "~/.var/app/com.vivaldi.Vivaldi/config/vivaldi/Profile */Cookies"
+        ],
+        "unix_crypt_name": "chrome"
+      },
+      "opera": {
+        "paths": [
+          "~/snap/opera/*/.config/opera/Default/Cookies",
+          "~/snap/opera/*/.config/opera/Cookies",
+          "~/.config/opera/Default/Cookies",
+          "~/.config/opera/Cookies",
+          "~/.var/app/com.opera.Opera/config/opera/Default/Cookies",
+          "~/.var/app/com.opera.Opera/config/opera/Cookies",
+          "~/snap/opera-beta/*/.config/opera/Default/Cookies",
+          "~/snap/opera-beta/*/.config/opera/Cookies",
+          "~/.config/opera-beta/Default/Cookies",
+          "~/.config/opera-beta/Cookies",
+          "~/.var/app/com.opera.Opera/config/opera-beta/Default/Cookies",
+          "~/.var/app/com.opera.Opera/config/opera-beta/Cookies",
+          "~/snap/opera-developer/*/.config/opera/Default/Cookies",
+          "~/snap/opera-developer/*/.config/opera/Cookies",
+          "~/.config/opera-developer/Default/Cookies",
+          "~/.config/opera-developer/Cookies",
+          "~/.var/app/com.opera.Opera/config/opera-developer/Default/Cookies",
+          "~/.var/app/com.opera.Opera/config/opera-developer/Cookies"
+        ],
+        "channels": [
+          "Stable",
+          "Next",
+          "Developer"
+        ],
+        "unix_crypt_name": "chromium"
+      },
+      "chromium": {
+        "paths": [
+          "~/snap/chromium/common/chromium/Default/Cookies",
+          "~/.config/chromium/Default/Cookies",
+          "~/.config/chromium/Profile */Cookies",
+          "~/.var/app/org.chromium.Chromium/config/chromium/Default/Cookies",
+          "~/.var/app/org.chromium.Chromium/config/chromium/Profile */Cookies"
+        ],
+        "unix_crypt_name": "chromium"
+      },
+      "arc": {
+        "paths": [
+          "~/snap/arc/common/arc/Default/Cookies",
+          "~/.config/arc/Default/Cookies",
+          "~/.config/arc/Profile */Cookies",
+          "~/.var/app/org.arc.Arc/config/arc/Default/Cookies",
+          "~/.var/app/org.arc.Arc/config/arc/Profile */Cookies"
+        ],
+        "unix_crypt_name": "arc"
+      },
+      "firefox": {
+        "paths": [
+          "~/snap/firefox/common/.mozilla/firefox",
+          "~/.mozilla/firefox",
+          "~/.var/app/org.mozilla.firefox/.mozilla/firefox"
+        ]
+      },
+      "librewolf": {
+        "paths": [
+          "~/snap/librewolf/common/.librewolf",
+          "~/.librewolf"
+        ]
+      },
+      "cachy": {
+        "paths": [
+          "~/.cachy"
+        ]
+      },
+      "opera_gx": {
+        "paths": [],
+        "channels": [
+          "",
+          ""
+        ]
+      }
+    }
+  }
+}

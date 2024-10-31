@@ -93,7 +93,7 @@ pub fn librewolf(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
 #[cfg(target_os = "linux")]
 pub fn cachy(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   let config = get_browser_config("cachy");
-  let db_path = paths::find_mozilla_based_paths(&config)?;
+  let db_path = paths::find_mozilla_based_paths(config)?;
   firefox_based(db_path, domains)
 }
 

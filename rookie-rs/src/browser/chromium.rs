@@ -1,4 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
+use crate::config::Browser;
 use eyre::{bail, Result};
 use std::path::PathBuf;
 
@@ -102,7 +103,9 @@ fn get_keys(config: &Browser) -> Result<Vec<Vec<u8>>> {
   let iterations = 1;
 
   let mut keys: Vec<Vec<u8>> = vec![];
-  if let Ok(passwords) = crate::linux::get_passwords(config.unix_crypt_name.unwrap_or("")) {
+  if let Ok(passwords) =
+    crate::linux::get_passwords(&config.unix_crypt_name.clone().unwrap_or("".to_owned()))
+  {
     for password in passwords {
       let key = create_pbkdf2_key(password.as_str(), salt, iterations);
       keys.push(key);

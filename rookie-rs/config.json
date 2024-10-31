@@ -1,6 +1,6 @@
 {
   "version": "0.5.5",
-  "browsers": {
+  "platforms": {
     "windows": {
       "chrome": {
         "paths": [
@@ -158,7 +158,7 @@
           "-dev",
           "-nightly"
         ],
-        "os_crypt_name": "chrome",
+        "unix_crypt_name": "chrome",
         "osx_key_service": "Chrome Safe Storage",
         "osx_key_user": "Chrome"
       },
@@ -173,7 +173,7 @@
           "-dev",
           "-nightly"
         ],
-        "os_crypt_name": "brave",
+        "unix_crypt_name": "brave",
         "osx_key_service": "Brave Safe Storage",
         "osx_key_user": "Brave"
       },
@@ -188,7 +188,7 @@
           " Dev",
           " Canary"
         ],
-        "os_crypt_name": "chromium",
+        "unix_crypt_name": "chromium",
         "osx_key_service": "Microsoft Edge Safe Storage",
         "osx_key_user": "Microsoft Edge"
       },
@@ -207,7 +207,7 @@
           "~/Library/Application Support/Vivaldi/Default/Cookies",
           "~/Library/Application Support/Vivaldi/Profile */Cookies"
         ],
-        "os_crypt_name": "chrome",
+        "unix_crypt_name": "chrome",
         "osx_key_service": "Vivaldi Safe Storage",
         "osx_key_user": "Vivaldi"
       },
@@ -222,7 +222,7 @@
           "Next",
           "Developer"
         ],
-        "os_crypt_name": "chromium",
+        "unix_crypt_name": "chromium",
         "osx_key_service": "Opera Safe Storage",
         "osx_key_user": "Opera"
       },
@@ -231,7 +231,7 @@
           "~/Library/Application Support/Chromium/Default/Cookies",
           "~/Library/Application Support/Chromium/Profile */Cookies"
         ],
-        "os_crypt_name": "chromium",
+        "unix_crypt_name": "chromium",
         "osx_key_service": "Chrome Safe Storage",
         "osx_key_user": "Chromium"
       },
@@ -246,7 +246,7 @@
           "-dev",
           "-nightly"
         ],
-        "os_crypt_name": "arc",
+        "unix_crypt_name": "arc",
         "osx_key_service": "Arc Safe Storage",
         "osx_key_user": "Arc"
       },
@@ -258,7 +258,7 @@
           "Stable",
           ""
         ],
-        "os_crypt_name": "chromium",
+        "unix_crypt_name": "chromium",
         "osx_key_service": "Opera Safe Storage",
         "osx_key_user": "Opera"
       },
@@ -283,7 +283,7 @@
           "-dev",
           "-nightly"
         ],
-        "os_crypt_name": "chrome"
+        "unix_crypt_name": "chrome"
       },
       "brave": {
         "paths": [
@@ -299,7 +299,7 @@
           "-dev",
           "-nightly"
         ],
-        "os_crypt_name": "brave"
+        "unix_crypt_name": "brave"
       },
       "edge": {
         "paths": [
@@ -314,7 +314,7 @@
           "-dev",
           "-nightly"
         ],
-        "os_crypt_name": "chromium"
+        "unix_crypt_name": "chromium"
       },
       "vivaldi": {
         "paths": [
@@ -325,7 +325,7 @@
           "~/.var/app/com.vivaldi.Vivaldi/config/vivaldi/Default/Cookies",
           "~/.var/app/com.vivaldi.Vivaldi/config/vivaldi/Profile */Cookies"
         ],
-        "os_crypt_name": "chrome"
+        "unix_crypt_name": "chrome"
       },
       "opera": {
         "paths": [
@@ -353,7 +353,7 @@
           "Next",
           "Developer"
         ],
-        "os_crypt_name": "chromium"
+        "unix_crypt_name": "chromium"
       },
       "chromium": {
         "paths": [
@@ -363,7 +363,7 @@
           "~/.var/app/org.chromium.Chromium/config/chromium/Default/Cookies",
           "~/.var/app/org.chromium.Chromium/config/chromium/Profile */Cookies"
         ],
-        "os_crypt_name": "chromium"
+        "unix_crypt_name": "chromium"
       },
       "arc": {
         "paths": [
@@ -373,7 +373,7 @@
           "~/.var/app/org.arc.Arc/config/arc/Default/Cookies",
           "~/.var/app/org.arc.Arc/config/arc/Profile */Cookies"
         ],
-        "os_crypt_name": "arc"
+        "unix_crypt_name": "arc"
       },
       "firefox": {
         "paths": [

@@ -25,12 +25,3 @@ impl CookieToString for Vec<Cookie> {
       .join(";")
   }
 }
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct BrowserConfig {
-  pub data_paths: Vec<String>,
-  pub channels: Option<Vec<String>>,
-  pub os_crypt_name: Option<String>,
-  pub osx_key_service: Option<String>,
-  pub osx_key_user: Option<String>,
-}

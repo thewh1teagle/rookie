@@ -1,4 +1,4 @@
-use crate::{browser::mozilla::get_default_profile, common::enums::BrowserConfig};
+use crate::{browser::mozilla::get_default_profile, config::Browser};
 use eyre::{anyhow, bail, Context, Result};
 use std::{env, path::PathBuf};
 
@@ -14,13 +14,13 @@ fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>> {
   Ok(data_paths)
 }
 
-pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBuf, PathBuf)> {
-  for path in browser_config.data_paths {
+pub fn find_chrome_based_paths(config: &Browser) -> Result<(PathBuf, PathBuf)> {
+  for path in config.paths.clone() {
     // base paths
-    let channels: &[&str] = browser_config.channels.unwrap_or(&[""]);
+    let channels = config.channels.clone().unwrap_or(vec!["".to_string()]);
     for channel in channels {
       // channels
-      let path = path.replace("{channel}", channel);
+      let path = path.replace("{channel}", &channel);
       let db_path = expand_path(path.as_str())?;
       let glob_db_paths = expand_glob_paths(db_path)?;
       for db_path in glob_db_paths {
@@ -48,13 +48,13 @@ pub fn find_chrome_based_paths(browser_config: &BrowserConfig) -> Result<(PathBu
   Err(anyhow!("can't find cookies file"))
 }
 
-pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
-  for path in browser_config.data_paths {
+pub fn find_mozilla_based_paths(config: &Browser) -> Result<PathBuf> {
+  for path in config.paths.clone() {
     // base paths
-    let channels: &[&str] = browser_config.channels.unwrap_or(&[""]);
+    let channels = config.channels.clone().unwrap_or(vec!["".to_string()]);
     for channel in channels {
       // channels
-      let path = path.replace("{channel}", channel);
+      let path = path.replace("{channel}", &channel);
       let firefox_path = expand_path(path.as_str())?;
       let glob_paths = expand_glob_paths(firefox_path)?;
       for path in glob_paths {
@@ -75,13 +75,13 @@ pub fn find_mozilla_based_paths(browser_config: &BrowserConfig) -> Result<PathBu
 }
 
 #[cfg(target_os = "macos")]
-pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
-  for path in browser_config.data_paths {
+pub fn find_safari_based_paths(config: &Browser) -> Result<PathBuf> {
+  for path in config.paths.clone() {
     // base paths
-    let channels: &[&str] = browser_config.channels.unwrap_or(&[""]);
+    let channels = config.channels.clone().unwrap_or(vec!["".to_string()]);
     for channel in channels {
       // channels
-      let path = path.replace("{channel}", channel);
+      let path = path.replace("{channel}", &channel);
       let safari_path = expand_path(path.as_str())?;
       let glob_paths = expand_glob_paths(safari_path)?;
       for path in glob_paths {
@@ -97,7 +97,7 @@ pub fn find_safari_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf
 }
 
 #[cfg(target_os = "windows")]
-pub fn find_ie_based_paths(browser_config: &BrowserConfig) -> Result<PathBuf> {
+pub fn find_ie_based_paths(browser_config: &Browser) -> Result<PathBuf> {
   for path in browser_config.data_paths {
     // base paths
     let channels: &[&str] = browser_config.channels.unwrap_or(&[""]);

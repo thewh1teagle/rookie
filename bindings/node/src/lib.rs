@@ -187,13 +187,13 @@ pub fn safari(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
 #[napi]
 #[cfg(unix)]
 pub fn chromium_based(db_path: String, domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
-  use rookie::common::enums::BrowserConfig;
+  use rookie::config::Browser;
 
   let db_path = db_path.as_str();
-  let config = BrowserConfig {
+  let config = Browser {
     channels: None,
-    data_paths: &[db_path],
-    os_crypt_name: Some("chrome"),
+    paths: vec![db_path.to_string()],
+    unix_crypt_name: Some("chrome".to_string()),
     osx_key_service: None,
     osx_key_user: None,
   };

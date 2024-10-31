@@ -1,7 +1,9 @@
 use crate::common::{date, enums::*, sqlite};
-use crate::config::Browser;
 use eyre::{bail, Result};
 use std::path::PathBuf;
+
+#[allow(unused)]
+use crate::config::Browser;
 
 #[cfg(target_os = "windows")]
 use crate::windows;

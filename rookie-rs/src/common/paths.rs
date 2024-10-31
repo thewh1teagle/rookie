@@ -3,19 +3,19 @@ use eyre::{anyhow, bail, Context, Result};
 use std::{env, path::PathBuf};
 
 fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>> {
-  let mut data_paths: Vec<PathBuf> = vec![];
+  let mut paths: Vec<PathBuf> = vec![];
   if let Some(path_str) = path.to_str() {
     for entry in glob::glob(path_str)? {
       if entry.is_ok() {
-        data_paths.push(entry?);
+        paths.push(entry?);
       }
     }
   }
-  Ok(data_paths)
+  Ok(paths)
 }
 
 pub fn find_chrome_based_paths(config: &Browser) -> Result<(PathBuf, PathBuf)> {
-  for path in config.paths.clone() {
+  for path in &config.paths {
     // base paths
     let channels = config.channels.clone().unwrap_or(vec!["".to_string()]);
     for channel in channels {
@@ -49,7 +49,7 @@ pub fn find_chrome_based_paths(config: &Browser) -> Result<(PathBuf, PathBuf)> {
 }
 
 pub fn find_mozilla_based_paths(config: &Browser) -> Result<PathBuf> {
-  for path in config.paths.clone() {
+  for path in &config.paths {
     // base paths
     let channels = config.channels.clone().unwrap_or(vec!["".to_string()]);
     for channel in channels {
@@ -76,7 +76,7 @@ pub fn find_mozilla_based_paths(config: &Browser) -> Result<PathBuf> {
 
 #[cfg(target_os = "macos")]
 pub fn find_safari_based_paths(config: &Browser) -> Result<PathBuf> {
-  for path in config.paths.clone() {
+  for path in &config.paths {
     // base paths
     let channels = config.channels.clone().unwrap_or(vec!["".to_string()]);
     for channel in channels {
@@ -97,14 +97,14 @@ pub fn find_safari_based_paths(config: &Browser) -> Result<PathBuf> {
 }
 
 #[cfg(target_os = "windows")]
-pub fn find_ie_based_paths(browser_config: &Browser) -> Result<PathBuf> {
-  for path in browser_config.data_paths {
+pub fn find_ie_based_paths(config: &Browser) -> Result<PathBuf> {
+  for path in &config.paths {
     // base paths
-    let channels: &[&str] = browser_config.channels.unwrap_or(&[""]);
+    let channels = config.channels.clone().unwrap_or(vec!["".to_string()]);
     for channel in channels {
       // channels
 
-      let path = path.replace("{channel}", channel);
+      let path = path.replace("{channel}", &channel);
       let path = expand_path(path.as_str())?;
       let glob_paths = expand_glob_paths(path)?;
       for path in glob_paths {

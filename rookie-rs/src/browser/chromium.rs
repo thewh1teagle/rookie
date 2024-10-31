@@ -1,5 +1,4 @@
 use crate::common::{date, enums::*, sqlite};
-use crate::config::Browser;
 use eyre::{bail, Result};
 use std::path::PathBuf;
 

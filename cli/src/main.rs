@@ -21,11 +21,7 @@ fn print_cookies(args: Args, cookies: Vec<Cookie>) {
 }
 
 fn print_version() {
-  println!(
-    "CLI: {}\nRookie: {}",
-    env!("CARGO_PKG_VERSION"),
-    rookie::version()
-  );
+  println!("Rookie: {}", rookie::version());
   std::process::exit(0);
 }
 

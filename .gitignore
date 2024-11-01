@@ -1,4 +1,5 @@
 target/
+venv/
 Cargo.lock
 __pycache__
 *.pyc

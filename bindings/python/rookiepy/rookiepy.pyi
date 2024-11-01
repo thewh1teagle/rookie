@@ -20,6 +20,15 @@ def firefox(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
+def zen(domains: Optional[List[str]] = None) -> CookieList:
+    """
+    Extract Cookies from Zen
+
+    :param domains: Optional list of domains to extract only from them
+    :return: A list of dictionaries of cookies
+    """
+    ...
+
 def firefox_based(
     key_path: str, db_path: str, domains: Optional[List[str]] = None
 ) -> CookieList:

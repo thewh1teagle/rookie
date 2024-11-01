@@ -31,6 +31,18 @@ pub fn firefox(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObjec
   Ok(cookies)
 }
 
+/// Extract Cookies from Zen
+///
+/// :param domains: Optional list of domains to extract only from them
+/// :return: A list of dictionaries of cookies
+#[pyfunction]
+pub fn zen(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+  let cookies = rookie::zen(domains)?;
+  let cookies = to_dict(py, cookies)?;
+
+  Ok(cookies)
+}
+
 /// Extract Cookies from LibreWolf browser
 ///
 /// :param domains: Optional list of domains to extract only from them

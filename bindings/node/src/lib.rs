@@ -61,6 +61,13 @@ pub fn firefox(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
 }
 
 #[napi]
+pub fn zen(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
+  let cookies =
+    rookie::zen(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;
+  cookies_to_js(cookies)
+}
+
+#[napi]
 pub fn librewolf(domains: Option<Vec<String>>) -> Result<Vec<CookieObject>> {
   let cookies =
     rookie::librewolf(domains).map_err(|e| napi::Error::new(Status::Unknown, format!("{e:?}")))?;

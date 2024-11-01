@@ -68,6 +68,15 @@
           "-nightly"
         ]
       },
+      "zen": {
+        "paths": [
+          "%APPDATA%/zen",
+          "%LOCALAPPDATA%/zen"
+        ],
+        "channels": [
+          ""
+        ]
+      },
       "vivaldi": {
         "paths": [
           "%LOCALAPPDATA%/Vivaldi/User Data/Default/Cookies",
@@ -195,6 +204,11 @@
       "firefox": {
         "paths": [
           "~/Library/Application Support/Firefox"
+        ]
+      },
+      "zen": {
+        "paths": [
+          "~/Library/Application Support/zen"
         ]
       },
       "librewolf": {
@@ -380,6 +394,11 @@
           "~/snap/firefox/common/.mozilla/firefox",
           "~/.mozilla/firefox",
           "~/.var/app/org.mozilla.firefox/.mozilla/firefox"
+        ]
+      },
+      "zen": {
+        "paths": [
+          "~/.zen"
         ]
       },
       "librewolf": {

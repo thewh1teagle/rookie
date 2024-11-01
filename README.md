@@ -114,6 +114,7 @@ So far the following platforms are supported:
 - **Opera GX:** `macOS`, `Windows`
 - **Safari:** `macOS`
 - **Vivaldi:** `Linux`, `macOS`, `Windows`
+- **Zen:** `Linux`, `macOS`, `Windows`
 
 You are welcome to contribute support for other browsers, or other platforms.
 
@@ -140,6 +141,7 @@ look at [rookie-rs/config.json](rookie-rs/config.json) to see what configuration
 | Opera GX  |    N/A     |     -      | 2023/10/01 |
 | Safari    |    N/A     | 2024/10/26 |    N/A     |
 | Vivaldi   | 2023/10/01 | 2023/11/25 | 2023/10/01 |
+| Zen       |     -      | 2024/10/26 |     -      |
 
 ## Credits 🙌
 

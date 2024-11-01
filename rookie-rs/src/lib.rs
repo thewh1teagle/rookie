@@ -201,6 +201,24 @@ pub fn arc(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   }
 }
 
+/// Returns cookies from Firefox
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::zen(Some(domains));
+/// ```
+pub fn zen(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
+  let config = get_browser_config("zen");
+  let db_path = paths::find_mozilla_based_paths(config)?;
+  firefox_based(db_path, domains)
+}
+
 /// Returns cookies from Edge
 ///
 /// # Arguments
@@ -378,7 +396,7 @@ pub fn load(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   let mut cookies = Vec::new();
 
   let mut browser_types = vec![
-    firefox, librewolf, opera, edge, chromium, brave, vivaldi, arc,
+    firefox, zen, librewolf, opera, edge, chromium, brave, vivaldi, arc,
   ];
 
   #[cfg(target_os = "windows")]

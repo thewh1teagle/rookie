@@ -1,5 +1,15 @@
 import platform
-from rookiepy import arc, brave, chromium, chrome, edge, firefox, librewolf, vivaldi
+from rookiepy import (
+    arc,
+    brave,
+    chromium,
+    chrome,
+    edge,
+    firefox,
+    librewolf,
+    vivaldi,
+    zen,
+)
 
 # On all platforms
 browsers_fn = [arc, brave, chromium, chrome, edge, firefox, librewolf, vivaldi]

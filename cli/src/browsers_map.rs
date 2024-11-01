@@ -17,6 +17,7 @@ lazy_static! {
     map.insert("chrome".into(), rookie::chrome);
     map.insert("edge".into(), rookie::edge);
     map.insert("firefox".into(), rookie::firefox);
+    map.insert("zen".into(), rookie::zen);
 
     #[cfg(target_os = "windows")]
     map.insert("internet_explorer".into(), rookie::internet_explorer);

@@ -12,6 +12,8 @@ fn version() -> PyResult<String> {
 fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
   pyo3_log::init();
   m.add_function(wrap_pyfunction!(firefox, m)?)?;
+  m.add_function(wrap_pyfunction!(zen, m)?)?;
+
   m.add_function(wrap_pyfunction!(librewolf, m)?)?;
   m.add_function(wrap_pyfunction!(chrome, m)?)?;
   m.add_function(wrap_pyfunction!(brave, m)?)?;

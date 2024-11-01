@@ -498,5 +498,9 @@ pub fn any_browser(
       return Ok(cookies);
     }
   }
-  bail!("Can't find any cookies");
+  bail!(
+    "\nNo cookies found.\n\
+    If you're using a Chromium-based browser, please specify the key file \
+    and run this program with administrator privileges."
+  );
 }

@@ -11,7 +11,6 @@ def version() -> str:
     """
     ...
 
-
 def firefox(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Firefox
@@ -21,8 +20,9 @@ def firefox(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
-
-def firefox_based(key_path: str, db_path: str, domains: Optional[List[str]] = None) -> CookieList:
+def firefox_based(
+    key_path: str, db_path: str, domains: Optional[List[str]] = None
+) -> CookieList:
     """
     Extract Cookies from Firefox-based browsers
 
@@ -33,7 +33,6 @@ def firefox_based(key_path: str, db_path: str, domains: Optional[List[str]] = No
     """
     ...
 
-
 def brave(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Brave browser
@@ -42,7 +41,6 @@ def brave(domains: Optional[List[str]] = None) -> CookieList:
     :return: A list of dictionaries of cookies
     """
     ...
-
 
 def edge(domains: Optional[List[str]] = None) -> CookieList:
     """
@@ -53,7 +51,6 @@ def edge(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
-
 def chrome(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Google Chrome browser
@@ -62,7 +59,6 @@ def chrome(domains: Optional[List[str]] = None) -> CookieList:
     :return: A list of dictionaries of cookies
     """
     ...
-
 
 def chromium_based(db_path: str, domains: Optional[List[str]] = None) -> CookieList:
     """
@@ -73,7 +69,6 @@ def chromium_based(db_path: str, domains: Optional[List[str]] = None) -> CookieL
     :return: A list of dictionaries of cookies
     """
     ...
-
 
 def chromium(domains: Optional[List[str]] = None) -> CookieList:
     """
@@ -102,7 +97,6 @@ def opera(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
-
 def vivaldi(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from Vivaldi browser
@@ -111,7 +105,6 @@ def vivaldi(domains: Optional[List[str]] = None) -> CookieList:
     :return: A list of dictionaries of cookies
     """
     ...
-
 
 def opera_gx(domains: Optional[List[str]] = None) -> CookieList:
     """
@@ -122,7 +115,6 @@ def opera_gx(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
-
 def librewolf(domains: Optional[List[str]] = None) -> CookieList:
     """
     Extract Cookies from LibreWolf browser
@@ -131,7 +123,6 @@ def librewolf(domains: Optional[List[str]] = None) -> CookieList:
     :return: A list of dictionaries of cookies
     """
     ...
-
 
 def load(domains: Optional[List[str]] = None) -> CookieList:
     """
@@ -142,17 +133,18 @@ def load(domains: Optional[List[str]] = None) -> CookieList:
     """
     ...
 
-def any_browser(db_path: str, domains: Optional[List[str]] = None, key_path: Optional[str] = None) -> CookieList:
+def any_browser(
+    db_path: str, domains: Optional[List[str]] = ..., key_path: Optional[str] = ...
+) -> List[Dict[str, str]]:
     """
-    Extract Cookies from any browser
+    Extract Cookies from any browser.
 
-    :param db_path: path to browser database file
-    :param domains: Optional list of domains to extract only from them
-    :param key_path: Optional path to key file used to decrypt db_path
-    :return: A list of dictionaries of cookies
+    :param db_path: Path to browser database file.
+    :param domains: Optional list of domains to extract cookies only from these domains.
+    :param key_path: Optional path to key file used to decrypt `db_path`.
+    :return: A list of dictionaries of cookies.
     """
     ...
-
 
 # Windows
 if platform == "win32":
@@ -174,7 +166,6 @@ if platform == "win32":
         """
         ...
 
-
 # MacOS
 if platform == "darwin":
     def safari(domains: Optional[List[str]] = None) -> CookieList:
@@ -185,5 +176,3 @@ if platform == "darwin":
         :return: A list of dictionaries of cookies
         """
         ...
-
-

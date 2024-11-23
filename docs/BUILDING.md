@@ -20,7 +20,7 @@ cargo build
 
 ## cli
 
-````console
+```console
 git clone https://github.com/thewh1teagle/rookie
 cd cli
 cargo build --release

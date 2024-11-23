@@ -3,7 +3,7 @@
 ## Install
 
 ```typescript
-npm install @rookie/api
+npm install @rookie-rs/api
 ```
 
 ## Basic Usage

@@ -114,11 +114,6 @@ fn get_process_handle(pid: u32) -> Result<HANDLE> {
   }
 }
 
-fn close_handle(handle: HANDLE) -> Result<()> {
-  unsafe { CloseHandle(handle)? };
-  Ok(())
-}
-
 fn get_system_token(lsass_handle: HANDLE) -> Result<HANDLE> {
   let mut token_handle = HANDLE::default();
   unsafe {
@@ -147,8 +142,8 @@ pub fn start_impersonate() -> Result<HANDLE> {
   let pid = get_system_process_pid()?;
   let lsass_handle = get_process_handle(pid)?;
   let duplicated_token = get_system_token(lsass_handle)?;
-  close_handle(lsass_handle)?;
   unsafe {
+    CloseHandle(lsass_handle)?;
     ImpersonateLoggedOnUser(duplicated_token)?;
   }
   Ok(duplicated_token)

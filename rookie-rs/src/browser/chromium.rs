@@ -157,7 +157,7 @@ fn get_keys(config: &Browser) -> Result<Vec<Vec<u8>>> {
 fn decrypt_encrypted_value(
   value: String,
   encrypted_value: &[u8],
-  keys: Vec<Vec<u8>>,
+  keys: &[Vec<u8>],
 ) -> Result<String> {
   let key_type = &encrypted_value[..3];
   if !value.is_empty() || !(key_type == b"v11" || key_type == b"v10" || key_type == b"v20") {
@@ -206,7 +206,7 @@ fn decrypt_encrypted_value(
 fn decrypt_encrypted_value(
   value: String,
   encrypted_value: &[u8],
-  keys: Vec<Vec<u8>>,
+  keys: &[Vec<u8>],
 ) -> Result<String> {
   // cbc
   if !value.is_empty() {
@@ -336,7 +336,7 @@ fn query_cookies(
     if encrypted_value.is_empty() {
       continue;
     }
-    let decrypted_value = decrypt_encrypted_value(value, &encrypted_value, keys.to_owned())?;
+    let decrypted_value = decrypt_encrypted_value(value, &encrypted_value, &keys)?;
     let http_only: bool = row.get(7)?;
 
     let same_site: i64 = row.get(8)?;

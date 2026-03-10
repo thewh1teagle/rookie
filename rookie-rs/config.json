@@ -281,6 +281,15 @@
           "~/Library/Containers/com.apple.Safari/Data/Library/Cookies/Cookies.binarycookies",
           "~/Library/Cookies/Cookies.binarycookies"
         ]
+      },
+      "tabbit": {
+        "paths": [
+          "~/Library/Application Support/Tabbit Browser/Default/Cookies",
+          "~/Library/Application Support/Tabbit Browser/Profile */Cookies"
+        ],
+        "unix_crypt_name": "chromium",
+        "osx_key_service": "Tabbit Browser Safe Storage",
+        "osx_key_user": "Tabbit Browser"
       }
     },
     "linux": {

@@ -28,6 +28,9 @@ lazy_static! {
     #[cfg(target_os = "macos")]
     map.insert("safari".into(), rookie::safari);
 
+    #[cfg(target_os = "macos")]
+    map.insert("tabbit".into(), rookie::tabbit);
+
     map.insert("vivaldi".into(), rookie::vivaldi);
 
     map.insert("arc".into(), rookie::arc);

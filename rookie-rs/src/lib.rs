@@ -361,6 +361,25 @@ pub fn safari(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
   safari_based(db_path, domains)
 }
 
+/// Returns cookies from Tabbit Browser (macOS only)
+///
+/// # Arguments
+///
+/// * `domains` - A optional list that for getting specific domains only
+///
+/// # Examples
+///
+/// ```
+/// let domains = vec!["google.com"];
+/// let cookies = rookie::tabbit(Some(domains));
+/// ```
+#[cfg(target_os = "macos")]
+pub fn tabbit(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
+  let config = get_browser_config("tabbit");
+  let (_, db_path) = paths::find_chrome_based_paths(config)?;
+  chromium_based(config, db_path, domains)
+}
+
 /// Returns cookies from Internet Explorer (Windows only)
 ///
 /// # Arguments
@@ -415,6 +434,7 @@ pub fn load(domains: Option<Vec<String>>) -> Result<Vec<Cookie>> {
     browser_types.push(chrome);
     browser_types.push(opera_gx);
     browser_types.push(safari);
+    browser_types.push(tabbit);
   }
 
   for browser_fn in browser_types.iter() {
@@ -459,6 +479,7 @@ pub fn any_browser(
       get_browser_config("opera"),
       get_browser_config("opera_gx"),
       get_browser_config("vivaldi"),
+      get_browser_config("tabbit"),
     ];
     for browser_config in chrome_configs {
       if let Ok(cookies) = chromium_based(browser_config, cookies_path.into(), domains.clone()) {

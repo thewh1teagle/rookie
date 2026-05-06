@@ -4,6 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "rookiepy"
+dynamic = ["version"]
 description = "Load cookies from any browser on any platform"
 license = "MIT"
 authors = [

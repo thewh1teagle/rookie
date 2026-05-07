@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     paths:
-      - ".github/workflows/lint-cli.yml"
+      - ".github/workflows/lint.yml"
       - "rookie-rs/src/**"
   workflow_dispatch:
 

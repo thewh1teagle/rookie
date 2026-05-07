@@ -1,9 +1,13 @@
 name: Publish CLI
 
 on:
+  push:
+    tags:
+      - "*"
   workflow_dispatch:
     inputs:
       tag:
+        description: 'Git tag for the release'
         required: true
 
 jobs:
@@ -49,13 +53,13 @@ jobs:
         if: contains(matrix.platform, 'windows')
 
       - name: Upload Unix
-        run: gh release upload ${{ github.event.inputs.tag }} rookie-cli-${{ matrix.target }} --clobber
+        run: gh release upload ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }} rookie-cli-${{ matrix.target }} --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: contains(matrix.platform, 'macos') || contains(matrix.platform, 'ubuntu')
 
       - name: Upload Windows
-        run: gh release upload ${{ github.event.inputs.tag }} rookie-cli-${{ matrix.target }}.exe --clobber
+        run: gh release upload ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }} rookie-cli-${{ matrix.target }}.exe --clobber
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: contains(matrix.platform, 'windows')

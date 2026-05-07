@@ -8,7 +8,7 @@ name = "rookiepy"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.28", features = ["extension-module", "eyre"] }
+pyo3 = { version = "0.28", features = ["extension-module", "eyre", "abi3-py38"] }
 pyo3-log = "0.13"
 
 [target.'cfg(windows)'.dependencies]

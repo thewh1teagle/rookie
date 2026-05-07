@@ -9,6 +9,7 @@ documentation = "https://docs.rs/rookie/"
 repository = "https://github.com/thewh1teagle/rookie"
 readme = "../README.md"
 keywords = ["windows", "cookies", "rust", "web"]
+include = ["src/**/*", "Cargo.toml", "Cargo.lock"]
 
 [lib]
 name = "rookie"
@@ -38,7 +39,6 @@ tracing-subscriber = "0.3.18"
 
 [features]
 default = ["appbound"]
-pyo3 = ["eyre/pyo3"]
 appbound = []
 
 [target.'cfg(unix)'.dependencies]
@@ -77,5 +77,3 @@ windows = { version = "0.51", features = [
 [[example]]
 name = "simple"
 path = "../examples/rust/simple.rs"
-
-include = ["src/**/*", "Cargo.toml", "Cargo.lock"]

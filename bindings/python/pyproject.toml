@@ -1,16 +1,17 @@
 [build-system]
-requires = ["maturin>=1.2,<2.0"]
+requires = ["maturin>=1.5,<2.0"]
 build-backend = "maturin"
 
 [project]
 name = "rookiepy"
+dynamic = ["version"]
 description = "Load cookies from any browser on any platform"
 license = "MIT"
 authors = [
     {name = "thewh1teagle"},
 ]
 
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: MacOS",
@@ -30,5 +31,4 @@ Documentation = "https://github.com/thewh1teagle/rookie/blob/main/docs/Python.md
 Repository = "https://github.com/thewh1teagle/rookie"
 Issues = "https://github.com/thewh1teagle/rookie/issues"
 
-[tool.maturin]
-features = ["pyo3/extension-module"]
+

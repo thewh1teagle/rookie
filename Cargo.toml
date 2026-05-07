@@ -5,3 +5,7 @@ exclude = ["examples/rust/http"]
 
 default-members = ["rookie-rs", "bindings/python"]
 resolver = "2"
+
+[profile.release]
+lto = true
+strip = "symbols"

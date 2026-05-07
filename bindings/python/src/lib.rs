@@ -9,7 +9,7 @@ fn version() -> PyResult<String> {
 }
 
 #[pymodule]
-fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
+fn rookiepy(m: &Bound<'_, PyModule>) -> PyResult<()> {
   pyo3_log::init();
   m.add_function(wrap_pyfunction!(firefox, m)?)?;
   m.add_function(wrap_pyfunction!(zen, m)?)?;
@@ -43,8 +43,8 @@ fn rookiepy(_py: Python, m: &PyModule) -> PyResult<()> {
   Ok(())
 }
 
-fn to_dict(py: Python, cookies: Vec<Cookie>) -> PyResult<Vec<PyObject>> {
-  let mut cookie_objects: Vec<PyObject> = vec![];
+fn to_dict(py: Python<'_>, cookies: Vec<Cookie>) -> PyResult<Vec<Py<PyAny>>> {
+  let mut cookie_objects: Vec<Py<PyAny>> = vec![];
   for cookie in cookies {
     let dict = PyDict::new(py);
     dict.set_item("domain", cookie.domain)?;
@@ -56,7 +56,7 @@ fn to_dict(py: Python, cookies: Vec<Cookie>) -> PyResult<Vec<PyObject>> {
     dict.set_item("name", cookie.name)?;
     dict.set_item("value", cookie.value)?;
 
-    cookie_objects.push(dict.to_object(py));
+    cookie_objects.push(dict.into_any().unbind());
   }
   Ok(cookie_objects)
 }

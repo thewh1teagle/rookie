@@ -23,8 +23,8 @@ jobs:
         target: [x86_64, x86, aarch64, armv7, s390x, ppc64le]
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Build wheels
@@ -36,7 +36,7 @@ jobs:
           manylinux: auto
           working-directory: bindings/python
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-linux-${{ matrix.target }}-${{ matrix.python-version }}
           path: bindings/python/dist
@@ -48,8 +48,8 @@ jobs:
         target: [x86_64, x86, aarch64, armv7]
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Build wheels
@@ -61,7 +61,7 @@ jobs:
           manylinux: musllinux_1_2
           working-directory: bindings/python
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-musllinux-${{ matrix.target }}-${{ matrix.python-version }}
           path: bindings/python/dist
@@ -73,8 +73,8 @@ jobs:
         target: [x64, x86, aarch64]
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.target == 'aarch64' && 'arm64' || matrix.target }}
@@ -86,7 +86,7 @@ jobs:
           working-directory: bindings/python
           sccache: "true"
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-windows-${{ matrix.target }}-${{ matrix.python-version }}
           path: bindings/python/dist
@@ -98,8 +98,8 @@ jobs:
         target: [x86_64, aarch64]
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Build wheels
@@ -110,7 +110,7 @@ jobs:
           working-directory: bindings/python
           sccache: "true"
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-macos-${{ matrix.target }}-${{ matrix.python-version }}
           path: bindings/python/dist
@@ -118,7 +118,7 @@ jobs:
   sdist:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build sdist
         uses: PyO3/maturin-action@v1
         with:
@@ -126,7 +126,7 @@ jobs:
           args: --out dist
           working-directory: bindings/python
       - name: Upload sdist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sdist
           path: bindings/python/dist
@@ -141,9 +141,11 @@ jobs:
     permissions:
       contents: write
       id-token: write
+      attestations: write
+      artifact-metadata: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v8
         with:
           path: artifacts
       - name: Gather wheels
@@ -151,9 +153,16 @@ jobs:
           mkdir -p bindings/python/dist
           find artifacts -name "*.whl" -exec cp {} bindings/python/dist/ \;
           find artifacts -name "*.tar.gz" -exec cp {} bindings/python/dist/ \;
+      - name: Calculate artifact digests
+        run: sha256sum bindings/python/dist/* > subject.checksums.txt
+      - name: Attest build provenance
+        uses: actions/attest@v4
+        with:
+          subject-checksums: subject.checksums.txt
       - name: Install uv
         uses: astral-sh/setup-uv@v5
       - name: Publish to PyPI
-        run: uv publish bindings/python/dist/*.whl bindings/python/dist/*.tar.gz
+        run: uv publish
+        working-directory: bindings/python/dist
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}

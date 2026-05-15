@@ -1,5 +1,5 @@
 use crate::common::{date, enums::*, sqlite};
-use eyre::{bail, Result};
+use anyhow::{bail, Result};
 use std::path::PathBuf;
 
 #[allow(unused)]
@@ -10,7 +10,7 @@ use crate::windows;
 
 #[cfg(not(target_os = "linux"))]
 #[allow(unused)]
-use eyre::ContextCompat;
+use anyhow::Context;
 
 #[cfg(target_os = "macos")]
 use crate::macos;
@@ -22,8 +22,6 @@ use aes_gcm::{
 };
 #[cfg(target_os = "windows")]
 use base64::{engine::general_purpose, Engine as _};
-#[cfg(target_os = "windows")]
-use eyre::Context;
 
 /// Returns cookies from chromium based browser
 #[cfg(target_os = "windows")]

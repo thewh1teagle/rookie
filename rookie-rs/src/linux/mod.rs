@@ -1,4 +1,4 @@
-use eyre::{anyhow, bail, Result};
+use anyhow::{anyhow, bail, Result};
 use std::{collections::HashMap, sync::Arc};
 use zbus::{blocking::Connection, zvariant::ObjectPath, zvariant::Value, Message};
 

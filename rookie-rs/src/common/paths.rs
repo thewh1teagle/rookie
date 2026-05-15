@@ -1,5 +1,5 @@
 use crate::{browser::mozilla::get_default_profile, config::Browser};
-use eyre::{anyhow, bail, Context, Result};
+use anyhow::{anyhow, bail, Context, Result};
 use std::{env, path::PathBuf};
 
 fn expand_glob_paths(path: PathBuf) -> Result<Vec<PathBuf>> {

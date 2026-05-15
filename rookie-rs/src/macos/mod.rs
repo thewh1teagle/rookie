@@ -1,4 +1,4 @@
-use eyre::{anyhow, bail, Result};
+use anyhow::{anyhow, bail, Result};
 
 use std::process::Command;
 pub fn get_osx_keychain_password(osx_key_service: &str, osx_key_user: &str) -> Result<String> {

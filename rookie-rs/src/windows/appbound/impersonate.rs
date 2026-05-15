@@ -1,6 +1,6 @@
 use std::{ffi::OsString, os::windows::ffi::OsStringExt, path::Path};
 
-use eyre::{bail, Result};
+use anyhow::{bail, Result};
 use windows::Win32::System::Threading::OpenProcessToken;
 use windows::Win32::{
   Foundation::{CloseHandle, BOOL, HANDLE, NTSTATUS},

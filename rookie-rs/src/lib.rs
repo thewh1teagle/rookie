@@ -15,11 +15,11 @@ pub use browser::{chromium::chromium_based, mozilla::firefox_based};
 
 // Private
 mod browser;
+use anyhow::bail;
+pub use anyhow::{self, Result};
 use common::paths;
 use config::get_browser_config;
 use enums::Cookie;
-use eyre::bail;
-pub use eyre::Result;
 #[cfg(target_os = "linux")]
 mod linux;
 #[cfg(target_os = "windows")]

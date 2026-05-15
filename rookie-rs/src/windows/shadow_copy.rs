@@ -1,4 +1,4 @@
-use eyre::{bail, Context, Result};
+use anyhow::{bail, Context, Result};
 use privilege::user::privileged;
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
@@ -33,7 +33,7 @@ pub fn shadow_copy(src: PathBuf, dst: PathBuf) -> Result<()> {
     dst.display()
   );
   rawcopy_rs_next::rawcopy(src.clone().to_str().unwrap(), dst.to_str().unwrap())
-    .map_err(|err| eyre::eyre!(Box::new(err)))
+    .map_err(|err| anyhow::anyhow!(Box::new(err)))
     .context(format!(
       "Can't shadow copy from {} to {}",
       src.display(),

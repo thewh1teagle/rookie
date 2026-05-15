@@ -1,4 +1,4 @@
-use eyre::{anyhow, Result};
+use anyhow::{anyhow, Result};
 use rusqlite::{Connection, OpenFlags};
 use std::path::PathBuf;
 use url::Url;

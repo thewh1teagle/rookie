@@ -1,5 +1,5 @@
 use crate::common::{date, enums::Cookie};
-use eyre::Result;
+use anyhow::Result;
 use libesedb::EseDb;
 use std::path::PathBuf;
 

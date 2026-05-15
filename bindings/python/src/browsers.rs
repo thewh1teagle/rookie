@@ -7,16 +7,15 @@ use std::path::PathBuf;
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
+#[pyo3(signature = (db_path, domains=None, key_path=None))]
 pub fn any_browser(
-  py: Python,
+  py: Python<'_>,
   db_path: &str,
   domains: Option<Vec<String>>,
   key_path: Option<&str>,
 ) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::any_browser(db_path, domains, key_path)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Firefox
@@ -24,11 +23,10 @@ pub fn any_browser(
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn firefox(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn firefox(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::firefox(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Zen
@@ -36,11 +34,10 @@ pub fn firefox(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObjec
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn zen(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn zen(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::zen(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from LibreWolf browser
@@ -48,11 +45,10 @@ pub fn zen(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> 
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn librewolf(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn librewolf(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::librewolf(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Google Chrome browser
@@ -60,11 +56,10 @@ pub fn librewolf(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObj
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn chrome(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn chrome(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::chrome(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Arc browser
@@ -72,11 +67,10 @@ pub fn chrome(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn arc(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn arc(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::arc(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Brave browser
@@ -84,12 +78,10 @@ pub fn arc(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> 
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn brave(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn brave(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::brave(domains)?;
-
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Microsoft Edge browser
@@ -97,11 +89,10 @@ pub fn brave(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn edge(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn edge(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::edge(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Opera browser
@@ -109,12 +100,10 @@ pub fn edge(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>>
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn opera(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn opera(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::opera(domains)?;
-
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Opera GX browser
@@ -122,12 +111,10 @@ pub fn opera(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn opera_gx(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn opera_gx(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::opera_gx(domains)?;
-
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Chromium browser
@@ -135,11 +122,10 @@ pub fn opera_gx(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObje
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn chromium(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn chromium(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::chromium(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Vivaldi browser
@@ -147,12 +133,10 @@ pub fn chromium(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObje
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn vivaldi(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn vivaldi(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::vivaldi(domains)?;
-
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Firefox-based browsers
@@ -162,15 +146,14 @@ pub fn vivaldi(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObjec
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
+#[pyo3(signature = (db_path, domains=None))]
 pub fn firefox_based(
-  py: Python,
+  py: Python<'_>,
   db_path: String,
   domains: Option<Vec<String>>,
 ) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::firefox_based(PathBuf::from(db_path), domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Load Cookies from a browser
@@ -178,11 +161,10 @@ pub fn firefox_based(
 /// :param domains: Optional list of domains to load cookies from
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
-pub fn load(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+#[pyo3(signature = (domains=None))]
+pub fn load(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::load(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Octo browser
@@ -190,13 +172,11 @@ pub fn load(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>>
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
+#[pyo3(signature = (domains=None))]
 #[cfg(target_os = "windows")]
-pub fn octo_browser(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+pub fn octo_browser(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::octo_browser(domains)?;
-
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Internet Explorer
@@ -204,12 +184,11 @@ pub fn octo_browser(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<Py
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
+#[pyo3(signature = (domains=None))]
 #[cfg(target_os = "windows")]
-pub fn internet_explorer(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+pub fn internet_explorer(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::internet_explorer(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Chromium-based browsers
@@ -218,17 +197,16 @@ pub fn internet_explorer(py: Python, domains: Option<Vec<String>>) -> PyResult<V
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
+#[pyo3(signature = (key_path, db_path, domains=None))]
 #[cfg(target_os = "windows")]
 pub fn chromium_based(
-  py: Python,
+  py: Python<'_>,
   key_path: String,
   db_path: String,
   domains: Option<Vec<String>>,
 ) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::chromium_based(PathBuf::from(key_path), PathBuf::from(db_path), domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Safari browser
@@ -236,12 +214,11 @@ pub fn chromium_based(
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
+#[pyo3(signature = (domains=None))]
 #[cfg(target_os = "macos")]
-pub fn safari(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
+pub fn safari(py: Python<'_>, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject>> {
   let cookies = rookie::safari(domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }
 
 /// Extract Cookies from Chromium-based browsers
@@ -250,9 +227,10 @@ pub fn safari(py: Python, domains: Option<Vec<String>>) -> PyResult<Vec<PyObject
 /// :param domains: Optional list of domains to extract only from them
 /// :return: A list of dictionaries of cookies
 #[pyfunction]
+#[pyo3(signature = (db_path, domains=None))]
 #[cfg(unix)]
 pub fn chromium_based(
-  py: Python,
+  py: Python<'_>,
   db_path: String,
   domains: Option<Vec<String>>,
 ) -> PyResult<Vec<PyObject>> {
@@ -267,7 +245,5 @@ pub fn chromium_based(
     osx_key_user: None,
   };
   let cookies = rookie::chromium_based(&config, PathBuf::from(db_path), domains)?;
-  let cookies = to_dict(py, cookies)?;
-
-  Ok(cookies)
+  to_dict(py, cookies)
 }

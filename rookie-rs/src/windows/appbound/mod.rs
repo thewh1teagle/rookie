@@ -2,8 +2,8 @@
 See https://github.com/runassu/chrome_v20_decryption/blob/main/decrypt_chrome_v20_cookie.py
 cargo build --release --features appbound
 */
+use anyhow::{anyhow, bail, Result};
 use base64::{prelude::BASE64_STANDARD, Engine};
-use eyre::{bail, eyre, Result};
 
 use aes_gcm::{
   aead::{generic_array::GenericArray, Aead, KeyInit},
@@ -52,7 +52,7 @@ pub fn get_keys(key64: &str) -> Result<Vec<Vec<u8>>> {
   let nonce = GenericArray::from_slice(iv); // 96-bits; unique per message
   if let Ok(plain) = cipher
     .decrypt(nonce, ciphertext.as_slice())
-    .map_err(|e| eyre!("{:?}", e))
+    .map_err(|e| anyhow!("{:?}", e))
   {
     keys.push(plain)
   }

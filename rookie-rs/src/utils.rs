@@ -1,7 +1,7 @@
 use std::fs;
 use std::path::PathBuf;
 
-use eyre::Result;
+use anyhow::Result;
 use rand::distributions::Alphanumeric;
 use rand::Rng;
 
